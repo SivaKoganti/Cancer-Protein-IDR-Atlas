@@ -1,0 +1,10 @@
+biopython
+pandas
+numpy
+matplotlib
+seaborn
+pyfaidx
+tqdm
+pysam
+requests
+pyyaml
