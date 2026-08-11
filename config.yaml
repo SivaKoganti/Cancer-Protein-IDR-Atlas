@@ -1,0 +1,102 @@
+# Basic configuration
+
+# A starter curated list of 50 high-confidence Cancer Gene Census (CGC) genes for MVP.
+genes:
+  - TP53
+  - KRAS
+  - EGFR
+  - BRCA1
+  - BRCA2
+  - PIK3CA
+  - BRAF
+  - APC
+  - PTEN
+  - NRAS
+  - CDKN2A
+  - RB1
+  - ERBB2
+  - SMAD4
+  - STK11
+  - ATM
+  - CHEK2
+  - MET
+  - VHL
+  - GNAS
+  - IDH1
+  - IDH2
+  - JAK2
+  - KIT
+  - PDGFRA
+  - ALK
+  - ROS1
+  - RET
+  - NFE2L2
+  - PTCH1
+  - FBXW7
+  - CTNNB1
+  - MAP2K1
+  - MAP2K2
+  - NOTCH1
+  - NOTCH2
+  - ARID1A
+  - ARID2
+  - SMARCA4
+  - KMT2A
+  - KMT2D
+  - TSC1
+  - TSC2
+  - MLH1
+  - MSH2
+  - MSH6
+  - PMS2
+  - ERCC2
+  - RNF43
+  - NTRK1
+
+llps:
+  window: 41
+  qn_weight: 0.45
+  aromatic_weight: 0.25
+  charge_pattern_weight: 0.15
+  hydrophobic_weight: 0.15
+
+structural:
+  quantum_proxy:
+    dielectric_constant: 4.0
+    polarizability_factor: 1.0
+    stacking_coefficient: 1.2
+    charge_penalty: 0.6
+
+phylogeny:
+  description: "Phylogeny-aware atlas construction using ortholog conservation."
+  species:
+    - name: human
+      taxon_id: 9606
+    - name: mouse
+      taxon_id: 10090
+    - name: rat
+      taxon_id: 10116
+    - name: zebrafish
+      taxon_id: 7955
+    - name: chicken
+      taxon_id: 9031
+    - name: fruitfly
+      taxon_id: 7227
+  ortholog_source: "uniprot"
+
+oncovirus:
+  description: "Curated oncovirus-host interaction regions mapped to human cancer proteins."
+  viruses:
+    - HPV16
+    - HPV18
+    - EBV
+    - HBV
+    - HCV
+    - KSHV
+    - MCPyV
+
+vipp:
+  description: "Virus-Interaction + IDR + LLPS prioritization score per residue."
+  idr_weight: 0.35
+  llps_weight: 0.35
+  virus_weight: 0.30
