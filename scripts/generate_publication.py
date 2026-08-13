@@ -437,8 +437,8 @@ def figure_8_ptm_category_distribution(ptm_category_path: Path, output_dir: Path
     ax.grid(axis="y", alpha=0.25)
     plt.xticks(rotation=20)
     plt.tight_layout()
-    fig.savefig(output_dir / "figure_8_ptm_category_distribution.png", dpi=300, bbox_inches="tight")
-    print("✓ Saved figure_8_ptm_category_distribution.png")
+    fig.savefig(output_dir / "figure_9_ptm_category_distribution.png", dpi=300, bbox_inches="tight")
+    print("✓ Saved figure_9_ptm_category_distribution.png")
 
 
 def figure_9_ptm_pathway_differential(ptm_pathway_path: Path, output_dir: Path):
@@ -496,8 +496,8 @@ def figure_9_ptm_pathway_differential(ptm_pathway_path: Path, output_dir: Path):
 
     fig.suptitle("Figure 9. PTM-stratified pathway differential effects", fontsize=13, fontweight="bold")
     plt.tight_layout(rect=[0, 0.02, 1, 0.96])
-    fig.savefig(output_dir / "figure_9_ptm_pathway_differential.png", dpi=300, bbox_inches="tight")
-    print("✓ Saved figure_9_ptm_pathway_differential.png")
+    fig.savefig(output_dir / "figure_8_ptm_pathway_differential.png", dpi=300, bbox_inches="tight")
+    print("✓ Saved figure_8_ptm_pathway_differential.png")
 
 
 def _assign_llp_phase(series: pd.Series) -> pd.Series:
@@ -714,8 +714,193 @@ def figure_10_viable_mutant_llp_phase_differential(mutants_path: Path, output_di
         fontweight="bold",
     )
     plt.tight_layout(rect=[0, 0.02, 1, 0.95])
-    fig.savefig(output_dir / "figure_10_viable_mutant_llp_phase_differential.png", dpi=300, bbox_inches="tight")
-    print("✓ Saved figure_10_viable_mutant_llp_phase_differential.png")
+    fig.savefig(output_dir / "figure_9_viable_mutant_llp_phase_differential.png", dpi=300, bbox_inches="tight")
+    print("✓ Saved figure_9_viable_mutant_llp_phase_differential.png")
+
+
+def figure_5_workflow_schema(output_dir: Path):
+    """Figure 5: End-to-end computational workflow schema."""
+    fig, ax = plt.subplots(figsize=(14, 9))
+    ax.set_xlim(0, 14)
+    ax.set_ylim(0, 9)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    box_style = dict(boxstyle="round,pad=0.4", linewidth=1.5)
+    arrow_kw = dict(arrowstyle="-|>", lw=1.8, color="#2d5a8e")
+
+    layers = [
+        (1.5, 7.8, "INPUT LAYER", "#1e3a5f", "#fff"),
+        (1.5, 5.4, "PREDICTOR LAYER", "#2d5a8e", "#fff"),
+        (1.5, 3.0, "INTEGRATION LAYER", "#d73027", "#fff"),
+        (1.5, 0.8, "OUTPUT LAYER", "#1a9850", "#fff"),
+    ]
+    for x, y, label, fc, tc in layers:
+        ax.text(x, y, label, fontsize=9, fontweight="bold", color=tc,
+                bbox=dict(facecolor=fc, edgecolor="none", boxstyle="round,pad=0.25", alpha=0.9),
+                ha="center", va="center")
+
+    inputs = [
+        (4.0, 8.2, "Gene list\n(50 CGC genes)"),
+        (6.5, 8.2, "FASTA\nsequences"),
+        (9.0, 8.2, "ClinVar\nvariants"),
+        (11.5, 8.2, "Oncovirus\ncurated table"),
+    ]
+    for x, y, label in inputs:
+        ax.text(x, y, label, fontsize=8.5, ha="center", va="center",
+                bbox=dict(facecolor="#e8edf3", edgecolor="#1e3a5f", **box_style))
+
+    predictors = [
+        (3.5, 5.8, "IUPred2A\n(disorder)"),
+        (5.5, 5.8, "LLPS proxy\n(phase sep)"),
+        (7.5, 5.8, "SEG / PLAAC\n(low complexity)"),
+        (9.5, 5.8, "AlphaFold\n(pLDDT)"),
+        (11.5, 5.8, "Phylogeny\n(conservation)"),
+        (5.0, 4.8, "SLiM / PTM\nscanning"),
+        (7.5, 4.8, "Delta-LLPS\nmutant map"),
+        (10.0, 4.8, "Structural\nproxy"),
+    ]
+    for x, y, label in predictors:
+        ax.text(x, y, label, fontsize=8, ha="center", va="center",
+                bbox=dict(facecolor="#dce4f0", edgecolor="#2d5a8e", **box_style))
+
+    integrations = [
+        (4.5, 3.3, "Per-residue\natlas builder"),
+        (7.5, 3.3, "VIPP scoring\n(IDR+LLPS+virus)"),
+        (10.5, 3.3, "Benchmark\nablation"),
+    ]
+    for x, y, label in integrations:
+        ax.text(x, y, label, fontsize=8.5, ha="center", va="center",
+                bbox=dict(facecolor="#fde0dd", edgecolor="#d73027", **box_style))
+
+    int2 = [
+        (4.5, 2.3, "ClinVar\naugmentation"),
+        (7.5, 2.3, "IDR mutant\npathway analysis"),
+        (10.5, 2.3, "Structural\nlibrary"),
+    ]
+    for x, y, label in int2:
+        ax.text(x, y, label, fontsize=8, ha="center", va="center",
+                bbox=dict(facecolor="#fde0dd", edgecolor="#d73027", **box_style))
+
+    outputs = [
+        (3.5, 1.0, "Per-gene atlas\nTSV tables"),
+        (6.0, 1.0, "Global summary\n+ hotspot tables"),
+        (8.5, 1.0, "Interactive\nchromosome map"),
+        (11.0, 1.0, "Publication\nfigures (1–10)"),
+    ]
+    for x, y, label in outputs:
+        ax.text(x, y, label, fontsize=8.5, ha="center", va="center",
+                bbox=dict(facecolor="#d4edda", edgecolor="#1a9850", **box_style))
+
+    for inp_x, _, _ in inputs:
+        ax.annotate("", xy=(inp_x, 6.3), xytext=(inp_x, 7.7),
+                     arrowprops=dict(**arrow_kw, connectionstyle="arc3,rad=0"))
+    for px, _, _ in integrations:
+        ax.annotate("", xy=(px, 1.7), xytext=(px, 2.8),
+                     arrowprops=dict(**arrow_kw, connectionstyle="arc3,rad=0"))
+
+    fig.suptitle("Figure 5. End-to-end computational workflow schema",
+                 fontsize=14, fontweight="bold", y=0.98)
+    fig.text(0.5, 0.01,
+             "Reproducible pipeline from sequence inputs through predictor and integration layers "
+             "to atlas construction, benchmarking, and publication artifacts.",
+             fontsize=9, ha="center", color="#555")
+    plt.tight_layout(rect=[0, 0.03, 1, 0.96])
+    fig.savefig(output_dir / "figure_5_workflow_schema.png", dpi=300, bbox_inches="tight")
+    print("✓ Saved figure_5_workflow_schema.png")
+
+
+def figure_vipp_model(output_dir: Path):
+    """Figure 8 (VIPP scoring model) as SVG."""
+    svg = """<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380"
+     font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f9fb"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="380" rx="12" fill="url(#bg)" stroke="#c8cdd8" stroke-width="1"/>
+  <text x="360" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e3a5f">
+    Figure 8. VIPP Scoring Model for Residue Prioritization
+  </text>
+
+  <!-- Input boxes -->
+  <rect x="30" y="70" width="140" height="60" rx="8" fill="#d73027" opacity="0.85"/>
+  <text x="100" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">IDR Disorder</text>
+  <text x="100" y="114" text-anchor="middle" font-size="11" fill="#fdd">I(i) — IUPred2A</text>
+
+  <rect x="200" y="70" width="140" height="60" rx="8" fill="#7b2d8b" opacity="0.85"/>
+  <text x="270" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">LLPS Propensity</text>
+  <text x="270" y="114" text-anchor="middle" font-size="11" fill="#ede">L(i) — proxy</text>
+
+  <rect x="370" y="70" width="140" height="60" rx="8" fill="#2166ac" opacity="0.85"/>
+  <text x="440" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Virus Contact</text>
+  <text x="440" y="114" text-anchor="middle" font-size="11" fill="#cde">V(i) — binary</text>
+
+  <!-- Weight labels -->
+  <text x="100" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#d73027">w = 0.35</text>
+  <text x="270" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#7b2d8b">w = 0.35</text>
+  <text x="440" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#2166ac">w = 0.30</text>
+
+  <!-- Arrows down -->
+  <line x1="100" y1="160" x2="100" y2="190" stroke="#d73027" stroke-width="2.5" marker-end="url(#arrowR)"/>
+  <line x1="270" y1="160" x2="270" y2="190" stroke="#7b2d8b" stroke-width="2.5"/>
+  <line x1="440" y1="160" x2="440" y2="190" stroke="#2166ac" stroke-width="2.5"/>
+
+  <!-- Summation box -->
+  <rect x="60" y="190" width="450" height="50" rx="10" fill="#1e3a5f" opacity="0.9"/>
+  <text x="285" y="215" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">
+    Weighted sum: VIPP(i) = 0.35 · I(i) + 0.35 · L(i) + 0.30 · V(i)
+  </text>
+  <text x="285" y="232" text-anchor="middle" font-size="11" fill="#aac">
+    Clipped to [0, 1]
+  </text>
+
+  <!-- Arrow to output -->
+  <line x1="285" y1="240" x2="285" y2="270" stroke="#1e3a5f" stroke-width="2.5"/>
+
+  <!-- Output box -->
+  <rect x="155" y="270" width="260" height="50" rx="10" fill="#1a9850" opacity="0.9"/>
+  <text x="285" y="296" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">
+    VIPP Score (per residue)
+  </text>
+  <text x="285" y="312" text-anchor="middle" font-size="10" fill="#cec">
+    Prioritization for experimental follow-up
+  </text>
+
+  <!-- Side note -->
+  <rect x="540" y="70" width="160" height="250" rx="8" fill="#f0f4f8" stroke="#c8cdd8"/>
+  <text x="620" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">
+    Supporting layers
+  </text>
+  <text x="555" y="115" font-size="10" fill="#555">• Conservation</text>
+  <text x="555" y="135" font-size="10" fill="#555">• Structural proxy</text>
+  <text x="555" y="155" font-size="10" fill="#555">• ClinVar variants</text>
+  <text x="555" y="175" font-size="10" fill="#555">• Low complexity</text>
+  <text x="555" y="195" font-size="10" fill="#555">• AlphaFold pLDDT</text>
+  <text x="555" y="215" font-size="10" fill="#555">• SLiM / PTM motifs</text>
+  <text x="555" y="235" font-size="10" fill="#555">• Delta-LLPS map</text>
+  <text x="555" y="270" font-size="9" fill="#888">
+    These layers inform
+  </text>
+  <text x="555" y="284" font-size="9" fill="#888">
+    atlas context but do
+  </text>
+  <text x="555" y="298" font-size="9" fill="#888">
+    not enter the VIPP
+  </text>
+  <text x="555" y="312" font-size="9" fill="#888">
+    weighted sum directly.
+  </text>
+
+  <text x="360" y="365" text-anchor="middle" font-size="9" fill="#888">
+    Default heuristic weights (current release). Future calibrated model will replace these.
+  </text>
+</svg>"""
+    (output_dir / "figure_vipp_model.svg").write_text(svg, encoding="utf-8")
+    print("✓ Saved figure_vipp_model.svg")
 
 
 def main():
@@ -743,8 +928,10 @@ def main():
     figure_2_representative_genes(residue_data, output_dir)
     figure_3_heatmap(summary, output_dir)
     figure_4_metrics_comparison(summary, output_dir)
+    figure_5_workflow_schema(output_dir)
     figure_6_entrez_chromosome_loci(summary, output_dir)
     figure_7_structural_library(atlas_dir, output_dir)
+    figure_vipp_model(output_dir)
     figure_8_ptm_category_distribution(ptm_category_path, output_dir)
     figure_9_ptm_pathway_differential(ptm_pathway_path, output_dir)
     figure_10_viable_mutant_llp_phase_differential(mutants_path, output_dir)
