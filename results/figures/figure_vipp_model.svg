@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380"
+     font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f9fb"/>
+      <stop offset="100%" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="380" rx="12" fill="url(#bg)" stroke="#c8cdd8" stroke-width="1"/>
+  <text x="360" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e3a5f">
+    Figure 8. VIPP Scoring Model for Residue Prioritization
+  </text>
+
+  <!-- Input boxes -->
+  <rect x="30" y="70" width="140" height="60" rx="8" fill="#d73027" opacity="0.85"/>
+  <text x="100" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">IDR Disorder</text>
+  <text x="100" y="114" text-anchor="middle" font-size="11" fill="#fdd">I(i) — IUPred2A</text>
+
+  <rect x="200" y="70" width="140" height="60" rx="8" fill="#7b2d8b" opacity="0.85"/>
+  <text x="270" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">LLPS Propensity</text>
+  <text x="270" y="114" text-anchor="middle" font-size="11" fill="#ede">L(i) — proxy</text>
+
+  <rect x="370" y="70" width="140" height="60" rx="8" fill="#2166ac" opacity="0.85"/>
+  <text x="440" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Virus Contact</text>
+  <text x="440" y="114" text-anchor="middle" font-size="11" fill="#cde">V(i) — binary</text>
+
+  <!-- Weight labels -->
+  <text x="100" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#d73027">w = 0.35</text>
+  <text x="270" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#7b2d8b">w = 0.35</text>
+  <text x="440" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#2166ac">w = 0.30</text>
+
+  <!-- Arrows down -->
+  <line x1="100" y1="160" x2="100" y2="190" stroke="#d73027" stroke-width="2.5" marker-end="url(#arrowR)"/>
+  <line x1="270" y1="160" x2="270" y2="190" stroke="#7b2d8b" stroke-width="2.5"/>
+  <line x1="440" y1="160" x2="440" y2="190" stroke="#2166ac" stroke-width="2.5"/>
+
+  <!-- Summation box -->
+  <rect x="60" y="190" width="450" height="50" rx="10" fill="#1e3a5f" opacity="0.9"/>
+  <text x="285" y="215" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">
+    Weighted sum: VIPP(i) = 0.35 · I(i) + 0.35 · L(i) + 0.30 · V(i)
+  </text>
+  <text x="285" y="232" text-anchor="middle" font-size="11" fill="#aac">
+    Clipped to [0, 1]
+  </text>
+
+  <!-- Arrow to output -->
+  <line x1="285" y1="240" x2="285" y2="270" stroke="#1e3a5f" stroke-width="2.5"/>
+
+  <!-- Output box -->
+  <rect x="155" y="270" width="260" height="50" rx="10" fill="#1a9850" opacity="0.9"/>
+  <text x="285" y="296" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">
+    VIPP Score (per residue)
+  </text>
+  <text x="285" y="312" text-anchor="middle" font-size="10" fill="#cec">
+    Prioritization for experimental follow-up
+  </text>
+
+  <!-- Side note -->
+  <rect x="540" y="70" width="160" height="250" rx="8" fill="#f0f4f8" stroke="#c8cdd8"/>
+  <text x="620" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">
+    Supporting layers
+  </text>
+  <text x="555" y="115" font-size="10" fill="#555">• Conservation</text>
+  <text x="555" y="135" font-size="10" fill="#555">• Structural proxy</text>
+  <text x="555" y="155" font-size="10" fill="#555">• ClinVar variants</text>
+  <text x="555" y="175" font-size="10" fill="#555">• Low complexity</text>
+  <text x="555" y="195" font-size="10" fill="#555">• AlphaFold pLDDT</text>
+  <text x="555" y="215" font-size="10" fill="#555">• SLiM / PTM motifs</text>
+  <text x="555" y="235" font-size="10" fill="#555">• Delta-LLPS map</text>
+  <text x="555" y="270" font-size="9" fill="#888">
+    These layers inform
+  </text>
+  <text x="555" y="284" font-size="9" fill="#888">
+    atlas context but do
+  </text>
+  <text x="555" y="298" font-size="9" fill="#888">
+    not enter the VIPP
+  </text>
+  <text x="555" y="312" font-size="9" fill="#888">
+    weighted sum directly.
+  </text>
+
+  <text x="360" y="365" text-anchor="middle" font-size="9" fill="#888">
+    Default heuristic weights (current release). Future calibrated model will replace these.
+  </text>
+</svg>
