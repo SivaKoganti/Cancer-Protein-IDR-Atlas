@@ -127,6 +127,7 @@ def load_data(atlas_dir: Path, summary_path: Path):
                 "pos":          df["pos"].tolist(),
                 "aa":           df["aa"].tolist(),
                 "iupred":       [round(float(v), 3) for v in df["iupred_score"]],
+                "is_idr":       [int(v) for v in df["is_idr"]] if "is_idr" in df.columns else [int(float(v) >= 0.5) for v in df["iupred_score"]],
                 "llps":         [round(float(v), 3) for v in df["llps_proxy"]],
                 "structural":   [round(float(v), 3) for v in df["structural_proxy"]],
                 "conservation": [round(float(v), 3) for v in df["conservation"]],
@@ -513,8 +514,10 @@ function renderResidueChart(rdata) {
   const hasCv = !!(rdata.cv_count);
   const cvH   = hasCv ? 24 : 0;
 
+  const IDR_THRESHOLD = 0.5;
+
   const tracks = [
-    { key: 'iupred',       label: 'IDR score (IUPred2A)', color: '#d73027', fill: true  },
+    { key: 'iupred',       label: 'IDR score (IUPred2A)', color: '#d73027', fill: true, threshold: IDR_THRESHOLD },
     { key: 'llps',         label: 'LLPS propensity',      color: '#7b2d8b', fill: true  },
     { key: 'vipp',         label: 'VIPP composite score', color: '#f39c12', fill: false },
     { key: 'virus_interaction', label: 'Virus interaction flag', color: '#9b59b6', fill: false },
@@ -570,14 +573,29 @@ function renderResidueChart(rdata) {
       .text(track.label);
 
     if (track.fill) {
+      const thresh = track.threshold || 0;
+      const clipped = vals.map(v => Math.max(0, Math.min(1, v) - thresh));
       tg.append('path')
-        .datum(vals)
+        .datum(clipped)
         .attr('d', d3.area()
           .x((d,i) => xScale(rdata.pos[i]))
-          .y0(y0 + tH)
-          .y1(d => yScale(Math.max(0, Math.min(1, d))))
-          .curve(d3.curveBasis))
+          .y0(yScale(thresh))
+          .y1((d,i) => yScale(Math.min(1, vals[i])))
+          .defined((d) => d > 0)
+          .curve(d3.curveLinear))
         .attr('fill', track.color).attr('opacity', .28);
+    }
+
+    if (track.threshold != null) {
+      tg.append('line')
+        .attr('x1', xRange[0]).attr('x2', xRange[1])
+        .attr('y1', yScale(track.threshold)).attr('y2', yScale(track.threshold))
+        .attr('stroke', '#999').attr('stroke-width', 0.8)
+        .attr('stroke-dasharray', '4,3');
+      tg.append('text')
+        .attr('x', xRange[1] - 2).attr('y', yScale(track.threshold) - 3)
+        .attr('text-anchor', 'end').attr('fill', '#999').attr('font-size', '8px')
+        .text('IDR threshold (0.5)');
     }
 
     tg.append('path')
@@ -585,7 +603,7 @@ function renderResidueChart(rdata) {
       .attr('d', d3.line()
         .x((d,i) => xScale(rdata.pos[i]))
         .y(d => yScale(Math.max(0, Math.min(1, d))))
-        .curve(d3.curveBasis))
+        .curve(d3.curveLinear))
       .attr('fill','none')
       .attr('stroke', track.color)
       .attr('stroke-width', track.fill ? 1.2 : 1.5);

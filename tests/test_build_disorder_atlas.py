@@ -107,11 +107,14 @@ def test_build_disorder_atlas_normalizes_isoform_ids_and_ignores_invalid_optiona
     assert atlas_df["gene"].eq("TP53").all()
     assert atlas_df["pos"].tolist()[:2] == [1, 2]
     assert {"ptm_count", "ptm_categories", "ptm_ids"}.issubset(atlas_df.columns)
-    assert {"vipp_score"}.issubset(atlas_df.columns)
+    assert {"vipp_score", "is_idr"}.issubset(atlas_df.columns)
     assert atlas_df["vipp_score"].between(0, 1).all()
+    assert atlas_df["is_idr"].isin([0, 1]).all()
+    assert atlas_df.loc[atlas_df["iupred_score"] >= 0.5, "is_idr"].eq(1).all()
+    assert atlas_df.loc[atlas_df["iupred_score"] < 0.5, "is_idr"].eq(0).all()
 
     summary_df = pd.read_csv(outdir / "global_disorder_phylogeny_atlas.tsv", sep="\t")
-    assert {"mean_vipp_score", "max_vipp_score", "virus_interaction_fraction", "mean_virus_count"}.issubset(summary_df.columns)
+    assert {"mean_vipp_score", "max_vipp_score", "virus_interaction_fraction", "mean_virus_count", "idr_fraction"}.issubset(summary_df.columns)
     assert summary_df["mean_vipp_score"].between(0, 1).all()
 
 

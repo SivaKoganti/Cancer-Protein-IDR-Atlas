@@ -33,6 +33,11 @@ def load_gene_list(config_path):
     return load_config(config_path).get("genes", [])
 
 
+def load_idr_threshold(config_path):
+    cfg = load_config(config_path)
+    return float(cfg.get("idr_threshold", 0.5))
+
+
 def load_vipp_weights(config_path):
     cfg = load_config(config_path)
     vipp_cfg = cfg.get("vipp", {})
@@ -149,6 +154,7 @@ def main():
     args = parser.parse_args()
 
     gene_list = load_gene_list(args.genes_file)
+    idr_threshold = load_idr_threshold(args.genes_file)
     vipp_weights = load_vipp_weights(args.genes_file)
     sequences = load_fasta_sequences(args.fasta)
     iupred = pd.read_csv(args.iupred, sep='\t')
@@ -261,11 +267,14 @@ def main():
             )
             vipp_score = clip01(vipp_score)
 
+            is_idr = int(iupred_score >= idr_threshold)
+
             table.append({
                 "gene": gene,
                 "pos": pos,
                 "aa": aa,
                 "iupred_score": iupred_score,
+                "is_idr": is_idr,
                 "low_complexity": low_complexity[pos-1] if pos-1 < len(low_complexity) else 0,
                 "plaac_qn": plaac_scores[pos-1] if pos-1 < len(plaac_scores) else 0.0,
                 "llps_proxy": llps_scores[pos-1] if pos-1 < len(llps_scores) else 0.0,
@@ -301,6 +310,7 @@ def main():
                 "gene": gene,
                 "length": length,
                 "mean_iupred": gene_df["iupred_score"].mean(),
+                "idr_fraction": gene_df["is_idr"].mean(),
                 "mean_llps": gene_df["llps_proxy"].mean(),
                 "mean_structural": gene_df["structural_proxy"].mean(),
                 "mean_quantum": gene_df["quantum_proxy"].mean(),

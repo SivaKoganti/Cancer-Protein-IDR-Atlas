@@ -95,6 +95,8 @@ oncovirus:
     - KSHV
     - MCPyV
 
+idr_threshold: 0.5
+
 vipp:
   description: "Virus-Interaction + IDR + LLPS prioritization score per residue."
   idr_weight: 0.35
