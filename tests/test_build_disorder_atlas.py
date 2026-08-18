@@ -110,12 +110,107 @@ def test_build_disorder_atlas_normalizes_isoform_ids_and_ignores_invalid_optiona
     assert {"vipp_score", "is_idr"}.issubset(atlas_df.columns)
     assert atlas_df["vipp_score"].between(0, 1).all()
     assert atlas_df["is_idr"].isin([0, 1]).all()
+    assert "idr_class" in atlas_df.columns
+    assert atlas_df["idr_class"].isin(["structured", "disordered", "conditionally_disordered"]).all()
     assert atlas_df.loc[atlas_df["iupred_score"] >= 0.5, "is_idr"].eq(1).all()
     assert atlas_df.loc[atlas_df["iupred_score"] < 0.5, "is_idr"].eq(0).all()
 
     summary_df = pd.read_csv(outdir / "global_disorder_phylogeny_atlas.tsv", sep="\t")
-    assert {"mean_vipp_score", "max_vipp_score", "virus_interaction_fraction", "mean_virus_count", "idr_fraction"}.issubset(summary_df.columns)
+    assert {"mean_vipp_score", "max_vipp_score", "virus_interaction_fraction", "mean_virus_count", "idr_fraction", "conditionally_disordered_fraction"}.issubset(summary_df.columns)
     assert summary_df["mean_vipp_score"].between(0, 1).all()
+
+
+def test_structure_aware_idr_classification(tmp_path):
+    """High IUPred + high pLDDT => conditionally_disordered (is_idr=0)."""
+    outdir = tmp_path / "atlas"
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text(
+        "genes:\n  - TP53\n"
+        "idr_threshold: 0.5\n"
+        "structure_aware_idr:\n  enabled: true\n  plddt_override_thresh: 70.0\n",
+        encoding="utf-8",
+    )
+
+    fasta_path = tmp_path / "sample.fasta"
+    fasta_path.write_text(">TP53_1\nACDE\n", encoding="utf-8")
+
+    (tmp_path / "iupred.tsv").write_text(
+        "gene\tpos\tscore\n"
+        "TP53_1\t1\t0.9\n"
+        "TP53_1\t2\t0.8\n"
+        "TP53_1\t3\t0.3\n"
+        "TP53_1\t4\t0.7\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "seg.tsv").write_text("gene\tstart\tend\nTP53_1\t1\t2\n", encoding="utf-8")
+    (tmp_path / "plaac.tsv").write_text("gene\tstart\tend\tq_n_fraction\nTP53_1\t1\t2\t0.5\n", encoding="utf-8")
+    (tmp_path / "llps.tsv").write_text("gene\tstart\tend\tllps_proxy\nTP53_1\t1\t2\t0.6\n", encoding="utf-8")
+    (tmp_path / "structure.tsv").write_text(
+        "gene\tpos\tstructural_proxy\tquantum_proxy\n"
+        "TP53_1\t1\t0.1\t0.2\nTP53_1\t2\t0.1\t0.2\n"
+        "TP53_1\t3\t0.1\t0.2\nTP53_1\t4\t0.1\t0.2\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "conservation.tsv").write_text(
+        "gene\tpos\tconservation_score\n"
+        "TP53_1\t1\t0.7\nTP53_1\t2\t0.7\n"
+        "TP53_1\t3\t0.7\nTP53_1\t4\t0.7\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "plddt.tsv").write_text(
+        "gene\tpos\tplddt\n"
+        "TP53_1\t1\t85.0\n"
+        "TP53_1\t2\t40.0\n"
+        "TP53_1\t3\t90.0\n"
+        "TP53_1\t4\t75.0\n",
+        encoding="utf-8",
+    )
+
+    completed = subprocess.run([
+        sys.executable,
+        str(REPO_ROOT / "scripts" / "build_disorder_atlas.py"),
+        "--iupred", str(tmp_path / "iupred.tsv"),
+        "--seg", str(tmp_path / "seg.tsv"),
+        "--plaac", str(tmp_path / "plaac.tsv"),
+        "--llps", str(tmp_path / "llps.tsv"),
+        "--structure", str(tmp_path / "structure.tsv"),
+        "--conservation", str(tmp_path / "conservation.tsv"),
+        "--fasta", str(fasta_path),
+        "--genes-file", str(config_path),
+        "--plddt", str(tmp_path / "plddt.tsv"),
+        "--outdir", str(outdir),
+    ], capture_output=True, text=True, check=False)
+
+    assert completed.returncode == 0, completed.stderr
+    atlas_df = pd.read_csv(outdir / "TP53_atlas.tsv", sep="\t")
+
+    # pos 1: iupred=0.9 (>=0.5) + plddt=85 (>=70) => conditionally_disordered, is_idr=0
+    row1 = atlas_df[atlas_df["pos"] == 1].iloc[0]
+    assert row1["idr_class"] == "conditionally_disordered"
+    assert row1["is_idr"] == 0
+
+    # pos 2: iupred=0.8 (>=0.5) + plddt=40 (<70) => disordered, is_idr=1
+    row2 = atlas_df[atlas_df["pos"] == 2].iloc[0]
+    assert row2["idr_class"] == "disordered"
+    assert row2["is_idr"] == 1
+
+    # pos 3: iupred=0.3 (<0.5) => structured, is_idr=0 regardless of plddt
+    row3 = atlas_df[atlas_df["pos"] == 3].iloc[0]
+    assert row3["idr_class"] == "structured"
+    assert row3["is_idr"] == 0
+
+    # pos 4: iupred=0.7 (>=0.5) + plddt=75 (>=70) => conditionally_disordered, is_idr=0
+    row4 = atlas_df[atlas_df["pos"] == 4].iloc[0]
+    assert row4["idr_class"] == "conditionally_disordered"
+    assert row4["is_idr"] == 0
+
+    # VIPP score for conditionally_disordered should be reduced (idr_component * 0.5)
+    assert row1["vipp_score"] < row2["vipp_score"]
+
+    # Summary should include conditionally_disordered_fraction
+    summary_df = pd.read_csv(outdir / "global_disorder_phylogeny_atlas.tsv", sep="\t")
+    assert "conditionally_disordered_fraction" in summary_df.columns
+    assert summary_df["conditionally_disordered_fraction"].iloc[0] == 0.5  # 2 of 4 residues
 
 
 def test_scan_slim_motifs_writes_empty_outputs_when_no_hits_are_found(tmp_path):

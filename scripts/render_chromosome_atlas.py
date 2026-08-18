@@ -128,6 +128,8 @@ def load_data(atlas_dir: Path, summary_path: Path):
                 "aa":           df["aa"].tolist(),
                 "iupred":       [round(float(v), 3) for v in df["iupred_score"]],
                 "is_idr":       [int(v) for v in df["is_idr"]] if "is_idr" in df.columns else [int(float(v) >= 0.5) for v in df["iupred_score"]],
+                "idr_class":    df["idr_class"].tolist() if "idr_class" in df.columns else ["disordered" if float(v) >= 0.5 else "structured" for v in df["iupred_score"]],
+                "plddt":        [round(float(v), 1) if pd.notna(v) else None for v in df["plddt"]] if "plddt" in df.columns else [None] * len(df),
                 "llps":         [round(float(v), 3) for v in df["llps_proxy"]],
                 "structural":   [round(float(v), 3) for v in df["structural_proxy"]],
                 "conservation": [round(float(v), 3) for v in df["conservation"]],
@@ -516,8 +518,11 @@ function renderResidueChart(rdata) {
 
   const IDR_THRESHOLD = 0.5;
 
+  const hasPlddt = rdata.plddt && rdata.plddt.some(v => v != null);
+
   const tracks = [
     { key: 'iupred',       label: 'IDR score (IUPred2A)', color: '#d73027', fill: true, threshold: IDR_THRESHOLD },
+    ...(hasPlddt ? [{ key: 'plddt', label: 'AlphaFold pLDDT (structure confidence)', color: '#2166ac', fill: false, domain: [0,100], threshold70: true }] : []),
     { key: 'llps',         label: 'LLPS propensity',      color: '#7b2d8b', fill: true  },
     { key: 'vipp',         label: 'VIPP composite score', color: '#f39c12', fill: false },
     { key: 'virus_interaction', label: 'Virus interaction flag', color: '#9b59b6', fill: false },
@@ -549,7 +554,8 @@ function renderResidueChart(rdata) {
 
   tracks.forEach((track, ti) => {
     const y0    = m.top + ti * (tH + tG);
-    const yScale = d3.scaleLinear().domain([0,1]).range([y0+tH, y0]);
+    const dom   = track.domain || [0,1];
+    const yScale = d3.scaleLinear().domain(dom).range([y0+tH, y0]);
     const vals   = rdata[track.key];
     if (!vals) return;
 
@@ -560,9 +566,10 @@ function renderResidueChart(rdata) {
       .attr('width', xRange[1]-xRange[0]).attr('height', tH)
       .attr('class','track-bg');
 
+    const fmt = dom[1] > 1 ? d3.format('d') : d3.format('.1f');
     tg.append('g')
       .attr('transform', `translate(${m.left},0)`)
-      .call(d3.axisLeft(yScale).ticks(3).tickFormat(d3.format('.1f')))
+      .call(d3.axisLeft(yScale).ticks(3).tickFormat(fmt))
       .call(ag => ag.select('.domain').attr('stroke','#ddd'))
       .call(ag => ag.selectAll('line').attr('stroke','#eee'))
       .call(ag => ag.selectAll('text').attr('fill','#bbb').attr('font-size','8px'));
@@ -598,15 +605,47 @@ function renderResidueChart(rdata) {
         .text('IDR threshold (0.5)');
     }
 
+    if (track.threshold70) {
+      tg.append('line')
+        .attr('x1', xRange[0]).attr('x2', xRange[1])
+        .attr('y1', yScale(70)).attr('y2', yScale(70))
+        .attr('stroke', '#e67e22').attr('stroke-width', 0.8)
+        .attr('stroke-dasharray', '4,3');
+      tg.append('text')
+        .attr('x', xRange[1] - 2).attr('y', yScale(70) - 3)
+        .attr('text-anchor', 'end').attr('fill', '#e67e22').attr('font-size', '8px')
+        .text('Confident structure (70)');
+    }
+
+    const validVals = vals.map(v => v == null ? dom[0] : v);
     tg.append('path')
-      .datum(vals)
+      .datum(validVals)
       .attr('d', d3.line()
         .x((d,i) => xScale(rdata.pos[i]))
-        .y(d => yScale(Math.max(0, Math.min(1, d))))
+        .y(d => yScale(Math.max(dom[0], Math.min(dom[1], d))))
+        .defined((d,i) => vals[i] != null)
         .curve(d3.curveLinear))
       .attr('fill','none')
       .attr('stroke', track.color)
       .attr('stroke-width', track.fill ? 1.2 : 1.5);
+
+    // Mark conditionally disordered residues on IDR track
+    if (track.key === 'iupred' && rdata.idr_class) {
+      rdata.idr_class.forEach((cls, i) => {
+        if (cls === 'conditionally_disordered') {
+          tg.append('circle')
+            .attr('cx', xScale(rdata.pos[i]))
+            .attr('cy', yScale(Math.min(1, vals[i])))
+            .attr('r', 2.5)
+            .attr('fill', '#e67e22')
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 0.5)
+            .attr('opacity', 0.85)
+            .append('title')
+            .text(`${rdata.aa[i]}${rdata.pos[i]}: conditionally disordered (IUPred=${vals[i].toFixed(2)}, pLDDT≥70)`);
+        }
+      });
+    }
   });
 
   // ClinVar tick track
