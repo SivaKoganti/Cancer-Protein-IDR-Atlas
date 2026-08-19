@@ -38,6 +38,15 @@ def load_idr_threshold(config_path):
     return float(cfg.get("idr_threshold", 0.5))
 
 
+def load_structure_aware_config(config_path):
+    cfg = load_config(config_path)
+    sa = cfg.get("structure_aware_idr", {})
+    return {
+        "plddt_override_thresh": float(sa.get("plddt_override_thresh", 70.0)),
+        "enabled": bool(sa.get("enabled", True)),
+    }
+
+
 def load_vipp_weights(config_path):
     cfg = load_config(config_path)
     vipp_cfg = cfg.get("vipp", {})
@@ -155,6 +164,7 @@ def main():
 
     gene_list = load_gene_list(args.genes_file)
     idr_threshold = load_idr_threshold(args.genes_file)
+    sa_config = load_structure_aware_config(args.genes_file)
     vipp_weights = load_vipp_weights(args.genes_file)
     sequences = load_fasta_sequences(args.fasta)
     iupred = pd.read_csv(args.iupred, sep='\t')
@@ -257,7 +267,29 @@ def main():
             pr_ptm = ptm_idx.get(pos)
             ov = oncovirus_idx.get(pos)
 
+            plddt_val = float(pr["plddt"]) if pr is not None and "plddt" in pr else float("nan")
+            disc_flag = int(cr["discordant_flag"]) if cr is not None and "discordant_flag" in cr else 0
+
+            iupred_idr = iupred_score >= idr_threshold
+            structured_override = (
+                sa_config["enabled"]
+                and not pd.isna(plddt_val)
+                and plddt_val >= sa_config["plddt_override_thresh"]
+            )
+
+            if iupred_idr and structured_override:
+                idr_class = "conditionally_disordered"
+                is_idr = 0
+            elif iupred_idr:
+                idr_class = "disordered"
+                is_idr = 1
+            else:
+                idr_class = "structured"
+                is_idr = 0
+
             idr_component = clip01(iupred_score)
+            if idr_class == "conditionally_disordered":
+                idr_component *= 0.5
             llps_component = clip01(llps_scores[pos-1] if pos-1 < len(llps_scores) else 0.0)
             virus_component = 1.0 if (ov is not None and int(ov.get("virus_interaction", 0)) > 0) else 0.0
             vipp_score = (
@@ -267,14 +299,13 @@ def main():
             )
             vipp_score = clip01(vipp_score)
 
-            is_idr = int(iupred_score >= idr_threshold)
-
             table.append({
                 "gene": gene,
                 "pos": pos,
                 "aa": aa,
                 "iupred_score": iupred_score,
                 "is_idr": is_idr,
+                "idr_class": idr_class,
                 "low_complexity": low_complexity[pos-1] if pos-1 < len(low_complexity) else 0,
                 "plaac_qn": plaac_scores[pos-1] if pos-1 < len(plaac_scores) else 0.0,
                 "llps_proxy": llps_scores[pos-1] if pos-1 < len(llps_scores) else 0.0,
@@ -288,12 +319,12 @@ def main():
                 "virus_evidence": str(ov.get("virus_evidence", "")) if ov is not None else "",
                 "vipp_score": vipp_score,
                 # ── novelty layers ──────────────────────────────────────────
-                "plddt":            float(pr["plddt"]) if pr is not None and "plddt" in pr else float("nan"),
+                "plddt":            plddt_val,
                 "llps_vulnerability": float(dr["llps_vulnerability"]) if dr is not None else float("nan"),
                 "delta_llps_max":   float(dr["delta_llps_max"]) if dr is not None else float("nan"),
                 "delta_llps_min":   float(dr["delta_llps_min"]) if dr is not None else float("nan"),
                 "cdr_flag":         int(cr["cdr_flag"]) if cr is not None and "cdr_flag" in cr else 0,
-                "discordant_flag":  int(cr["discordant_flag"]) if cr is not None and "discordant_flag" in cr else 0,
+                "discordant_flag":  disc_flag,
                 "slim_count":       int(sr["slim_count"]) if sr is not None and "slim_count" in sr else 0,
                 "slim_ids":         str(sr["slim_ids"]) if sr is not None and "slim_ids" in sr else "",
                 "ptm_count":        int(pr_ptm["ptm_count"]) if pr_ptm is not None and "ptm_count" in pr_ptm else 0,
@@ -311,6 +342,7 @@ def main():
                 "length": length,
                 "mean_iupred": gene_df["iupred_score"].mean(),
                 "idr_fraction": gene_df["is_idr"].mean(),
+                "conditionally_disordered_fraction": (gene_df["idr_class"] == "conditionally_disordered").mean(),
                 "mean_llps": gene_df["llps_proxy"].mean(),
                 "mean_structural": gene_df["structural_proxy"].mean(),
                 "mean_quantum": gene_df["quantum_proxy"].mean(),

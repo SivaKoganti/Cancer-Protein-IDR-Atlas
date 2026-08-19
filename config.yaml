@@ -97,6 +97,10 @@ oncovirus:
 
 idr_threshold: 0.5
 
+structure_aware_idr:
+  enabled: true
+  plddt_override_thresh: 70.0
+
 vipp:
   description: "Virus-Interaction + IDR + LLPS prioritization score per residue."
   idr_weight: 0.35
