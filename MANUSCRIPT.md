@@ -11,13 +11,13 @@ Intrinsic disorder, liquid-liquid phase separation (LLPS), and host-virus interf
 
 ## Author summary
 
-- We built an integrated computational atlas that combines intrinsic disorder, LLPS propensity, conservation, structural confidence, and viral-interface evidence across 50 cancer genes.
-- The framework highlights residue-level hotspots that are enriched for virus-linked and phase-separating signals, making them useful starting points for mechanistic follow-up.
+- We built an integrated computational atlas that combines intrinsic disorder, LLPS propensity, conservation, structural confidence, and viral-interface evidence across 50 cancer genes, using a structure-aware IDR classification that reconciles sequence-based disorder predictions with AlphaFold structural confidence.
+- The three-class system (structured, disordered, conditionally disordered) resolves false-positive IDR annotations at residues that fold upon binding, and the framework highlights residue-level hotspots enriched for virus-linked and phase-separating signals as starting points for mechanistic follow-up.
 - In an internal benchmark, virus-aware models outperformed sequence-only baselines, supporting use of the atlas as a hypothesis-generation resource and motivating further external validation.
 
 ## Significance statement
 
-Most cancer-protein resources focus on sequence variants or folded domains and do not explicitly integrate disordered regulatory regions, condensate propensity, and host-virus interface burden at residue resolution. We provide a reproducible atlas and prioritization framework that links these layers across 50 cancer genes in a form that is readily interrogated and extended, enabling systematic hypothesis generation for experimentally testing how viral rewiring may converge on regulatory hotspots.
+Most cancer-protein resources focus on sequence variants or folded domains and do not explicitly integrate disordered regulatory regions, condensate propensity, and host-virus interface burden at residue resolution. By reconciling sequence-based disorder predictions with AlphaFold structural confidence, we introduce a structure-aware IDR classification that distinguishes constitutively disordered regions from those that fold upon binding. We provide a reproducible atlas and prioritization framework that links these layers across 50 cancer genes in a form that is readily interrogated and extended, enabling systematic hypothesis generation for experimentally testing how viral rewiring may converge on regulatory hotspots.
 
 ## Introduction
 
@@ -77,15 +77,15 @@ To make the atlas more interpretable, we generated a compact structural library 
 
 ### PTM-stratified pathway differentials highlight context-dependent LLPS sensitivity
 
-Because post-translational regulation can reshape interaction avidity and condensate behavior, we stratified mutant effects by PTM-context versus non-PTM-context residues and summarized differential impact at the pathway level. This analysis revealed reproducible direction-dependent contrasts: PTM-context residues showed stronger increase-direction mean absolute LLPS shifts in pathways such as NOTCH_HEDGEHOG, CHROMATIN_REMODELING, and JAK_STAT_CYTOKINE, while decrease-direction contrasts showed larger relative losses in TGF_BETA_SMAD, NOTCH_HEDGEHOG, and JAK_STAT_CYTOKINE. These magnitudes are modest but consistent with a model in which PTM-rich disordered sites tune pathway-specific LLPS responsiveness rather than serving as uniformly amplifying features. Figure 8 summarizes these PTM-stratified pathway differentials.
+Because post-translational regulation can reshape interaction avidity and condensate behavior, we stratified mutant effects by PTM-context versus non-PTM-context residues and summarized differential impact at the pathway level. This analysis revealed reproducible direction-dependent contrasts: PTM-context residues showed stronger increase-direction mean absolute LLPS shifts in pathways such as NOTCH_HEDGEHOG, CHROMATIN_REMODELING, and JAK_STAT_CYTOKINE, while decrease-direction contrasts showed larger relative losses in TGF_BETA_SMAD, NOTCH_HEDGEHOG, and JAK_STAT_CYTOKINE. These magnitudes are modest but consistent with a model in which PTM-rich disordered sites tune pathway-specific LLPS responsiveness rather than serving as uniformly amplifying features. Figure 10 summarizes these PTM-stratified pathway differentials.
 
 ### Viable IDR mutants reveal LLPS-phase differential effects with PTM and pathway coupling
 
-To explicitly evaluate viable mutant effects on phase separation, we defined viable mutants as the top effect-size tail of IDR substitutions (highest absolute delta-LLPS shifts) and stratified them into three LLPS phases based on baseline IDR LLPS context (lower, intermediate, higher). This phase-aware analysis shows that viable mutant burden and effect magnitude are not uniformly distributed across LLP phases and that PTM-context versus non-PTM-context contrasts remain pathway-dependent within each phase. In other words, the impact of a viable IDR mutation on LLPS is jointly conditioned by local phase context and PTM enrichment, and this coupling propagates to pathway-level differential signatures rather than producing a single global effect pattern. Figure 9 summarizes viable mutant fractions, phase-specific PTM contrasts, and pathway-level phase-direction differentials.
+To explicitly evaluate viable mutant effects on phase separation, we defined viable mutants as the top effect-size tail of IDR substitutions (highest absolute delta-LLPS shifts) and stratified them into three LLPS phases based on baseline IDR LLPS context (lower, intermediate, higher). This phase-aware analysis shows that viable mutant burden and effect magnitude are not uniformly distributed across LLP phases and that PTM-context versus non-PTM-context contrasts remain pathway-dependent within each phase. In other words, the impact of a viable IDR mutation on LLPS is jointly conditioned by local phase context and PTM enrichment, and this coupling propagates to pathway-level differential signatures rather than producing a single global effect pattern. Figure 11 summarizes viable mutant fractions, phase-specific PTM contrasts, and pathway-level phase-direction differentials.
 
-![Figure 8: PTM-stratified pathway differential effects](results/figures/figure_8_ptm_pathway_differential.png)
+![Figure 10: PTM-stratified pathway differential effects](results/figures/figure_8_ptm_pathway_differential.png)
 
-![Figure 10: viable mutant LLPS-phase PTM and pathway differentials](results/figures/figure_9_viable_mutant_llp_phase_differential.png)
+![Figure 11: viable mutant LLPS-phase PTM and pathway differentials](results/figures/figure_9_viable_mutant_llp_phase_differential.png)
 
 ### Case studies highlight mechanistically interpretable residues
 
@@ -149,7 +149,7 @@ To support conservative interpretation of benchmark performance, we report the f
 2. Input transparency: Gene list, scoring parameters, and VIPP weights are declared in project configuration files and command-line interfaces.
 3. Deterministic outputs: Core tables are regenerated from fixed inputs in the current release and can be reproduced with the documented environment.
 4. Benchmark disclosure: Reported benchmark values are derived from an internal benchmark set and should be interpreted as internal performance rather than external generalization.
-5. Known limitations: Curated oncovirus coverage, heuristic fallback disorder states, and heuristic VIPP weights are explicitly acknowledged in the Discussion.
+5. Known limitations: Curated oncovirus coverage, heuristic fallback disorder states, heuristic VIPP weights, and pLDDT-based structure-aware classification caveats are explicitly acknowledged in the Discussion.
 6. Re-execution checks: Automated tests for major computational modules pass in the current environment.
 
 ## Data availability
