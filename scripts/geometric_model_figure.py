@@ -76,7 +76,7 @@ axA.text(pbx2, pby, 'Pb', ha='center', va='center', color='white',
          fontsize=8.5, fontweight='bold', zorder=4)
 axA.text(pbx2, 1.15, 'mixed S/N/O, 4-coordinate', ha='center', fontsize=8.5,
          fontweight='bold', color=INK)
-axA.text(pbx2, 0.6, 'this work: Pb–S 2.65, Pb–N 2.73,\nPb–O 2.42 / 2.38 Å',
+axA.text(pbx2, 0.6, 'this work: Pb–S 2.66, Pb–N 2.75,\nPb–O 2.44 / 2.41 Å',
          ha='center', fontsize=7, color=MUTED)
 axA.text(4.9, 3.5, 'vs', ha='center', va='center', fontsize=11,
          color=MUTED, style='italic')

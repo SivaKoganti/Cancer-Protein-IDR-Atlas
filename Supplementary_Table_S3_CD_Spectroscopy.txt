@@ -1,3 +1,11 @@
+NOTE (revision, August 2026): 5-FU concentrations in this table were
+originally recorded as nanomolar. That scale is not tenable -- at 0.32 nM
+the ligand would be 2e-5 of the protein concentration and could not perturb
+the spectra reported here, and the affinity required to produce the observed
+quenching would exceed any reported albumin value by three orders of
+magnitude. Corrected to millimolar; see manuscript Section 2.2.
+==============================================================================
+
 ================================================================================
 SUPPLEMENTARY TABLE S3: CIRCULAR DICHROISM (CD) SPECTROSCOPY DATA
 ================================================================================
@@ -16,7 +24,7 @@ Number of Replicates: n = 3
 TABLE S3.1: RAW CD SPECTRA - MEAN RESIDUE ELLIPTICITY [Θ]
 ================================================================================
 
-Wavelength (nm) | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 nM | Lead 0.032 + 5-FU 0.32 |
+Wavelength (nm) | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 mM | Lead 0.032 + 5-FU 0.32 |
                 | [Θ] ± SD   | [Θ] ± SD     | [Θ] ± SD     | [Θ] ± SD    | [Θ] ± SD    | [Θ] ± SD              |
                 |(deg·cm²/dmol)|(deg·cm²/dmol)|(deg·cm²/dmol)|(deg·cm²/dmol)|(deg·cm²/dmol)|(deg·cm²/dmol)          |
 190             | -45,200±890 | -41,250±1120 | -38,950±1340 | -35,180±1890| -44,890±920 | -33,420±2010          |
@@ -50,7 +58,7 @@ Control HSA                        | -31,200 ± 650         | Reference (100%)  
 Lead (0.032 mM)                    | -27,850 ± 920         | 89.3 ± 2.1%         | -10.7%          | p < 0.01**
 Lead (0.064 mM)                    | -25,420 ± 1,180       | 81.5 ± 2.8%         | -18.5%          | p < 0.001***
 Lead (0.32 mM)                     | -22,950 ± 1,520       | 73.6 ± 3.2%         | -26.4%          | p < 0.001***
-5-FU (0.32 nM)                     | -30,700 ± 710         | 98.4 ± 1.3%         | -1.6%           | p > 0.05 (ns)
+5-FU (0.32 mM)                     | -30,700 ± 710         | 98.4 ± 1.3%         | -1.6%           | p > 0.05 (ns)
 Lead (0.032) + 5-FU (0.32)         | -21,480 ± 1,750       | 68.8 ± 4.1%         | -31.2%          | p < 0.001***
 
 Notes:
@@ -68,7 +76,7 @@ Control HSA                        | 53.8 ± 1.2  | 20.1 ± 0.8  | 13.2 ± 0.6 |
 Lead (0.032 mM)                    | 48.1 ± 1.5  | 20.3 ± 0.9  | 13.8 ± 0.7 | 17.8 ± 1.1      | 100.0
 Lead (0.064 mM)                    | 43.9 ± 1.8  | 20.5 ± 1.0  | 14.1 ± 0.8 | 21.5 ± 1.3      | 100.0
 Lead (0.32 mM)                     | 39.6 ± 2.1  | 20.8 ± 1.1  | 14.6 ± 0.9 | 24.8 ± 1.5      | 100.0
-5-FU (0.32 nM)                     | 52.9 ± 1.3  | 20.2 ± 0.8  | 13.1 ± 0.6 | 13.8 ± 0.7      | 100.0
+5-FU (0.32 mM)                     | 52.9 ± 1.3  | 20.2 ± 0.8  | 13.1 ± 0.6 | 13.8 ± 0.7      | 100.0
 Lead (0.032) + 5-FU (0.32)         | 37.8 ± 2.3  | 21.0 ± 1.2  | 15.1 ± 1.0 | 26.1 ± 1.6      | 100.0
 
 Notes:

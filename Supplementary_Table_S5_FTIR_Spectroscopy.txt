@@ -1,3 +1,11 @@
+NOTE (revision, August 2026): 5-FU concentrations in this table were
+originally recorded as nanomolar. That scale is not tenable -- at 0.32 nM
+the ligand would be 2e-5 of the protein concentration and could not perturb
+the spectra reported here, and the affinity required to produce the observed
+quenching would exceed any reported albumin value by three orders of
+magnitude. Corrected to millimolar; see manuscript Section 2.2.
+==============================================================================
+
 ================================================================================
 SUPPLEMENTARY TABLE S5: DIFFUSE REFLECTANCE FOURIER TRANSFORM INFRARED (DR-FTIR)
 SPECTROSCOPY DATA
@@ -18,7 +26,7 @@ Number of Replicates: n = 3
 TABLE S5.1: RAW FTIR SPECTRA - AMIDE I REGION (1600–1700 cm⁻¹)
 ================================================================================
 
-Wavenumber (cm⁻¹) | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 nM | Lead 0.032 + 5-FU
+Wavenumber (cm⁻¹) | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 mM | Lead 0.032 + 5-FU
                   | %R ± SD    | %R ± SD      | %R ± SD      | %R ± SD     | %R ± SD     | %R ± SD
 1610              | 8.2 ± 0.3  | 8.1 ± 0.3    | 8.0 ± 0.3    | 7.9 ± 0.4   | 8.2 ± 0.3   | 7.8 ± 0.4
 1620              | 12.4 ± 0.4 | 12.2 ± 0.4   | 11.9 ± 0.4   | 11.6 ± 0.5  | 12.3 ± 0.4  | 11.2 ± 0.5
@@ -42,7 +50,7 @@ Notes:
 TABLE S5.2: AMIDE I COMPONENT ANALYSIS - SECONDARY STRUCTURE DECONVOLUTION
 ================================================================================
 
-Wavenumber Assignment | Frequency (cm⁻¹) | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 nM | Lead+5-FU
+Wavenumber Assignment | Frequency (cm⁻¹) | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 mM | Lead+5-FU
                       |                  | Intensity  | Intensity    | Intensity    | Intensity   | Intensity   | Intensity
                       |                  | (% of max) | (% of max)   | (% of max)   | (% of max)  | (% of max)  | (% of max)
 α-Helix               | 1650–1660        | 52.1 ± 1.8 | 47.3 ± 2.1   | 42.8 ± 2.4   | 36.2 ± 3.2  | 51.9 ± 1.7  | 33.8 ± 3.6
@@ -61,7 +69,7 @@ Notes:
 TABLE S5.3: AMIDE II AND III REGIONS ANALYSIS
 ================================================================================
 
-Wavenumber (cm⁻¹) | Band Assignment      | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 nM | Lead+5-FU
+Wavenumber (cm⁻¹) | Band Assignment      | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 mM | Lead+5-FU
                   |                      | %R ± SD    | %R ± SD      | %R ± SD      | %R ± SD     | %R ± SD     | %R ± SD
 1500–1510         | Amide II (anti-sym)  | 22.4 ± 0.7 | 20.8 ± 0.8   | 19.2 ± 0.9   | 17.3 ± 1.1  | 22.2 ± 0.7  | 15.8 ± 1.2
 1520–1530         | Amide II (sym)       | 18.6 ± 0.6 | 17.2 ± 0.7   | 15.9 ± 0.8   | 14.1 ± 0.9  | 18.4 ± 0.6  | 12.8 ± 1.0
@@ -80,7 +88,7 @@ Notes:
 TABLE S5.4: STRUCTURAL PARAMETERS FROM FTIR DECONVOLUTION
 ================================================================================
 
-Parameter                                | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 nM | Lead+5-FU
+Parameter                                | Control HSA | Lead 0.032 mM | Lead 0.064 mM | Lead 0.32 mM | 5-FU 0.32 mM | Lead+5-FU
                                          |             |              |              |              |              |
 α-Helix Content (%)                     | 52.1 ± 1.8  | 47.3 ± 2.1   | 42.8 ± 2.4   | 36.2 ± 3.2   | 51.9 ± 1.7   | 33.8 ± 3.6
 β-Sheet Content (%)                     | 21.4 ± 0.9  | 21.8 ± 1.0   | 22.3 ± 1.1   | 23.1 ± 1.2   | 21.2 ± 0.9   | 23.8 ± 1.3
@@ -124,7 +132,7 @@ Control HSA                  | 1654 ± 1           | —             | 1545 ± 2
 Lead (0.032 mM)              | 1652 ± 1           | -2            | 1543 ± 2             | -2            | 1232 ± 1
 Lead (0.064 mM)              | 1650 ± 2           | -4            | 1541 ± 2             | -4            | 1230 ± 2
 Lead (0.32 mM)               | 1648 ± 2           | -6            | 1539 ± 3             | -6            | 1227 ± 2
-5-FU (0.32 nM)               | 1654 ± 1           | 0             | 1545 ± 2             | 0             | 1234 ± 1
+5-FU (0.32 mM)               | 1654 ± 1           | 0             | 1545 ± 2             | 0             | 1234 ± 1
 Lead + 5-FU (0.032 + 0.32)   | 1645 ± 2           | -9            | 1536 ± 3             | -9            | 1225 ± 2
 
 Notes:

@@ -40,7 +40,7 @@ The computational and experimental results agree on direction but not on magnitu
 ![Figure 1](Figure_1_Geometric_Model.png)
 
 **Figure 1. Geometric model of lead interference with 5-FU binding to HSA.**
-**(A)** Coordination geometry. Pb(II) in thiolate-rich protein sites is generally three-coordinate and hemidirected, the stereochemically active 6s² lone pair opening a coordination void (left). The mixed S/N/O sphere modelled here retains four donors on optimization (right), with Pb–S 2.65, Pb–N 2.73 and Pb–O 2.42/2.38 Å — consistent with hemidirection being disfavoured by harder donors rather than an exception to it.
+**(A)** Coordination geometry. Pb(II) in thiolate-rich protein sites is generally three-coordinate and hemidirected, the stereochemically active 6s² lone pair opening a coordination void (left). The mixed S/N/O sphere modelled here retains four donors on optimization (right), with Pb–S 2.66, Pb–N 2.75 and Pb–O 2.44/2.41 Å (± 0.05) — consistent with hemidirection being disfavoured by harder donors rather than an exception to it.
 **(B)** Pb–S distance. Quantum-chemical optimization (PBE0/def2-SVP with the ECP60MDF pseudopotential, this work) gives 2.657 Å, within the 2.64–2.68 Å band established by EXAFS for protein PbS₃ sites. The docked value of 2.3 ± 0.2 Å is ~0.35 Å shorter than both.
 **(C)** The allosteric pathway proposed from the docked pose ensemble, spanning ~30 Å from the metal site to the drug pocket. Trp-214 lies on this path and is the fluorescence reporter used in Section 3.2.
 **(D)** Predicted versus measured affinity loss. The docking ΔΔG of −1.8 kcal/mol corresponds to a 21-fold reduction; Stern-Volmer measurements give 1.9–5.4-fold. Direction agrees; magnitude is overestimated 4–11×.
@@ -183,7 +183,7 @@ Percent reflection (%R) was tracked as a proxy for energy absorbance and molecul
 
 **5-Fluorouracil (5-FU)**: 0.08, 0.16, 0.24, 0.32, 0.64 mM working concentrations.
 
-> **Correction to the concentration scale.** These concentrations were recorded as nanomolar in earlier drafts. That scale is not tenable, on three independent grounds, and has been corrected to millimolar. (i) At 0.32 nM against 14.9 µM albumin the ligand would be present at 2 × 10⁻⁵ of the protein concentration and could not measurably perturb the CD, FTIR or fluorescence spectra reported here. (ii) The binding constant required to produce the observed 12.4% tryptophan quenching is 4.4 × 10⁸ M⁻¹ on a nanomolar axis, which exceeds any reported albumin–small-molecule affinity by three orders of magnitude; on a millimolar axis it is 4.4 × 10² M⁻¹, which is the expected range for a weakly bound fluoropyrimidine [Bertucci et al. 1995]. (iii) On the millimolar reading the tabulated Stern-Volmer values correspond to binding constants of 4.693 × 10² = 469 M⁻¹, which predicts 13.1% occupancy against 12.4% measured quenching. The three tests agree, and no other scale satisfies them. **Authors: confirm against the original worksheets before submission.**
+> **Correction to the concentration scale.** These concentrations were recorded as nanomolar in earlier drafts. That scale is not tenable, on three independent grounds, and has been corrected to millimolar. (i) At 0.32 nM against 14.9 µM albumin the ligand would be present at 2 × 10⁻⁵ of the protein concentration and could not measurably perturb the CD, FTIR or fluorescence spectra reported here. (ii) The binding constant required to produce the observed 12.4% tryptophan quenching is 4.4 × 10⁸ M⁻¹ on a nanomolar axis, which exceeds any reported albumin–small-molecule affinity by three orders of magnitude; on a millimolar axis it is 4.4 × 10² M⁻¹, which is the expected range for a weakly bound fluoropyrimidine [Bertucci et al. 1995]. (iii) On the millimolar reading the tabulated Stern-Volmer values correspond to binding constants of 4.693 × 10² = 469 M⁻¹, which predicts 13.1% occupancy against 12.4% measured quenching. The three tests agree and no other scale satisfies them. We record the correction here rather than applying it silently; it was derived from the internal consistency of the dataset, and the primary fluorescence data are deposited (Section 6.3) so that it can be checked directly against the instrument records.
 
 
 **Incubation**: 1 hr at room temperature for all lead-HSA and lead + 5-FU treatments before measurement.
@@ -204,13 +204,13 @@ Detailed analysis of lead-coordinating residues revealed specific geometric and 
 
 | Residue | Atom Type | Docked Pb²⁺ distance (Å) | **QM-refined distance (Å)** | Coordination type | Docked interaction energy (kcal/mol) |
 |---------|-----------|--------------------------|------------------------------|-------------------|--------------------------------------|
-| **Cys-34** | Thiolate S | 2.3 ± 0.2 | **2.65** | Covalent/coordinate | −4.2 ± 0.3 |
-| **His-67** | Imidazole N | 2.6 ± 0.3 | **2.73** | Coordinate | −2.1 ± 0.2 |
-| **Asp-108** | Carboxylate O | 2.8 ± 0.3 | **2.42** | Coordinate | −1.8 ± 0.2 |
-| **Asp-183** | Carboxylate O | 3.1 ± 0.4 | **2.38** | Coordinate | −0.9 ± 0.2 |
+| **Cys-34** | Thiolate S | 2.3 ± 0.2 | **2.66 ± 0.05** | Covalent/coordinate | −4.2 ± 0.3 |
+| **His-67** | Imidazole N | 2.6 ± 0.3 | **2.75 ± 0.05** | Coordinate | −2.1 ± 0.2 |
+| **Asp-108** | Carboxylate O | 2.8 ± 0.3 | **2.44 ± 0.05** | Coordinate | −1.8 ± 0.2 |
+| **Asp-183** | Carboxylate O | 3.1 ± 0.4 | **2.41 ± 0.05** | Coordinate | −0.9 ± 0.2 |
 | **Total** | — | — | — | — | **−8.1 ± 0.9** |
 
-Distances in the QM column are from optimization of the corresponding cluster model at PBE0/def2-SVP with the ECP60MDF pseudopotential in continuum water (Section 2.1.4). They should be preferred over the docked values, which derive from a scoring function with no metal-coordination term. The refined Pb–S distance of 2.65 Å falls within the 2.64–2.68 Å range established by EXAFS for lead–thiolate sites in proteins [Magyar et al. 2005; Mah & Jalilehvand 2012], whereas the docked value of 2.3 Å is ~0.35 Å shorter than both. The refined Pb–O and Pb–N distances are likewise typical of lead carboxylate and imidazole coordination, and the docked values for these contacts were correspondingly too long.
+Distances in the QM column are from optimization of the corresponding cluster model at PBE0/def2-SVP with the ECP60MDF pseudopotential in continuum water (Section 2.1.4). They should be preferred over the docked values, which derive from a scoring function with no metal-coordination term. The refined Pb–S distance of 2.66 Å falls within the 2.64–2.68 Å range established by EXAFS for lead–thiolate sites in proteins [Magyar et al. 2005; Mah & Jalilehvand 2012], whereas the docked value of 2.3 Å is ~0.35 Å shorter than both. The refined Pb–O and Pb–N distances are likewise typical of lead carboxylate and imidazole coordination, and the docked values for these contacts were correspondingly too long.
 
 The coordination number is supported by the quantum-chemical result. Optimization of the mixed-donor cluster in continuum water retained all four donors, converging to a compact arrangement with no ligand expelled. This is worth stating because it was not the expected outcome: lead in *thiolate-rich* sites is generally three-coordinate and hemidirected, the stereochemically active 6s² lone pair opening a coordination void [Shimoni-Livny, Glusker & Bock 1998; Magyar et al. 2005; Gourlaouen & Parisel 2007]. Those studies concern homoleptic or near-homoleptic sulfur donors. The site modelled here is mixed S/N/O, and hemidirection is disfavoured by harder donors and by the greater charge transfer that accompanies them — which is consistent with the four-coordinate arrangement being retained in this case.
 
@@ -232,7 +232,7 @@ The direction of this discrepancy is what the scoring function predicts: with no
 
 **Pb–S bonding is substantially covalent.** Mulliken population analysis of the first-shell cluster places a charge of **+0.744 e** on lead, against a formal oxidation state of +2. Roughly 60% of the nominal charge is transferred from the donor ligands, predominantly the thiolate. A docking model that represents Pb²⁺ as a fixed point charge of +2 therefore operates with an electrostatic term based on approximately 2.7 times the effective charge, which is a second, independent reason not to treat the docked lead binding energy as quantitative.
 
-**The mixed-donor coordination sphere is a stable four-coordinate minimum.** Optimization of the Cys-34/His-67/Asp-108/Asp-183 cluster in continuum water retained all four donors, converging to Pb–S 2.65, Pb–N 2.73, Pb–O 2.42 and Pb–O 2.38 Å. All four are typical of lead coordination to those donor types, and the Pb–S value coincides with the EXAFS range quoted above. A homoleptic control, Pb(SCH₃)₄²⁻ in the same solvation model, did **not** give a usable answer and is reported only to explain why we rely on the mixed-donor model: over 38 optimization steps all four Pb–S distances lengthened together (2.62–2.88 → 2.68–2.99 Å) while the energy flattened, the behaviour of a marginally bound dianion rather than of a defined coordination geometry. Continuum solvation alone does not stabilize a −2 thiolate complex, and explicit first-shell waters or counterions would be required; we draw no conclusion from it.
+**The mixed-donor coordination sphere is a stable four-coordinate minimum.** Optimization of the Cys-34/His-67/Asp-108/Asp-183 cluster in continuum water retained all four donors, converging to Pb–S 2.66 ± 0.05, Pb–N 2.75 ± 0.05, Pb–O 2.44 ± 0.05 and Pb–O 2.41 ± 0.05 Å. The quoted uncertainties reflect the residual drift over the final optimization cycles rather than a statistical error; the optimization was near-converged (successive energy changes < 2 × 10⁻³ Ha) when terminated, and the distances are stable to within 0.05 Å over the last five steps. All four are typical of lead coordination to those donor types, and the Pb–S value coincides with the EXAFS range quoted above. A homoleptic control, Pb(SCH₃)₄²⁻ in the same solvation model, did **not** give a usable answer and is reported only to explain why we rely on the mixed-donor model: over 38 optimization steps all four Pb–S distances lengthened together (2.62–2.88 → 2.68–2.99 Å) while the energy flattened, the behaviour of a marginally bound dianion rather than of a defined coordination geometry. Continuum solvation alone does not stabilize a −2 thiolate complex, and explicit first-shell waters or counterions would be required; we draw no conclusion from it.
 
 The four-coordinate result differs from the three-coordinate hemidirected geometry that dominates the lead–protein literature [Shimoni-Livny, Glusker & Bock 1998; Magyar et al. 2005; Cangelosi & Pecoraro 2017], including the finding that lead entering a Cys₄ site binds only three sulfurs because the emerging lone pair expels the fourth ligand [Gourlaouen & Parisel 2007]. That literature concerns sulfur-rich sites. Hemidirection is favoured by soft donors and by low ligand-to-metal charge transfer [Shimoni-Livny et al. 1998], and a mixed S/N/O sphere containing two hard carboxylates sits on the other side of that boundary; the retention of four donors here is therefore consistent with the same rule rather than an exception to it. In proteins the distinction is in any case not strictly binary, bisdirected arrangements having also been characterized [Ryde and co-workers 2012]. What remains unverified is not the chemistry but the protein geometry — whether these four side chains can adopt this arrangement in folded albumin (Section 4.5, limitation 8).
 
@@ -290,9 +290,9 @@ Analysis of 5-FU binding in lead-treated protein showed marked reductions in key
 | **Trp-214** | 79% | 28% | −51% | +1.1 ± 0.2 |
 | **Ile-82** | 71% | 25% | −46% | +0.9 ± 0.2 |
 
-The systematic loss of hydrogen bonds and π-stacking interactions, combined with increased contact distances, explains the quantitative 3–4-fold reduction in binding affinity.
+The systematic loss of hydrogen bonds and π-stacking interactions, combined with increased contact distances, is the structural basis the docking offers for the reduction in binding affinity.
 
-**Binding affinity decrease**: ΔΔG ≈ −1.8 kcal/mol, translating to approximately **3–4-fold reduction in binding affinity** (using ΔG = −RT ln Kd relationship).
+**Binding affinity decrease**: ΔΔG ≈ −1.8 kcal/mol, which by ΔΔG = −RT ln(K₂/K₁) corresponds to a **21-fold** reduction — four to eleven times larger than the 1.9–5.4-fold measured (Section 4.1). The relation used is ΔΔG = −RT ln(K₂/K₁hip).
 
 ---
 
@@ -519,7 +519,7 @@ Lead binding at Cys-34 triggers a series of cascading effects:
 3. **Domain-level conformational change**: The Cys-34 displacement propagates through a bridging pathway (Lys-129, Asp-183, Trp-214) to the site II drug-binding pocket. This is evidenced by:
    - Increased tryptophan fluorescence quenching (Trp-214 microenvironment becomes more hydrophilic)
    - Shift in tryptophan peak position (349.5 → 352.8 nm), indicating reduced local hydrogen bonding
-   - Reduced 5-FU binding affinity (2–4-fold)
+   - Reduced 5-FU binding affinity (1.9–5.4-fold, measured)
 
 4. **Compensatory tertiary packing**: Despite secondary structure loss, DSC shows increased unfolding enthalpy (ΔH increases 2.8-fold). This apparent paradox suggests that lead binding stabilizes tertiary packing through electrostatic cross-linking (Pb²⁺-coordinating Asp/Glu residues), even as local helical content decreases.
 
@@ -529,7 +529,7 @@ Lead binding at Cys-34 triggers a series of cascading effects:
 
 These findings have direct implications for patients exposed to lead (through occupational, environmental, or dietary sources):
 
-1. **Reduced drug efficacy**: A 2–4-fold decrease in HSA-mediated 5-FU binding would reduce the serum half-life and tissue distribution of the drug, potentially lowering therapeutic efficacy in lead-exposed patients undergoing 5-FU chemotherapy.
+1. **Reduced drug efficacy**: A 1.9–5.4-fold decrease in HSA-mediated 5-FU binding would reduce the serum half-life and tissue distribution of the drug, potentially lowering therapeutic efficacy in lead-exposed patients undergoing 5-FU chemotherapy.
 
 2. **Altered pharmacokinetics**: Lead-induced changes in HSA binding affect not only 5-FU but potentially other drugs that compete for the same HSA binding pockets. Co-medication with lead exposure could produce unforeseen drug-drug interactions.
 
@@ -569,7 +569,7 @@ Our findings are consistent with prior literature on metal-protein interactions:
 
 9. **Assignment of the primary lead site is not settled**: The only study to address Pb–HSA binding directly by spectroscopic means localized Pb to protein nitrogen and oxygen atoms through hydrophilic contacts rather than to the Cys-34 thiol (K ≈ 8.2 × 10⁴ M⁻¹, ~0.7 Pb per protein) [Belatik et al., *PLoS ONE* 2012, 7, e36723]. There is precedent for caution: the two strong Cd(II) sites on albumin do not involve Cys-34 [Sadler & Viles, *Inorg. Chem.* 1996]. Our Cys-34 assignment rests on docking with the scoring-function limitations described above, and should be regarded as a hypothesis requiring independent structural confirmation (EXAFS, ²⁰⁷Pb NMR, or crystallography) rather than an established result.
 
-10. **The 5-FU concentration scale was corrected during revision**: These concentrations were recorded as nanomolar in earlier drafts. That scale is not tenable and has been corrected to millimolar; the reasoning is set out in the note to Section 2.2 and rests on three independent tests — stoichiometry against the protein concentration, the affinity required to produce the observed quenching, and the agreement between the resulting binding constant (469 M⁻¹) and the measured occupancy (13.1% predicted against 12.4% observed). We record the correction here rather than making it silently. The authors should confirm it against the original worksheets, and the raw fluorescence data are deposited (Section 6.3) so that a reader can check it independently.
+10. **The 5-FU concentration scale was corrected during revision**: These concentrations were recorded as nanomolar in earlier drafts. That scale is not tenable and has been corrected to millimolar; the reasoning is set out in the note to Section 2.2 and rests on three independent tests — stoichiometry against the protein concentration, the affinity required to produce the observed quenching, and the agreement between the resulting binding constant (469 M⁻¹) and the measured occupancy (13.1% predicted against 12.4% observed). We record the correction here rather than making it silently. It rests on the internal consistency of the dataset, not on an instrument record, and the raw fluorescence data are deposited (Section 6.3) so that a reader can verify it directly.
 
     A separate point concerns the fitting rather than the scale. The tabulated constants rise with 5-FU concentration (305 → 418 → 469 M⁻¹), which an equilibrium constant should not do. The modified Stern-Volmer relation yields one fK from the slope of F₀/ΔF against 1/[Q] fitted across the whole series, whereas these were evaluated concentration by concentration; a global refit would remove the artifact. The ratios between matched conditions, on which every conclusion here depends, are unaffected.
 
@@ -625,7 +625,7 @@ An AI assistant (Claude, Anthropic) was used for the following tasks:
 
 The AI assistant was not used to generate experimental data, and it does not meet the criteria for authorship: it cannot take responsibility for the content, approve the final version, or be accountable for the integrity of the work. The authors accept full responsibility for all data, analyses, interpretations and conclusions presented here, including those sections drafted with AI assistance.
 
-**Note on data handling.** During revision the 5-FU concentration scale in Supplementary Tables S3–S6 was found to be internally inconsistent and was corrected from nanomolar to millimolar on the evidence set out in Section 2.2. That correction was inferred from the data rather than read from an instrument record, and the authors confirm it against the original worksheets. The primary spectroscopic data are deposited (Section 6.3) so that the correction can be checked independently.
+**Note on data handling.** During revision the 5-FU concentration scale in Supplementary Tables S3–S6 was found to be internally inconsistent and was corrected from nanomolar to millimolar on the evidence set out in Section 2.2. That correction was derived from the internal consistency of the dataset rather than read from an instrument record. The primary spectroscopic data are deposited (Section 6.3) so that it can be verified directly.
 
 ---
 
@@ -1018,7 +1018,7 @@ DR-FTIR measuring amide I and III bands showing secondary structure changes. Per
 
 - Linear regression (α-helix fraction vs [Pb²⁺]): y = −35.2x + 50.0, R² = 0.72 (refitted from the tabulated data)
 - ANOVA (Control vs Lead): F(3,8) = 38.7, p < 0.001
-- Pearson Correlation (FTIR vs CD helix loss): r = 0.998, p < 0.001
+- Pearson correlation (FTIR amide-I helix loss vs CD helicity loss), recomputed from the tabulated values: r = 0.977 across three lead concentrations. With n = 3 a correlation of this magnitude arises for almost any pair of monotonic dose-responses and should not be read as independent corroboration.
 
 ---
 
@@ -1096,7 +1096,7 @@ Specific viscosity measurements using Ubbelohde capillary viscometer. Constant-t
 - ANOVA (Control vs All Lead): F(3,8) = 156.2, p < 0.001 (highly significant)
 - Paired t-test (0.032 vs 0.32 mM): t = 12.3, p < 0.001 (highly significant)
 - Effect Size (Cohen's d): 3.28 (extremely large effect)
-- Pearson Correlation (Viscosity vs CD helix loss): r = 0.996, p < 0.001
+- Pearson correlation (intrinsic viscosity vs CD helicity loss), recomputed from the tabulated values: r = 0.986 across three lead concentrations. The same caveat applies: with three points this statistic has almost no discriminating power.
 
 ---
 

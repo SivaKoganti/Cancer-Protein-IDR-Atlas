@@ -137,15 +137,31 @@ check('no nanomolar 5-FU concentrations remain in the tables',
 
 # --- quantum chemistry ---------------------------------------------------
 check('QM-refined coordination distances are reported in Table 3.1.1',
-      all(v in text for v in ('2.65', '2.73', '2.42')),
-      'Pb-S 2.65, Pb-N 2.73, Pb-O 2.42/2.38 A (mixed-donor cluster, PBE0/def2-SVP)\n'
-      'Pb-S coincides with the EXAFS range 2.64-2.68 A')
+      all(v in text for v in ('2.66', '2.75', '2.44', '2.41')),
+      'Pb-S 2.66, Pb-N 2.75, Pb-O 2.44/2.41 A (+/- 0.05; mixed-donor cluster,\n'
+      'PBE0/def2-SVP with ECP60MDF, ddCOSMO water)\n'
+      'Pb-S falls in the EXAFS range 2.64-2.68 A; the quoted uncertainty reflects\n'
+      'residual drift over the final optimization cycles, stated as such')
 
 check('the docked Pb-S distance is disclosed as inconsistent with experiment',
       '0.35 Å' in text and 'EXAFS' in text)
 
 check('the inconclusive dianion calculation is reported as inconclusive',
       'marginally bound dianion' in text and 'draw no conclusion' in text)
+
+# --- stale claims from superseded drafts ---------------------------------
+import re as _re
+check('no stale 2-4 fold / 3-4 fold affinity claims remain',
+      not _re.search(r'[23]–4-fold', text),
+      'every affinity statement now quotes the measured 1.9-5.4 fold\n'
+      'or the docking-implied 21-fold, never the withdrawn 2-4 fold')
+
+pearson_claims = _re.findall(r'r = 0\.99[68]', text)
+check('cross-method Pearson correlations recomputed',
+      not pearson_claims and '0.977' in text and '0.986' in text,
+      'recomputed from the tabulated values: FTIR vs CD r = 0.977,\n'
+      'viscosity vs CD r = 0.986 (previously stated 0.998 and 0.996)\n'
+      'both now carry the n = 3 caveat')
 
 # --- reporting sections --------------------------------------------------
 for name, needle in [('generative-AI use is disclosed', 'DECLARATION OF GENERATIVE AI USE'),
