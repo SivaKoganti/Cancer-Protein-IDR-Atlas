@@ -27,7 +27,11 @@
 
 ## ABSTRACT
 
-Lead (Pb²⁺) is a toxic heavy metal that interacts with multiple physiological systems, yet the molecular basis of lead-drug interference in serum protein binding remains poorly characterized. We present an integrated study combining **molecular docking simulations** with experimental biophysical measurements to elucidate how lead binding disrupts 5-fluorouracil (5-FU) distribution through human serum albumin (HSA). Using structure-based computational docking and multi-method biophysical validation (fluorescence spectroscopy, circular dichroism, differential scanning calorimetry, DR-FTIR, and viscometry), we find that lead binding induces allosteric conformational changes that reduce 5-FU binding affinity by 2–5-fold. Docking identified a candidate allosteric pathway linking the lead-binding site to the Lys-199 drug-binding pocket. Docking reproduced the *direction* of this effect but overestimated its *magnitude* by roughly an order of magnitude: the predicted ΔΔG of −1.8 kcal/mol corresponds to a 21-fold affinity loss, whereas the measured 2–5-fold reduction corresponds to ΔΔG = 0.4–1.0 kcal/mol. Quantum-chemical refinement of the lead site (PBE0/def2-SVP with a small-core relativistic pseudopotential) reproduced the experimental Pb–S distance of 2.64–2.68 Å known from EXAFS, which the docking scoring function underestimates by ~0.35 Å, and showed substantial Pb–S covalency (Mulliken charge +0.74 e rather than the formal +2) that fixed-point-charge docking cannot represent. Amide I/III region analysis revealed distinct molecular vibration patterns in lead-treated samples, supporting computational predictions of altered hydrogen bonding geometry. This work establishes a dual computational-experimental framework for understanding metal-drug interference in serum protein transport, with implications for chemotherapy efficacy and adverse drug event prediction.
+Lead remains a common occupational and environmental exposure, and its toxicology is well documented, but little is known about whether it interferes with the drugs that circulate bound to serum albumin. We examined this question for 5-fluorouracil, combining molecular docking, five biophysical methods, and quantum-chemical calculations on the lead coordination sphere.
+
+Lead reduces 5-FU binding to human serum albumin. Stern-Volmer analysis gives a 1.9–5.4-fold reduction in the binding constant (ΔΔG = 0.4–1.0 kcal/mol), and lead produces concurrent, dose-dependent changes in helicity, amide hydrogen bonding, hydrodynamic radius and unfolding enthalpy. Because albumin's metal sites and its drug pockets are ~30 Å apart, the effect must be allosteric; network analysis of the docked pose ensemble suggests a route running from Cys-34 through Lys-129, Asp-183 and Trp-214 to the site II pocket at Lys-199. Trp-214 lies on this path and responds to lead, which is consistent with the proposal without confirming the individual residue assignments.
+
+The computational and experimental results agree on direction but not on magnitude. The docked ΔΔG of −1.8 kcal/mol corresponds to a 21-fold affinity loss, four to eleven times larger than measured. Quantum-chemical optimization of the coordination sphere (PBE0/def2-SVP with a small-core relativistic pseudopotential) gives a Pb–S distance of 2.657 Å, matching the 2.64–2.68 Å known from EXAFS for lead–thiolate sites in proteins, whereas the docked geometry is ~0.35 Å shorter; the lead centre carries a Mulliken charge of +0.74 e rather than the formal +2, indicating covalency that a fixed-point-charge model cannot represent. These discrepancies are consistent with the known behaviour of empirical scoring functions at metal centres, and they bound what the docking can be asked to support: the location and plausibility of an allosteric coupling, but not its energetics or its coordination geometry.
 
 **Keywords:** lead toxicity, human serum albumin, 5-fluorouracil, molecular docking, density functional theory, hemidirected coordination, allosteric mechanism, drug-protein interactions, circular dichroism, fluorescence spectroscopy
 
@@ -46,22 +50,23 @@ Colour convention throughout: blue, quantum chemistry from this work; green, ind
 
 ## 1. INTRODUCTION
 
-Human Serum Albumin (HSA) is the primary transport protein for hydrophobic drugs and environmental toxicants in blood plasma. As the largest thiol pool in circulation, HSA's free cysteine at position 34 (Cys-34) serves as the principal binding site for divalent metal ions, including lead (Pb²⁺). Although lead toxicity has been documented, the molecular mechanisms by which metal ion binding disrupts drug-protein interactions remain incompletely understood. This gap is particularly significant for anticancer therapeutics like 5-fluorouracil (5-FU), whose efficacy depends critically on HSA-mediated distribution and serum half-life.
+Serum albumin carries much of what circulates in blood that will not dissolve in it on its own — fatty acids, bilirubin, and a large fraction of clinically used drugs. It is also the largest thiol pool in plasma, and its single free cysteine, Cys-34, is among the more reactive soft-metal targets in circulation. Lead is a soft divalent cation with a marked preference for thiolate sulfur, so the expectation that Pb²⁺ and albumin interact is an old one.
 
-Previous studies have reported that lead alters HSA structure and suggested interference with drug binding, but structural details of the mechanism have not been resolved. Here, we address this gap by combining **molecular docking simulations** with comprehensive biophysical characterization to map the allosteric pathway linking lead binding to 5-FU binding disruption.
+What has been harder to establish is whether that interaction matters for the drugs albumin carries. Lead exposure remains common in battery manufacturing, smelting, mining, and in communities with aged water infrastructure, and patients drawn from those populations receive the same chemotherapy regimens as everyone else. If lead binding alters how albumin holds a drug, the free fraction of that drug changes, and with it the dose that reaches tissue. For 5-fluorouracil, a fluoropyrimidine whose therapeutic window is narrow and whose distribution depends substantially on albumin, that would be a consequential effect.
+
+Prior work has shown that lead perturbs albumin's structure and has suggested that drug binding is affected, but the structural basis has not been resolved. The difficulty is partly geometric: the metal sites and the drug sites are not in the same place. If lead at Cys-34 is to affect a drug bound some 30 Å away, the effect has to travel, and any account of the mechanism has to say how.
+
+This study asks whether such a path exists and what it would look like. We combine molecular docking, which can survey a protein for plausible sites and suggest how they might be coupled, with biophysical measurements that report on the protein's structure and on drug binding directly. To the docking we add quantum-chemical calculations on the lead coordination sphere, for a reason that turned out to matter: docking scoring functions are fitted to organic ligands and carry no term for metal coordination, and lead is a poor case for them. Its 6s² lone pair is stereochemically active, which produces coordination geometries no point-charge model reproduces.
 
 ### 1.1 STRUCTURAL BACKGROUND
 
-HSA is a 67 kDa globular protein containing three homologous domains (I, II, III), each with A and B subdomains, stabilized by 17 disulfide bridges. Two major ligand-binding pockets are located in subdomains IIA and IIIA (sites I and II), where aromatic and heterocyclic drugs preferentially bind. 5-FU has been mapped to site II at Lys-199. Lead's high-affinity metal-binding site is located at the N-terminus and at the Cys-34 thiol group. The spatial separation between these sites (~30 Å in native HSA) suggests that lead-induced conformational changes must propagate through the protein structure to disrupt 5-FU binding. This allosteric mechanism is the focus of our docking and biophysical investigation.
+Albumin is a 67 kDa protein of three homologous helical domains, each split into A and B subdomains and held together by 17 disulfide bridges. Most drug binding occurs at two pockets, Sudlow sites I and II, in subdomains IIA and IIIA; 5-FU associates with site II near Lys-199. Albumin's metal sites lie elsewhere — the N-terminal ATCUN motif, Cys-34, and the interdomain site A involving His-67 and His-247 — and the separation between the nearest metal site and the drug pocket is roughly 30 Å. Any interference between the two must therefore be allosteric rather than competitive, which is what makes the question structurally interesting and experimentally awkward: the effect is real at the level of binding constants, but its path through the protein is not something a binding assay reveals.
 
-### 1.2 COMPUTATIONAL AND EXPERIMENTAL APPROACH
+### 1.2 APPROACH
 
-We deployed a dual-method strategy:
+The work proceeds in three stages. Docking locates candidate lead sites and, through network analysis of the pose ensemble, proposes a route by which metal binding could reach the drug pocket. Five biophysical methods — fluorescence, circular dichroism, differential scanning calorimetry, diffuse-reflectance FTIR, and viscometry — then test whether lead produces the structural changes that route implies, and measure the effect on 5-FU binding. Finally, density functional theory is applied to the lead coordination sphere, both to check the docked geometry against what is known experimentally about lead–thiolate bonding and to characterize the electronic structure that empirical scoring cannot capture.
 
-1. **Computational**: Molecular docking simulations (AutoDock Vina, GOLD) to predict lead and 5-FU binding modes and identify allosteric transmission pathways
-2. **Experimental**: Multi-method biophysical validation including fluorescence spectroscopy (tryptophan quenching), CD spectroscopy (secondary structure), DSC (thermodynamic stability), DR-FTIR (amide band shifts), and viscometry (hydrodynamic changes)
-
-This integration allows us to validate computational predictions against experimental observables and refine mechanistic models iteratively.
+We report the three strands separately rather than as a single converging argument, because they do not all point the same way. The experimental measurements agree with each other on the direction and rough size of the effect. The docking agrees on direction but not on magnitude, overestimating the affinity loss by roughly an order of magnitude. The quantum chemistry agrees with independent experimental structural data and disagrees with the docked geometry. Where those disagreements fall is, we think, as informative as the agreements.
 
 ---
 
@@ -488,24 +493,17 @@ These shifts **validate docking predictions** that lead binding causes helical d
 
 ## 4. DISCUSSION
 
-### 4.1 INTEGRATED COMPUTATIONAL-EXPERIMENTAL MODEL OF LEAD-DRUG INTERFERENCE
+### 4.1 WHAT THE COMPUTATIONS AND THE MEASUREMENTS EACH ESTABLISH
 
-Our study presents a new framework for understanding how metal ions interfere with drug-protein binding through allosteric mechanisms. By integrating molecular docking with multi-method biophysical validation, we resolve the structural basis of lead interference with 5-FU transport via HSA:
+Docking placed lead at Cys-34 with a scored binding energy of −7.8 kcal/mol and, through network analysis of the pose ensemble, suggested a route from that site to the drug pocket running by way of Lys-129, Asp-183 and Trp-214. Docking 5-FU into the lead-bound receptor then gave a scored affinity loss of ΔΔG ≈ −1.8 kcal/mol.
 
-1. **Computational prediction** (docking) identified lead binding at Cys-34 with predicted binding free energy of −7.8 kcal/mol, establishing the direct metal-protein interaction.
+The measurements support the mechanism but not that number. Lead reduces the Stern-Volmer binding constant for 5-FU by 1.9–5.4-fold, which corresponds to ΔΔG between 0.4 and 1.0 kcal/mol at 298 K. The docked value of 1.8 kcal/mol corresponds to a 21-fold reduction. The prediction and the measurement therefore differ by a factor of four to eleven, and the earlier characterization of this as a quantitative match was an arithmetic error: it compared a free energy with a fold-change without performing the conversion.
 
-2. **Allosteric pathway mapping** (docking ensemble analysis) revealed that lead binding propagates conformational effects through Lys-129 → Asp-183 → Trp-214 → Lys-199, connecting the metal-binding site to the drug-binding pocket over a ~30 Å distance.
+That the docking should fail at exactly this point is not surprising, and the reason is worth stating plainly because it constrains how the rest of the computational work should be read. The Vina scoring function is a five-term empirical expression fitted to organic ligand–protein complexes, with no electrostatic term, no desolvation term, and no term for metal coordination [Trott & Olson 2010]. Benchmarking on metalloprotein complexes has found that docking programs pose such complexes acceptably while failing to rank their affinities [Chen et al. 2019], and AutoDock4Zn exists precisely because AutoDock4 and Vina mispredict coordination when sulfur is the donor [Santos-Martins et al. 2014] — the situation at Cys-34. An absolute ΔΔG from such a function is not an affinity prediction, and we do not treat it as one.
 
-3. **Binding affinity prediction** (docking in lead-bound conformation) gave ΔΔG ≈ −1.8 kcal/mol. Converted through ΔΔG = −RT ln(K₂/K₁) at 298 K, this corresponds to a **21-fold** reduction in 5-FU affinity.
+What the docking does supply is a hypothesis about *where* and *whether*, and there the experiments are corroborative. Four independent methods report structural change in the same direction and over the same concentration range: helicity falls (CD), amide hydrogen bonding is disrupted (DR-FTIR), the hydrodynamic radius grows (viscometry), and unfolding enthalpy rises even as secondary structure is lost (DSC). Trp-214, which the network analysis places on the transmission path, shows both quenching and a red shift, indicating that its environment becomes more polar on lead binding. None of this proves the specific residue assignments — a different path could produce the same aggregate observables — but it is what one would expect to see if the proposed path is broadly right.
 
-4. **Experimental comparison** (biophysical assays). The measurements agree with the predicted direction and with the mechanism, but not with the predicted magnitude:
-   - Viscometry: lead induces structural elongation (increased ηSP)
-   - Fluorescence: tryptophan quenching (Trp-214, on the predicted pathway) with Stern-Volmer analysis gives a 1.9–5.4-fold reduction in the binding constant, i.e. ΔΔG = 0.4–1.0 kcal/mol — the same sign as the docking prediction but 4–11× smaller in magnitude
-   - CD spectroscopy: 10–31% helix loss, consistent in direction with docking-predicted backbone destabilization
-   - DSC: increased unfolding enthalpy in lead-bound state (ΔH: 1.7 → 4.7 J/g), indicating compensatory tertiary packing despite secondary structure loss
-   - DR-FTIR: amide I/III percent reflectance drops by 3.6–4.6%, consistent with altered hydrogen bonding geometry
-
-**On the quantitative discrepancy.** The sevenfold-to-elevenfold gap between predicted and measured affinity loss is not a failure of the mechanistic model, and it is the expected behaviour of the method. Empirical docking scoring functions are fitted to organic ligand–protein complexes and are known to pose metal complexes acceptably while failing to rank their affinities [Chen et al. 2019]; the Vina function additionally carries no electrostatic, desolvation, or metal-coordination term [Trott & Olson 2010]. Treating an absolute docking ΔΔG as a quantitative affinity prediction is therefore unsound, and we do not do so here. What the docking supports is the *existence and location* of an allosteric coupling between the metal site and the drug pocket; what the experiments supply is its *magnitude*.
+The DSC result deserves a note, since it looks contradictory at first. Lead increases the unfolding enthalpy 2.8-fold while CD and FTIR both report loss of secondary structure. These are reconcilable: a metal ion that bridges carboxylate side chains can add electrostatic cross-links that must be broken during unfolding, raising the enthalpic cost, while locally disordering the helices it perturbs. Stability and order are not the same quantity, and lead appears to increase one while decreasing the other.
 
 ### 4.2 MECHANISTIC INSIGHTS: ALLOSTERIC COUPLING AND METAL-INDUCED DESTABILIZATION
 
@@ -566,6 +564,10 @@ Our findings are consistent with prior literature on metal-protein interactions:
 
 8. **Assignment of the primary lead site is not settled**: The only study to address Pb–HSA binding directly by spectroscopic means localized Pb to protein nitrogen and oxygen atoms through hydrophilic contacts rather than to the Cys-34 thiol (K ≈ 8.2 × 10⁴ M⁻¹, ~0.7 Pb per protein) [Belatik et al., *PLoS ONE* 2012, 7, e36723]. There is precedent for caution: the two strong Cd(II) sites on albumin do not involve Cys-34 [Sadler & Viles, *Inorg. Chem.* 1996]. Our Cys-34 assignment rests on docking with the scoring-function limitations described above, and should be regarded as a hypothesis requiring independent structural confirmation (EXAFS, ²⁰⁷Pb NMR, or crystallography) rather than an established result.
 
+9. **Two unresolved features of the fluorescence dataset**: The binding-constant column is headed "(fK)⁻¹" in the main text and "fK M⁻¹" in Supplementary Table S4.2. These are reciprocal quantities, and which label is correct determines the direction of the reported change. Separately, the tabulated constants of order unity (M⁻¹) are difficult to reconcile with 5-FU concentrations in the nanomolar range: at fK = 4.7 M⁻¹ and 0.32 nM ligand the fractional occupancy of HSA would be ~10⁻⁹, which cannot produce the 28.8–57.9% quenching reported in the same rows. Reported binding constants for small molecules to albumin are typically 10³–10⁶ M⁻¹. The tabulated constants also rise with ligand concentration (3.053 → 4.693 M⁻¹ across 0.08–0.32 nM 5-FU), which an equilibrium constant cannot do. We report these values as tabulated and flag the discrepancy rather than silently rescaling; resolving it requires returning to the original Stern-Volmer fits. The *relative* changes between conditions, on which the conclusions rest, are unaffected by a uniform error in scale or units.
+
+10. **Dose-response fits are not linear**: The regressions relating helicity, binding constant and intrinsic viscosity to lead concentration were refitted by least squares for this revision (Tables S3.2, S4.2, S6.4). The coefficients of determination are 0.54–0.87 rather than the 0.996–0.998 quoted in earlier drafts, and in each case a straight line is a poor model for a response that saturates. Log-linear fits perform better and remain physical across the studied range. Reported effect sizes should be read as describing the measured concentrations rather than supporting extrapolation.
+
 ### 4.6 FUTURE DIRECTIONS
 
 1. **Physiologically relevant lead concentrations**: Perform biophysical assays in plasma or whole blood at lead levels corresponding to occupational exposure (1–10 μM) to assess translational relevance.
@@ -600,7 +602,23 @@ If the mechanism proposed here is confirmed, it would imply that occupational or
 
 ## 6. ACKNOWLEDGMENTS
 
-We thank all collaborators for helpful discussions. Computational resources were provided by institutional facilities. This work was supported by relevant funding sources.
+We thank all collaborators for helpful discussions. Computational resources were provided by institutional facilities. This work was supported by [INSERT FUNDING SOURCES AND GRANT NUMBERS].
+
+### 6.1 DECLARATION OF GENERATIVE AI USE
+
+In accordance with ICMJE recommendations and ACS Publications policy, we disclose the following use of generative artificial intelligence in the preparation of this work.
+
+An AI assistant (Claude, Anthropic) was used for the following tasks:
+
+- **Literature retrieval and synthesis.** Identifying and summarizing prior work on Pb(II) coordination chemistry, lead–thiolate protein sites, relativistic pseudopotentials, and the documented limitations of docking scoring functions for metal centres. All cited references were subsequently checked against the primary sources by the authors.
+- **Quantitative consistency auditing.** Systematically recomputing the relationships claimed between computational predictions and experimental measurements. This identified eleven internal inconsistencies in an earlier draft, including an error of approximately one order of magnitude in the conversion between binding free energy and fold-change in affinity, and four regression fits whose reported coefficients of determination were not obtained from the tabulated data. The audit is reproducible via `scripts/audit_consistency.py`.
+- **Quantum-chemical calculation setup and execution.** Construction of the cluster models, selection of functional, basis set and pseudopotential in line with published benchmarks, and execution of the geometry optimizations reported in Sections 2.1.4 and 3.1.2.
+- **Figure preparation.** Generation of Figure 1 and formatting of the remaining figures.
+- **Manuscript editing.** Drafting and revision of text, with all scientific claims verified by the authors.
+
+The AI assistant was not used to generate experimental data, and it does not meet the criteria for authorship: it cannot take responsibility for the content, approve the final version, or be accountable for the integrity of the work. The authors accept full responsibility for all data, analyses, interpretations and conclusions presented here, including those sections drafted with AI assistance.
+
+**Note on data provenance.** [AUTHORS TO COMPLETE BEFORE SUBMISSION: confirm that the values in Supplementary Tables S3–S6 derive from instrument output, and deposit the underlying raw spectra. See Section 4.5, limitations 9–10.]
 
 ---
 
@@ -687,6 +705,18 @@ We thank all collaborators for helpful discussions. Computational resources were
 54. Wyman, J. and Gill, S. J. (1990) *Binding and Linkage: Functional Chemistry of Biological Macromolecules*. University Science Books.
 55. Eftink, M. R. and Ghiron, C. A. (1981) Fluorescence quenching studies with proteins. *Anal. Biochem.*, 114, 199–227.
 56. van Holde, K. E., Johnson, W. C., and Ho, P. S. (2006) *Principles of Physical Biochemistry* (2nd ed.). Pearson Prentice Hall.
+
+### Software and Computational Tools
+57. Anthropic (2026) Claude [large language model]. Used for literature synthesis, quantitative consistency auditing, quantum-chemical calculation setup, figure preparation and manuscript editing; see Section 6.1. https://claude.ai
+58. Sun, Q., Berkelbach, T. C., Blunt, N. S., et al. (2018) PySCF: the Python-based simulations of chemistry framework. *WIREs Comput. Mol. Sci.*, 8, e1340.
+59. Hunter, J. D. (2007) Matplotlib: a 2D graphics environment. *Comput. Sci. Eng.*, 9, 90–95.
+60. Harris, C. R., Millman, K. J., van der Walt, S. J., et al. (2020) Array programming with NumPy. *Nature*, 585, 357–362.
+61. Virtanen, P., Gommers, R., Oliphant, T. E., et al. (2020) SciPy 1.0: fundamental algorithms for scientific computing in Python. *Nat. Methods*, 17, 261–272.
+62. Hermann, J. (2020) pyberny: molecular structure optimizer. Zenodo. https://doi.org/10.5281/zenodo.3695038
+
+### Reporting Standards for AI-Assisted Research
+63. International Committee of Medical Journal Editors (2023) *Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals*: Defining the Role of Authors and Contributors — Artificial Intelligence.
+64. Nature Portfolio (2023) Tools such as ChatGPT threaten transparent science: here are our ground rules for their use. *Nature*, 613, 612.
 
 ---
 
