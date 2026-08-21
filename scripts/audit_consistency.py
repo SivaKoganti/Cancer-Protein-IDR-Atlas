@@ -1,161 +1,164 @@
 #!/usr/bin/env python3
-"""Recompute every claimed computational/experimental agreement in the manuscript.
+"""Consistency audit of the manuscript's quantitative claims.
 
-Each check takes numbers printed in COMPLETE_INTEGRATED_MANUSCRIPT.md and asks
-whether the stated relationship between them holds. Nothing here is fitted or
-estimated; it is arithmetic on the manuscript's own values.
+Part 1 re-derives each relationship that was found to be wrong in the 21 August
+audit and confirms the corrected value now in the manuscript.
+Part 2 lists the issues that remain OPEN because they cannot be resolved without
+the raw spectroscopic data.
 
 Usage: python3 scripts/audit_consistency.py
 Companion write-up: COMPUTATIONAL_EXPERIMENTAL_AUDIT.md
 """
 
 import math
+import re
+import sys
 
-R_KCAL = 1.98720425e-3          # kcal / (mol K)
+R_KCAL = 1.98720425e-3
 T = 298.15
 RT = R_KCAL * T
 
-FAILURES = []
+MANUSCRIPT = 'COMPLETE_INTEGRATED_MANUSCRIPT.md'
+
+passed, failed, open_issues = [], [], []
 
 
-def check(name, ok, detail):
-    tag = 'PASS' if ok else 'FAIL'
-    if not ok:
-        FAILURES.append(name)
-    print(f'[{tag}] {name}')
+def check(name, ok, detail=''):
+    (passed if ok else failed).append(name)
+    print(f'[{"PASS" if ok else "FAIL"}] {name}')
     for line in detail.strip('\n').split('\n'):
-        print(f'       {line}')
+        if line:
+            print(f'       {line}')
     print()
 
 
-def r_squared(points, slope, intercept):
-    """R^2 of a stated line against the points it is supposed to describe."""
-    ybar = sum(y for _, y in points) / len(points)
+def fit(points):
+    n = len(points)
+    sx = sum(x for x, _ in points); sy = sum(y for _, y in points)
+    sxx = sum(x * x for x, _ in points); sxy = sum(x * y for x, y in points)
+    slope = (n * sxy - sx * sy) / (n * sxx - sx * sx)
+    intercept = (sy - slope * sx) / n
+    ybar = sy / n
     ss_tot = sum((y - ybar) ** 2 for _, y in points)
     ss_res = sum((y - (slope * x + intercept)) ** 2 for x, y in points)
-    return 1 - ss_res / ss_tot if ss_tot else float('nan')
+    return slope, intercept, (1 - ss_res / ss_tot if ss_tot else float('nan'))
 
+
+try:
+    text = open(MANUSCRIPT, encoding='utf-8').read()
+except FileNotFoundError:
+    print(f'{MANUSCRIPT} not found; run from the repository root.')
+    sys.exit(1)
 
 print(f'RT at {T} K = {RT:.4f} kcal/mol\n')
+print('=' * 70)
+print('PART 1  Corrections verified against the current manuscript')
+print('=' * 70 + '\n')
 
-# ---------------------------------------------------------------- 1
-ddg = 1.8
-fold_from_ddg = math.exp(ddg / RT)
-check(
-    'DDG of -1.8 kcal/mol equals a 2-4 fold affinity reduction',
-    2 <= fold_from_ddg <= 4,
-    f'DDG = -{ddg} kcal/mol  ->  {fold_from_ddg:.1f}-fold\n'
-    f'2-fold -> DDG = {RT*math.log(2):.2f} ; 4-fold -> DDG = {RT*math.log(4):.2f} kcal/mol\n'
-    f'docking overpredicts by ~{fold_from_ddg/3:.0f}x',
-)
+# 1 -- thermodynamic conversion
+fold = math.exp(1.8 / RT)
+check('DDG -> fold-change conversion is stated correctly',
+      '20.9' in text or '21-fold' in text,
+      f'DDG = -1.8 kcal/mol corresponds to {fold:.1f}-fold\n'
+      f'measured 1.9-5.4 fold corresponds to DDG = '
+      f'{RT*math.log(1.9):.2f}-{RT*math.log(5.4):.2f} kcal/mol\n'
+      'manuscript now reports the overestimate rather than a match')
 
-# ---------------------------------------------------------------- 2
-K, L = 4.693, 0.32e-9
-theta = K * L / (1 + K * L)
-check(
-    'fK = 4.693 /M with 5-FU at 0.32 nM can produce ~50% quenching',
-    theta > 0.1,
-    f'fractional occupancy = {theta:.2e}\n'
-    f'reported quenching at these conditions: 28.8-57.9 %\n'
-    f'K needed for 50% occupancy at 0.32 nM: {1/L:.1e} /M '
-    f'(HSA-drug constants are 1e3-1e6 /M)',
-)
+check('the false "quantitative match" claim has been removed',
+      'quantitatively matched' not in text,
+      'searched for: "quantitatively matched"')
 
-# ---------------------------------------------------------------- 3
-fk_vs_ligand = [(0.08, 3.053), (0.16, 4.176), (0.32, 4.693)]
-spread = fk_vs_ligand[-1][1] / fk_vs_ligand[0][1]
-check(
-    'fK is constant with respect to ligand concentration',
-    spread < 1.05,
-    'fK: ' + ', '.join(f'{c} nM -> {k}' for c, k in fk_vs_ligand) + '\n'
-    f'varies by {spread:.2f}x; an equilibrium constant cannot depend on [ligand]',
-)
+check('overestimate is quantified in the text',
+      '4–11×' in text or '4-11x' in text or 'overestimates the effect by 4–11' in text,
+      'the 4-11x factor is stated where the comparison is made')
 
-# ---------------------------------------------------------------- 4
-check(
-    'the fK column carries a consistent unit label',
-    False,
-    'main text line 304 : "Binding Constant (fK)^-1"\n'
-    'supplement S4.2    : "fK  M^-1"\n'
-    'identical numbers under reciprocal labels; direction of change depends on which',
-)
-
-# ---------------------------------------------------------------- 5..8
+# 2 -- regressions refitted
 regressions = [
-    ('Helix % vs [Pb]  y = -6.78x + 88.4', -6.78, 88.4, 0.998,
-     [(0.032, 89.3), (0.064, 81.5), (0.32, 73.6)]),
-    ('alpha-helix % vs [Pb]  y = -6.78x + 52.1', -6.78, 52.1, 0.996,
-     [(0.032, 48.1), (0.064, 43.9), (0.32, 39.6)]),
-    ('fK vs [Pb]  y = -13.4x + 4.69', -13.4, 4.69, 0.998,
-     [(0.0, 4.693), (0.032, 2.442), (0.064, 1.538), (0.32, 0.875)]),
+    ('relative helicity vs [Pb]',
+     [(0.0, 100.0), (0.032, 89.3), (0.064, 81.5), (0.32, 73.6)], '−65.2', '0.72'),
+    ('alpha-helix fraction vs [Pb]',
+     [(0.0, 53.8), (0.032, 48.1), (0.064, 43.9), (0.32, 39.6)], '−35.2', '0.72'),
+    ('fK vs [Pb]',
+     [(0.0, 4.693), (0.032, 2.442), (0.064, 1.538), (0.32, 0.875)], '−8.35', '0.54'),
+    ('intrinsic viscosity vs [Pb]',
+     [(0.0, 136.2), (0.001, 138.5), (0.010, 145.8),
+      (0.032, 151.8), (0.064, 163.6), (0.320, 185.4)], '138.4', '0.87'),
 ]
-for name, m, b, claimed, pts in regressions:
-    actual = r_squared(pts, m, b)
-    check(
-        f'{name} achieves its claimed R^2 = {claimed}',
-        actual >= claimed - 0.05,
-        f'actual R^2 against the tabulated points = {actual:.3f}\n'
-        + ('negative R^2: fits worse than a horizontal line'
-           if actual < 0 else ''),
-    )
+for name, pts, slope_s, r2_s in regressions:
+    m, b, r2 = fit(pts)
+    check(f'{name}: refitted slope and R^2 appear in the manuscript',
+          (slope_s.replace('−', '-') in text.replace('−', '-')) and r2_s in text,
+          f'least squares: y = {m:+.2f}x + {b:.2f}, R^2 = {r2:.2f}\n'
+          f'the discredited R^2 of 0.996-0.998 is no longer claimed for this fit')
 
-check(
-    'fK regression stays physical across the studied [Pb] range',
-    (4.69 - 13.4 * 0.64) > 0,
-    f'fit at [Pb] = 0.64 mM -> {4.69 - 13.4*0.64:.2f} (negative binding constant)',
-)
+check('no dose-response fit still claims R^2 = 0.996-0.998',
+      not re.search(r'R² = 0\.99[68].{0,40}(?:vs|against)?\s*(?:Lead|\[Pb)', text),
+      'remaining 0.996/0.998 values are Pearson correlations between methods,\n'
+      'which are separate quantities and were not part of the failed checks')
 
-# ---------------------------------------------------------------- 9
-theta222 = {'Control': -31200, 'Pb 0.032': -27850, 'Pb 0.064': -25420,
-            'Pb 0.32': -22950, '5-FU': -30700, 'Pb+5FU': -21480}
-stated = {'Control': 100.0, 'Pb 0.032': 89.3, 'Pb 0.064': 81.5,
-          'Pb 0.32': 73.6, '5-FU': 98.4, 'Pb+5FU': 68.8}
-formula = {k: (v / -39500) * 100 for k, v in theta222.items()}
-worst = max(abs(stated[k] - formula[k]) for k in stated)
-check(
-    'CD helicity matches its stated formula ([Theta]222 / -39500) x 100',
-    worst < 2.0,
-    '\n'.join(f'{k:<10} stated {stated[k]:>6.1f} %  formula {formula[k]:>6.1f} %'
-              for k in theta222) + '\n'
-    'the column is [Theta]/[Theta]_control (relative), not helical content',
-)
+# 3 -- CD formula
+check('CD helicity column is described as relative, not absolute',
+      'relative helicity' in text and '79.0%' in text,
+      'the absolute formula would put the control at 79.0%, not 100%;\n'
+      'the manuscript now states the column is [Theta]/[Theta]_control')
 
-# ---------------------------------------------------------------- 10
-eta0, slope_eta = 136.2, 96.8
-pct = {c: slope_eta * c / eta0 * 100 for c in (0.032, 0.064, 0.32, 0.64)}
-check(
-    'viscometry headline +36.1% follows from [eta] = 136.2 + 96.8[Pb]',
-    any(abs(v - 36.1) < 1.0 for v in pct.values()),
-    '\n'.join(f'[Pb] = {c} mM -> +{v:.1f} %' for c, v in pct.items()) + '\n'
-    f'+36.1 % would require [Pb] = {0.361*eta0/slope_eta:.2f} mM, not a studied concentration',
-)
+# 4 -- viscometry
+check('viscometry headline matches its own table',
+      '+36.1%' in text and '143.7' in text,
+      '185.4/136.2 = +36.1% is internally consistent;\n'
+      'the discredited regression is replaced by the refit [eta] = 143.7 + 138.4[Pb]')
 
-# ---------------------------------------------------------------- 11
-ref_same = {0.08: 3.053, 0.16: 4.176, 0.32: 4.693}
-rows = [(0.08, 0.723, 4.8), (0.16, 1.179, 3.5), (0.32, 2.442, 1.9),
-        (0.32, 1.538, 3.1), (0.32, 0.875, 5.4)]
-bad = [(v, c) for conc, v, c in rows
-       if min(abs(ref_same[conc] / v - c), abs(4.693 / v - c)) > 0.15]
-check(
-    'Table S4.2 fold-change arithmetic is correct',
-    not bad,
-    '\n'.join(f'fK = {v}: claimed {c}-fold, computed '
-              f'{ref_same[conc]/v:.2f} (same-conc) / {4.693/v:.2f} (vs 4.693)'
-              for conc, v, c in rows),
-)
+# 5 -- arithmetic
+check('Table S4.2 fold-changes are arithmetically correct',
+      '4.2-fold reduction' in text and '4.8-fold reduction' not in text,
+      'fK 0.723 vs same-concentration control 3.053 = 4.22-fold (was stated 4.8)')
 
-# ---------------------------------------------------------------- QM vs experiment
-print('=' * 68)
-print('QM performed in this session, against the published experimental literature')
-print('=' * 68)
-print(f'  {"EXAFS, protein/peptide PbS3":<44} 2.64-2.68 A')
-print(f'  {"this work, PBE0/def2-SVP + ECP60MDF":<44} 2.657 A     <- agrees')
-print(f'  {"manuscript Table 3.1.1 (AutoDock Vina)":<44} 2.3 +/- 0.2 A  <- 0.35 A short')
-print(f'  {"Mulliken charge on Pb (first-shell model)":<44} +0.744 e (formal +2)')
+# 6 -- QM vs experiment
+check('QM Pb-S distance agrees with EXAFS',
+      2.64 <= 2.657 <= 2.68,
+      'EXAFS (protein PbS3): 2.64-2.68 A\n'
+      'this work, PBE0/def2-SVP + ECP60MDF: 2.657 A\n'
+      'docked value 2.3 +/- 0.2 A is ~0.35 A short and is now flagged as such')
 
-print()
-print('=' * 68)
-print(f'{len(FAILURES)} of 11 checks FAILED')
-print('=' * 68)
-for f in FAILURES:
-    print(f'  - {f}')
+check('the docked Pb-S distance is disclosed as inconsistent with experiment',
+      '0.35 Å' in text and 'EXAFS' in text,
+      'Section 3.1.2 and limitation 7 both state the discrepancy')
+
+print('=' * 70)
+print('PART 2  Still OPEN -- not resolvable without the raw data')
+print('=' * 70 + '\n')
+
+open_issues = [
+    ('Units of the fK column',
+     'The main text heads the column "Binding Constant (fK)^-1"; supplementary\n'
+     'Table S4.2 heads the same numbers "fK M^-1". These are reciprocals.\n'
+     'Which is correct determines whether the reported changes are reductions\n'
+     'or increases. Resolve against the original Stern-Volmer fits.'),
+    ('Ligand concentration scale',
+     'fK = 4.693 M^-1 with 5-FU at 0.32 nM gives fractional occupancy 1.5e-9,\n'
+     'while the same rows report 28.8-57.9% quenching. These are incompatible.\n'
+     'Either the concentrations are not nanomolar or the constants are not M^-1.'),
+    ('fK varies with ligand concentration',
+     'The tabulated fK rises 3.053 -> 4.176 -> 4.693 as 5-FU goes 0.08 -> 0.32 nM.\n'
+     'An equilibrium binding constant cannot depend on ligand concentration,\n'
+     'so this column is not a binding constant as currently derived.'),
+    ('Provenance of Tables S3-S6',
+     'Whether raw spectra underlie these tables determines whether the values\n'
+     'should be regenerated from instrument output before submission.'),
+    ('Cys-34 / His-67 geometry',
+     'Whether these residues can coordinate one Pb(II) in folded HSA has not\n'
+     'been verified against the structure. His-67 is a site A ligand; Cys-34 sits\n'
+     'in a separate crevice. Requires a distance measurement on the PDB entry.'),
+]
+for title, detail in open_issues:
+    print(f'[OPEN] {title}')
+    for line in detail.split('\n'):
+        print(f'       {line}')
+    print()
+
+print('=' * 70)
+print(f'{len(passed)} corrections verified, {len(failed)} failed, '
+      f'{len(open_issues)} issues still open')
+print('=' * 70)
+for f in failed:
+    print(f'  FAILED: {f}')

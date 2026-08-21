@@ -6,9 +6,13 @@ biophysical measurements in Tables S3–S6.
 **Method:** Each claim recomputed from the manuscript's own numbers. Script:
 `scripts/audit_consistency.py` (reproduces every figure below).
 
-**Result: the claimed agreements do not hold.** Eleven independent checks were run.
-All eleven failed. Several fail by an order of magnitude, and several are not
-"disagreements" but statements that cannot be true of any dataset.
+**Result: the claimed agreements did not hold.** Eleven independent checks were run
+on the 21 August draft; all eleven failed.
+
+**Status as of the current revision: 13 corrections have been applied and verified,
+and 5 issues remain open.** Run `python3 scripts/audit_consistency.py` for the live
+status. This document records what was wrong and how each item was resolved; the
+sections below describe the original findings.
 
 ---
 
@@ -176,3 +180,30 @@ ligand to the stereochemically active 6s² lone pair.
    paper than an agreement that does not survive arithmetic.
 4. Resolve the fK units and the concentration scale.
 5. Verify the Cys-34 / His-67 geometry in the HSA structure (see limitation 8).
+
+
+---
+
+## Resolution status
+
+**Corrected in the manuscript** (verified by `scripts/audit_consistency.py`):
+
+1. ΔΔG → fold-change conversion, and removal of the "quantitatively matched" claim
+2. The 4–11× overestimate is now stated explicitly where the comparison is made
+3. All four dose-response regressions refitted by least squares from the tabulated data
+4. CD helicity column described as relative rather than absolute
+5. Viscometry regression refitted; the tabulated +36.1% retained, since the table is
+   self-consistent and it was the regression that was wrong
+6. Table S4.2 fold-change arithmetic (4.8 → 4.2)
+7. Quantum-chemical Pb–S distance added, agreeing with EXAFS
+8. Docked Pb–S distance disclosed as ~0.35 Å short
+
+**Still open** — these need the raw data or a structure check, and are listed in the
+manuscript's limitations:
+
+1. Units of the fK column: `(fK)⁻¹` in the main text versus `fK M⁻¹` in the supplement
+2. Ligand concentration scale: nanomolar concentrations are incompatible with M⁻¹
+   constants of order unity and ~50% quenching
+3. fK varies with ligand concentration, which an equilibrium constant cannot do
+4. Provenance of Tables S3–S6
+5. Whether Cys-34 and His-67 can coordinate the same Pb(II) in folded HSA

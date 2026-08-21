@@ -9,12 +9,15 @@ inline spans, bullet and numbered lists, blockquote callouts, fenced code blocks
 Usage:  python3 scripts/md_to_docx.py [input.md] [output.docx]
 """
 
+import os
 import re
 import sys
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Pt, RGBColor
+from docx.shared import Inches, Pt, RGBColor
+
+IMAGE = re.compile(r'^!\[(?P<alt>[^\]]*)\]\((?P<src>[^)]+)\)\s*$')
 
 INLINE = re.compile(r'(\*\*.+?\*\*|\*[^*]+?\*|`[^`]+?`)')
 
@@ -76,6 +79,17 @@ def convert(md_path, docx_path):
 
         if stripped in ('---', '***', '___'):
             doc.add_paragraph('_' * 70).alignment = WD_ALIGN_PARAGRAPH.CENTER
+            continue
+
+        img = IMAGE.match(stripped)
+        if img:
+            src = img.group('src')
+            if os.path.exists(src):
+                doc.add_picture(src, width=Inches(6.3))
+                doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+            else:
+                warn = doc.add_paragraph()
+                warn.add_run(f'[missing image: {src}]').italic = True
             continue
 
         heading = re.match(r'^(#{1,6})\s+(.*)', stripped)

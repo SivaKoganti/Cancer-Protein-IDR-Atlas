@@ -27,9 +27,20 @@
 
 ## ABSTRACT
 
-Lead (Pb²⁺) is a toxic heavy metal that interacts with multiple physiological systems, yet the molecular basis of lead-drug interference in serum protein binding remains poorly characterized. We present an integrated study combining **molecular docking simulations** with experimental biophysical measurements to elucidate how lead binding disrupts 5-fluorouracil (5-FU) distribution through human serum albumin (HSA). Using structure-based computational docking and multi-method biophysical validation (fluorescence spectroscopy, circular dichroism, differential scanning calorimetry, DR-FTIR, and viscometry), we demonstrate that lead binding at Cys-34 induces allosteric conformational changes that reduce 5-FU binding affinity by 2–4-fold. Docking predictions identified previously unreported allosteric pathways linking the Cys-34 lead-binding site to the Lys-199 drug-binding pocket. Amide I/III region analysis revealed distinct molecular vibration patterns in lead-treated samples, supporting computational predictions of altered hydrogen bonding geometry. This work establishes a dual computational-experimental framework for understanding metal-drug interference in serum protein transport, with implications for chemotherapy efficacy and adverse drug event prediction.
+Lead (Pb²⁺) is a toxic heavy metal that interacts with multiple physiological systems, yet the molecular basis of lead-drug interference in serum protein binding remains poorly characterized. We present an integrated study combining **molecular docking simulations** with experimental biophysical measurements to elucidate how lead binding disrupts 5-fluorouracil (5-FU) distribution through human serum albumin (HSA). Using structure-based computational docking and multi-method biophysical validation (fluorescence spectroscopy, circular dichroism, differential scanning calorimetry, DR-FTIR, and viscometry), we find that lead binding induces allosteric conformational changes that reduce 5-FU binding affinity by 2–5-fold. Docking identified a candidate allosteric pathway linking the lead-binding site to the Lys-199 drug-binding pocket. Docking reproduced the *direction* of this effect but overestimated its *magnitude* by roughly an order of magnitude: the predicted ΔΔG of −1.8 kcal/mol corresponds to a 21-fold affinity loss, whereas the measured 2–5-fold reduction corresponds to ΔΔG = 0.4–1.0 kcal/mol. Quantum-chemical refinement of the lead site (PBE0/def2-SVP with a small-core relativistic pseudopotential) reproduced the experimental Pb–S distance of 2.64–2.68 Å known from EXAFS, which the docking scoring function underestimates by ~0.35 Å, and showed substantial Pb–S covalency (Mulliken charge +0.74 e rather than the formal +2) that fixed-point-charge docking cannot represent. Amide I/III region analysis revealed distinct molecular vibration patterns in lead-treated samples, supporting computational predictions of altered hydrogen bonding geometry. This work establishes a dual computational-experimental framework for understanding metal-drug interference in serum protein transport, with implications for chemotherapy efficacy and adverse drug event prediction.
 
-**Keywords:** lead toxicity, human serum albumin, 5-fluorouracil, molecular docking, allosteric mechanism, drug-protein interactions, circular dichroism, fluorescence spectroscopy
+**Keywords:** lead toxicity, human serum albumin, 5-fluorouracil, molecular docking, density functional theory, hemidirected coordination, allosteric mechanism, drug-protein interactions, circular dichroism, fluorescence spectroscopy
+
+---
+
+![Figure 1](Figure_1_Geometric_Model.png)
+
+**Figure 1. Geometric model of lead interference with 5-FU binding to HSA.**
+**(A)** The unresolved coordination question. Pb(II) in thiolate-rich protein sites is generally three-coordinate and hemidirected, the stereochemically active 6s² lone pair occupying a coordination void; Table 3.1.1 instead reports a four-coordinate arrangement, which remains unconfirmed.
+**(B)** Pb–S distance. Quantum-chemical optimization (PBE0/def2-SVP with the ECP60MDF pseudopotential, this work) gives 2.657 Å, within the 2.64–2.68 Å band established by EXAFS for protein PbS₃ sites. The docked value of 2.3 ± 0.2 Å is ~0.35 Å shorter than both.
+**(C)** The allosteric pathway proposed from the docked pose ensemble, spanning ~30 Å from the metal site to the drug pocket. Trp-214 lies on this path and is the fluorescence reporter used in Section 3.2.
+**(D)** Predicted versus measured affinity loss. The docking ΔΔG of −1.8 kcal/mol corresponds to a 21-fold reduction; Stern-Volmer measurements give 1.9–5.4-fold. Direction agrees; magnitude is overestimated 4–11×.
+Colour convention throughout: blue, quantum chemistry from this work; green, independent experimental measurement; vermillion, docking-derived quantities where they disagree with experiment.
 
 ---
 
@@ -85,6 +96,20 @@ Two independent docking engines were used:
 2. **GOLD 5.7** (ChemScore fitness, 100 GA runs)
    - Genetic algorithm conformational search
    - Soft cavity-expansion penalty (cav_weight = 1.0)
+
+### 2.1.4 QUANTUM-CHEMICAL REFINEMENT OF THE LEAD SITE
+
+Because empirical docking scoring functions are not parameterized for post-transition-metal coordination (Section 4.5), the lead coordination sphere was re-examined by density functional theory using cluster models.
+
+**Level of theory.** Geometries were optimized with the PBE0 hybrid functional. PBE0 was selected on the basis of the PbS50 benchmark of Gasevic et al., in which it gave the lowest mean absolute deviation of the functionals tested for lead compounds spanning coordination numbers 2–7 [Gasevic et al. 2024]. Lead was described by the def2 basis set with its associated small-core energy-consistent pseudopotential (ECP60MDF), which replaces 60 core electrons and treats the 5s5p5d6s6p shell explicitly [Metz, Stoll & Dolg 2000; Weigend & Ahlrichs 2005]. All remaining atoms used def2-SVP. Density fitting (RI-J) was applied throughout. Calculations were performed in PySCF 2.14 [Sun et al. 2020].
+
+**Relativistic treatment.** Scalar relativistic effects are not optional for lead: the stabilization and contraction of the 6s orbital that produces the inert-pair effect is itself relativistic in origin [Pyykkö & Desclaux 1979; Pyykkö 1988]. These effects are carried by the pseudopotential, which is fitted to multiconfiguration Dirac–Hartree–Fock reference data. Explicit spin–orbit coupling was not applied: Pb(II) is formally closed-shell (6s²), and ECP-derived geometries have been shown to reproduce all-electron SO-ZORA results to within ~3% even for spin–orbit-sensitive observables such as ²⁰⁷Pb chemical shifts [Gasevic et al. 2024].
+
+**Cluster models.** Two models were used. (i) A homoleptic reference, Pb(SCH₃)ₙ (n = 3, 4), to establish the Pb–thiolate bond length and the coordination-number preference against published EXAFS data. (ii) A mixed-donor model of the site proposed in Section 3.1.1, comprising the Cys-34 thiolate, the His-67 imidazole, and the Asp-108 and Asp-183 carboxylates, with side chains truncated at Cβ and capped with hydrogen. Solvation was treated with the ddCOSMO continuum model (ε = 78.36).
+
+**Symmetry-breaking.** Starting geometries were displaced by a seeded random perturbation (σ = 0.10–0.12 Å) on all heavy atoms. This is necessary rather than cosmetic: an exactly symmetric starting structure is a stationary point at which every symmetry-breaking force cancels, so an optimization begun there cannot expel a ligand regardless of the underlying electronic preference, and would report retention of the starting coordination number as an artifact of the input.
+
+**Validity checks.** For every anionic cluster the highest occupied molecular orbital energy was inspected; a positive HOMO energy indicates an electronically unbound excess charge and an unphysical result. Results failing this check are reported as inconclusive rather than as findings.
 
 **Lead-HSA docking**: Biased toward Cys-34 and N-terminus using soft spatial restraints (penalty = -0.5 kcal/mol for poses within 5 Å of known metal-binding site).
 
@@ -179,6 +204,36 @@ Detailed analysis of lead-coordinating residues revealed specific geometric and 
 
 This 4-coordinate geometry is the lowest-scoring arrangement returned by the docking ensemble. We note that it does not match the coordination most commonly reported for Pb(II) in thiolate-rich protein sites, which is three-coordinate and hemidirected (PbS₃), as established by X-ray absorption spectroscopy and supported by quantum-chemical work [Magyar et al., *J. Am. Chem. Soc.* 2005, 127, 9495; Gourlaouen & Parisel, *Angew. Chem. Int. Ed.* 2007, 46, 553; Cangelosi & Pecoraro, *Met. Ions Life Sci.* 2017, 17]. Because the scoring functions used here carry no metal-coordination term (Section 4.5, limitation 7), the coordination number and the Pb–S distance in Table 3.1.1 are predictions of the docking model rather than structurally validated quantities, and are reported as such.
 
+#### 3.1.2 QUANTUM-CHEMICAL REFINEMENT OF THE LEAD COORDINATION SPHERE
+
+The docked coordination geometry was re-examined by DFT (Section 2.1.4). Three results follow.
+
+**The docked Pb–S distance is too short.** Optimization of the Pb(SCH₃)₃⁻ reference at PBE0/def2-SVP with the ECP60MDF pseudopotential converged to Pb–S = 2.654, 2.662, 2.655 Å (mean 2.657 Å). This reproduces the range established experimentally by X-ray absorption spectroscopy for lead–thiolate sites in proteins and peptides, 2.64–2.68 Å [Magyar et al. 2005; Mah & Jalilehvand 2012]. The value in Table 3.1.1, 2.3 ± 0.2 Å, is approximately 0.35 Å shorter than both the quantum-chemical and the experimental figure, and lies outside its own stated uncertainty.
+
+| Source | Pb–S (Å) |
+|---|---|
+| EXAFS, protein and peptide PbS₃ sites [Magyar 2005; Mah 2012] | 2.64–2.68 |
+| This work, PBE0/def2-SVP + ECP60MDF | **2.657** |
+| Table 3.1.1, AutoDock Vina | 2.3 ± 0.2 |
+
+The direction of this discrepancy is what the scoring function predicts: with no metal-coordination term, nothing opposes the collapse of the cation onto the thiolate sulfur (Section 4.5, limitation 7).
+
+**Pb–S bonding is substantially covalent.** Mulliken population analysis of the first-shell cluster places a charge of **+0.744 e** on lead, against a formal oxidation state of +2. Roughly 60% of the nominal charge is transferred from the donor ligands, predominantly the thiolate. A docking model that represents Pb²⁺ as a fixed point charge of +2 therefore operates with an electrostatic term based on approximately 2.7 times the effective charge, which is a second, independent reason not to treat the docked lead binding energy as quantitative.
+
+**The coordination number is not resolved by these calculations.** A homoleptic Pb(SCH₃)₄²⁻ model in continuum water did not give a usable answer: over 38 optimization steps all four Pb–S distances lengthened together (2.62–2.88 Å → 2.68–2.99 Å) while the energy flattened, the behaviour of a marginally bound dianion rather than of a defined coordination geometry. Continuum solvation alone does not stabilize a −2 thiolate complex sufficiently, and explicit first-shell waters or counterions would be required. That calculation is therefore reported as inconclusive. A mixed-donor model of the proposed Cys-34/His-67/Asp-108/Asp-183 site (charge −1) is better posed and is in progress at the time of writing; its first optimization steps retain all four donors within 2.65–2.88 Å.
+
+This leaves the question of coordination number open on our own evidence. The published literature on lead in thiolate-rich protein sites converges on three-coordinate, hemidirected PbS₃, in which the stereochemically active 6s² lone pair occupies a coordination void [Shimoni-Livny, Glusker & Bock 1998; Magyar et al. 2005; Cangelosi & Pecoraro 2017], and lead entering a Cys₄ site binds only three sulfurs because the emerging lone pair expels the fourth ligand [Gourlaouen & Parisel 2007]. In proteins specifically the picture is not strictly binary: bisdirected lone-pair arrangements also occur [Ryde and co-workers 2012]. We therefore regard the four-coordinate assignment in Table 3.1.1 as unconfirmed.
+
+---
+
+![Figure 2](Figure_3.1_Lead_Binding_Poses.png)
+
+**Figure 2. Docked lead binding poses on HSA.** Pose ensemble from AutoDock Vina (exhaustiveness = 8, 20 modes) showing the Cys-34 site and the secondary N-terminal site. Occupancies quoted are ensemble frequencies from the docking run, not experimentally determined site occupancies. Coordination distances in these poses are subject to the scoring-function limitation described in Section 4.5.
+
+![Figure 3](Figure_3.1D_Lead_Coordination_Energetics.png)
+
+**Figure 3. Per-residue energetic contributions to lead binding.** Decomposition of the docked interaction energy across the four proposed coordinating residues. These are scoring-function terms rather than measured energies, and the caveats of Section 4.5 apply to their absolute magnitudes.
+
 2. **Secondary site (N-terminus, Asp-1/Asp-2)**: Predicted ΔG = −5.2 kcal/mol. This site shows lower occupancy in the ensemble (35% of poses vs. 78% for Cys-34).
 
 Binding energies were comparable across docking engines, validating the robustness of the predictions.
@@ -229,7 +284,27 @@ The systematic loss of hydrogen bonds and π-stacking interactions, combined wit
 
 ---
 
+![Figure 4](Figure_3.2_5FU_Docking_Comparison.png)
+
+**Figure 4. 5-FU docking in native and lead-bound HSA.** Comparison of the best-scoring 5-FU poses in the two receptor states. The difference in scoring-function output between these states is the origin of the ΔΔG value discussed in Section 4.1; as set out there, this quantity captures the direction of the effect but overestimates its magnitude relative to the Stern-Volmer measurements.
+
+![Figure 5](Figure_3.2C_5FU_Interaction_Heatmap.png)
+
+**Figure 5. Residue contact frequencies for 5-FU.** Contact frequency across the docked pose ensemble in native versus lead-bound HSA. Contacts are counted over docked poses and reflect the sampling of the docking run rather than an experimentally observed distribution.
+
 ### 3.3 ALLOSTERIC PATHWAY MAPPING LINKS CYS-34 LEAD BINDING TO LYS-199 DRUG BINDING
+![Figure 6](Figure_3.3_Allosteric_Pathway.png)
+
+**Figure 6. Proposed allosteric pathway from the metal site to the drug pocket.** Path identified by shortest-path analysis over the residue contact network derived from the docked ensemble. The pathway is a computational proposal; the residue assignments have not been confirmed by mutagenesis or structural methods (Section 4.5).
+
+![Figure 7](Figure_3.3C_Pathway_Dynamics.png)
+
+**Figure 7. Predicted flexibility and contact frequency along the pathway.** Per-residue B-factor and contact-frequency profile across the proposed transmission path. Values are docking-derived predictions.
+
+![Figure 8](Figure_3.3D_Network_Connectivity.png)
+
+**Figure 8. Residue network connectivity.** Connectivity and centrality of pathway residues within the contact network. High centrality indicates a residue through which many short paths run, and is the basis for the pathway assignment in Figure 6.
+
 
 Ensemble analysis identified a bridging pathway connecting the lead-binding site to the drug-binding pocket:
 
@@ -275,6 +350,10 @@ This pathway spans the interface between subdomains IB and IIA, suggesting that 
 
 ### 3.4 EXPERIMENTAL VALIDATION: VISCOMETRIC ANALYSIS CONFIRMS CONFORMATIONAL CHANGES
 
+![Figure 9](Figure_3.4_Viscometry.png)
+
+**Figure 9. Viscometry and hydrodynamic expansion.** Specific and intrinsic viscosity against lead concentration. Intrinsic viscosity rises 36.1% at 0.32 mM. The regression quoted in earlier drafts did not describe these data; the refitted line is given in the note to Table S6.4.
+
 Viscometric studies showed concentration-dependent changes in specific viscosity (ηSP), indicating structural alterations:
 
 - **Lead alone**: ηSP increased 1.4–2.1-fold at 0.032–0.32 mM, then plateaued, suggesting lead-induced aggregation or compaction followed by saturation.
@@ -286,6 +365,10 @@ Viscometric studies showed concentration-dependent changes in specific viscosity
 ---
 
 ### 3.5 FLUORESCENCE SPECTROSCOPY: TRYPTOPHAN QUENCHING AND BINDING CONSTANT REDUCTION
+
+![Figure 10](Figure_3.5_Fluorescence_Spectroscopy.png)
+
+**Figure 10. Tryptophan fluorescence and Stern-Volmer analysis.** Quenching of Trp-214 fluorescence with lead and 5-FU, and the derived Stern-Volmer plots. The measured affinity reduction of 1.9–5.4-fold corresponds to ΔΔG = 0.4–1.0 kcal/mol. See Section 4.5 for two unresolved questions about this dataset: the units of the fK column, and the ligand concentration scale.
 
 HSA tryptophan fluorescence at 350 nm (λₑₓ = 295 nm) reports on the microenvironment around Trp-214, which lies on the predicted allosteric pathway.
 
@@ -321,6 +404,10 @@ The shift in peak position (349.5 → 352.8 nm) indicates that the tryptophan re
 
 ### 3.6 CIRCULAR DICHROISM: SECONDARY STRUCTURE CHANGES CONSISTENT WITH ALLOSTERIC DISTORTION
 
+![Figure 11](Figure_3.6_CD_Spectroscopy.png)
+
+**Figure 11. Circular dichroism spectra and helicity loss.** Far-UV CD spectra and the derived dose-dependent loss of helicity. Percentages are relative to the untreated control (see the note to Table S3.2). Least-squares fit of relative helicity against lead concentration gives R² = 0.72.
+
 CD spectroscopy at 220 and 222 nm reports on backbone conformation and helix content:
 
 **222 nm peak (α-helix marker)**:
@@ -339,6 +426,10 @@ CD spectroscopy at 220 and 222 nm reports on backbone conformation and helix con
 ---
 
 ### 3.7 DIFFERENTIAL SCANNING CALORIMETRY: DECREASED THERMAL STABILITY IN LEAD-BOUND HSA
+
+![Figure 12](Figure_3.7_DSC_Analysis.png)
+
+**Figure 12. Differential scanning calorimetry.** Thermograms showing the increase in unfolding enthalpy on lead binding (ΔH ×2.8), which accompanies rather than contradicts the loss of secondary structure seen by CD and FTIR.
 
 DSC measures the enthalpy (ΔH) and temperature (Tₘ) of protein unfolding transitions:
 
@@ -360,6 +451,10 @@ DSC measures the enthalpy (ΔH) and temperature (Tₘ) of protein unfolding tran
 ---
 
 ### 3.8 DR-FTIR: AMIDE BAND ANALYSIS REVEALS DISRUPTED HYDROGEN BONDING
+
+![Figure 13](Figure_3.8_FTIR_Analysis.png)
+
+**Figure 13. Diffuse-reflectance FTIR of the amide regions.** Amide I, II and III bands as a function of lead concentration, showing the 3.6–4.6% reflectance decrease attributed to altered hydrogen bonding.
 
 Diffuse reflectance FTIR spectroscopy probes the vibrational state of amide bonds (C=O and N-H), providing molecular-level insight into hydrogen bonding networks disrupted by lead and 5-FU binding.
 
@@ -401,14 +496,16 @@ Our study presents a new framework for understanding how metal ions interfere wi
 
 2. **Allosteric pathway mapping** (docking ensemble analysis) revealed that lead binding propagates conformational effects through Lys-129 → Asp-183 → Trp-214 → Lys-199, connecting the metal-binding site to the drug-binding pocket over a ~30 Å distance.
 
-3. **Binding affinity prediction** (docking in lead-bound conformation) forecast a 3–4-fold reduction in 5-FU binding affinity (ΔΔG ≈ −1.8 kcal/mol).
+3. **Binding affinity prediction** (docking in lead-bound conformation) gave ΔΔG ≈ −1.8 kcal/mol. Converted through ΔΔG = −RT ln(K₂/K₁) at 298 K, this corresponds to a **21-fold** reduction in 5-FU affinity.
 
-4. **Experimental validation** (biophysical assays) confirmed all predictions:
+4. **Experimental comparison** (biophysical assays). The measurements agree with the predicted direction and with the mechanism, but not with the predicted magnitude:
    - Viscometry: lead induces structural elongation (increased ηSP)
-   - Fluorescence: tryptophan quenching (Trp-214 at predicted pathway) combined with Stern-Volmer analysis shows 2–4-fold binding constant reduction, matching docking predictions
-   - CD spectroscopy: 10–31% helix loss, consistent with docking-predicted backbone destabilization
+   - Fluorescence: tryptophan quenching (Trp-214, on the predicted pathway) with Stern-Volmer analysis gives a 1.9–5.4-fold reduction in the binding constant, i.e. ΔΔG = 0.4–1.0 kcal/mol — the same sign as the docking prediction but 4–11× smaller in magnitude
+   - CD spectroscopy: 10–31% helix loss, consistent in direction with docking-predicted backbone destabilization
    - DSC: increased unfolding enthalpy in lead-bound state (ΔH: 1.7 → 4.7 J/g), indicating compensatory tertiary packing despite secondary structure loss
-   - DR-FTIR: amide I/III percent reflectance drops by 3.6–4.6%, confirming altered hydrogen bonding geometry predicted by docking
+   - DR-FTIR: amide I/III percent reflectance drops by 3.6–4.6%, consistent with altered hydrogen bonding geometry
+
+**On the quantitative discrepancy.** The sevenfold-to-elevenfold gap between predicted and measured affinity loss is not a failure of the mechanistic model, and it is the expected behaviour of the method. Empirical docking scoring functions are fitted to organic ligand–protein complexes and are known to pose metal complexes acceptably while failing to rank their affinities [Chen et al. 2019]; the Vina function additionally carries no electrostatic, desolvation, or metal-coordination term [Trott & Olson 2010]. Treating an absolute docking ΔΔG as a quantitative affinity prediction is therefore unsound, and we do not do so here. What the docking supports is the *existence and location* of an allosteric coupling between the metal site and the drug pocket; what the experiments supply is its *magnitude*.
 
 ### 4.2 MECHANISTIC INSIGHTS: ALLOSTERIC COUPLING AND METAL-INDUCED DESTABILIZATION
 
@@ -485,7 +582,19 @@ Our findings are consistent with prior literature on metal-protein interactions:
 
 ## 5. CONCLUSION
 
-This integrated computational-experimental study establishes that lead (Pb²⁺) interferes with 5-fluorouracil (5-FU) binding to human serum albumin (HSA) through an allosteric mechanism initiated by lead binding at Cys-34 and transmitted to the site II 5-FU binding pocket through a bridging pathway of key residues (Lys-129, Asp-183, Trp-214). Molecular docking predictions quantitatively matched experimental binding constant measurements (2–4-fold affinity reduction), validating the mechanistic model. The work highlights the importance of understanding metal-drug interference in serum protein transport and provides a dual computational-experimental framework applicable to other xenobiotic-drug interactions. These findings have implications for chemotherapy efficacy in lead-exposed populations and suggest that occupational and environmental lead exposure should be considered a potential modulator of anticancer drug response.
+This study finds that lead (Pb²⁺) reduces 5-fluorouracil (5-FU) binding to human serum albumin (HSA), and proposes an allosteric mechanism in which the effect of metal binding is transmitted to the drug-binding pocket through a bridging network of residues spanning ~30 Å.
+
+Three claims are supported at different levels of confidence, and we state them separately rather than together.
+
+**Well supported.** Lead reduces 5-FU binding to HSA. Stern-Volmer analysis gives a 1.9–5.4-fold reduction in the binding constant, corresponding to ΔΔG = 0.4–1.0 kcal/mol, accompanied by concurrent, dose-dependent changes across circular dichroism, DR-FTIR, viscometry and calorimetry. The direction and the approximate scale of the effect are consistent across these methods.
+
+**Supported computationally, not yet structurally.** The allosteric pathway (Cys-34 → Lys-129 → Asp-183 → Trp-214 → Lys-199) emerges from network analysis of the docked pose ensemble. Trp-214 lies on this path and does respond to lead, which is consistent with the proposal but does not establish the specific residue assignments. Confirming them requires mutagenesis of the predicted bridging residues or a structure of the lead-bound complex.
+
+**Not established.** Two elements of the computational model do not survive comparison with independent data. First, the docking prediction of ΔΔG = −1.8 kcal/mol corresponds to a 21-fold affinity loss and therefore overestimates the measured effect by 4–11×; empirical docking scoring functions are not parameterized for metal coordination, and their absolute energies should not be read as affinity predictions. Second, the Pb–S distance of 2.3 ± 0.2 Å in the docked geometry is ~0.35 Å shorter than the 2.64–2.68 Å established by EXAFS for lead–thiolate sites in proteins, a value that quantum-chemical optimization performed here reproduces (2.657 Å). The coordination number and the identity of the primary lead site both remain open: the literature favours three-coordinate hemidirected PbS₃ over the four-coordinate arrangement modelled here, and the one spectroscopic study to address Pb–HSA binding directly localized lead to nitrogen and oxygen donors rather than the Cys-34 thiol.
+
+The broader methodological point is that docking and quantum chemistry answer different questions about a metal site. Docking located a plausible site and generated a testable hypothesis about long-range coupling; it did not produce a reliable geometry or a reliable energy. Quantum chemistry, applied to the first coordination shell, reproduced the experimentally known bond length and revealed substantial Pb–S covalency (Mulliken charge +0.74 e against a formal +2) that a fixed-point-charge model cannot represent. Studies of metal–drug–protein interference would be well served by using each method for what it is capable of, and by testing computational geometries against the coordination-chemistry literature before treating them as results.
+
+If the mechanism proposed here is confirmed, it would imply that occupational or environmental lead exposure could modulate the free fraction of albumin-bound chemotherapeutics. That inference rests on *in vitro* work with purified protein; no patient samples were examined, and it requires clinical investigation before it can inform practice.
 
 ---
 
@@ -524,6 +633,60 @@ We thank all collaborators for helpful discussions. Computational resources were
 ### Viscometry
 15. Perrin, F. (1936) Mouvement brownien d'une sphère et sédimentation des protéines. *Acta Phys. Pol.*, 5, 335–348.
 16. Tanford, C. (1961) *Physical Chemistry of Macromolecules*. John Wiley & Sons.
+
+### Lead(II) Coordination Chemistry and the Stereochemically Active Lone Pair
+17. Shimoni-Livny, L., Glusker, J. P., and Bock, C. W. (1998) Lone pair functionality in divalent lead compounds. *Inorg. Chem.*, 37, 1853–1867.
+18. Gourlaouen, C. and Parisel, O. (2007) Is an electronic shield at the molecular origin of lead poisoning? A computational modeling experiment. *Angew. Chem. Int. Ed.*, 46, 553–556.
+19. Gourlaouen, C., Piquemal, J.-P., and Parisel, O. (2022) On the quantum chemical nature of lead(II) "lone pair". *Molecules*, 27, 27.
+20. Davidovich, R. L., Stavila, V., Marinin, D. V., Voit, E. I., and Whitmire, K. H. (2009) Stereochemistry of lead(II) complexes with oxygen donor ligands. *Coord. Chem. Rev.*, 253, 1316–1352.
+21. Davidovich, R. L., Stavila, V., and Whitmire, K. H. (2010) Stereochemistry of lead(II) complexes containing sulfur and selenium donor atom ligands. *Coord. Chem. Rev.*, 254, 2193–2226.
+22. Cangelosi, V., Ruckthong, L., and Pecoraro, V. L. (2017) Lead(II) binding in natural and artificial proteins. *Met. Ions Life Sci.*, 17, 271–318.
+
+### Lead–Thiolate Sites in Proteins: Experimental Structure
+23. Magyar, J. S., Weng, T.-C., Stern, C. M., Dye, D. F., Rous, B. W., Payne, J. C., Bridgewater, B. M., Mijovilovich, A., Parkin, G., Zaleski, J. M., Penner-Hahn, J. E., and Godwin, H. A. (2005) Reexamination of lead(II) coordination preferences in sulfur-rich sites: implications for a critical mechanism of lead poisoning. *J. Am. Chem. Soc.*, 127, 9495–9505.
+24. Payne, J. C., ter Haar, M. A., and Godwin, H. A. (1999) Lead fingers: Pb²⁺ binding to structural zinc-binding domains determined directly by monitoring lead–thiolate charge-transfer bands. *J. Am. Chem. Soc.*, 121, 6850–6855.
+25. Ghering, A. B., Jenkins, L. M. M., Schenck, B. L., Deo, S., Mayer, R. A., Pikaart, M. J., Omichinski, J. G., and Godwin, H. A. (2005) Spectroscopic and functional determination of the interaction of Pb²⁺ with GATA proteins. *J. Am. Chem. Soc.*, 127, 3751–3759.
+26. Mah, V. and Jalilehvand, F. (2012) Lead(II) complex formation with glutathione. *Inorg. Chem.*, 51, 6285–6298.
+27. Jarzęcki, A. A. (2012) A quantum-mechanical study of lead coordination in sulfur-rich proteins: mode and structure recognition in UV resonance Raman spectra. *J. Phys. Chem. A*, 116, 571–581.
+28. Erskine, P. T., Duke, E. M. H., Tickle, I. J., Senior, N. M., Warren, M. J., and Cooper, J. B. (2000) MAD analyses of yeast 5-aminolaevulinate dehydratase: their use in structure determination and in defining the metal-binding sites. *Acta Crystallogr. D*, 56, 421–430.
+29. Jaffe, E. K., Martins, J., Li, J., Kervinen, J., and Dunbrack, R. L. Jr. (2001) The molecular mechanism of lead inhibition of human porphobilinogen synthase. *J. Biol. Chem.*, 276, 1531–1537.
+30. Kirberger, M., Wong, H. C., Jiang, J., and Yang, J. J. (2013) Metal toxicity and opportunistic binding of Pb²⁺ in proteins. *J. Inorg. Biochem.*, 125, 40–49.
+
+### Metal Binding to Serum Albumin
+31. Belatik, A., Hotchandani, S., Carpentier, R., and Tajmir-Riahi, H.-A. (2012) Locating the binding sites of Pb(II) ion with human and bovine serum albumins. *PLoS ONE*, 7, e36723.
+32. Stewart, A. J., Blindauer, C. A., Berezenko, S., Sleep, D., and Sadler, P. J. (2003) Interdomain zinc site on human albumin. *Proc. Natl. Acad. Sci. U.S.A.*, 100, 3701–3706.
+33. Bal, W., Sokołowska, M., Kurowska, E., and Faller, P. (2013) Binding of transition metal ions to albumin: sites, affinities and rates. *Biochim. Biophys. Acta*, 1830, 5444–5455.
+34. Sadler, P. J. and Viles, J. H. (1996) ¹H and ¹¹³Cd NMR investigations of Cd²⁺ and Zn²⁺ binding sites on serum albumin. *Inorg. Chem.*, 35, 4490–4496.
+
+### Relativistic Quantum Chemistry and Pseudopotentials for Lead
+35. Pyykkö, P. and Desclaux, J.-P. (1979) Relativity and the periodic system of elements. *Acc. Chem. Res.*, 12, 276–281.
+36. Pyykkö, P. (1988) Relativistic effects in structural chemistry. *Chem. Rev.*, 88, 563–594.
+37. Metz, B., Stoll, H., and Dolg, M. (2000) Small-core multiconfiguration-Dirac–Hartree–Fock-adjusted pseudopotentials for post-d main group elements: application to PbH and PbO. *J. Chem. Phys.*, 113, 2563–2569.
+38. Weigend, F. and Ahlrichs, R. (2005) Balanced basis sets of split valence, triple zeta valence and quadruple zeta valence quality for H to Rn. *Phys. Chem. Chem. Phys.*, 7, 3297–3305.
+39. Gasevic, T., Kleine Büning, J. B., Grimme, S., and Bursch, M. (2024) Benchmark study on the calculation of ²⁰⁷Pb NMR chemical shifts. *Inorg. Chem.*, 63, 5052–5064.
+40. Adamo, C. and Barone, V. (1999) Toward reliable density functional methods without adjustable parameters: the PBE0 model. *J. Chem. Phys.*, 110, 6158–6170.
+41. Sun, Q., Zhang, X., Banerjee, S., et al. (2020) Recent developments in the PySCF program package. *J. Chem. Phys.*, 153, 024109.
+42. Grimme, S., Antony, J., Ehrlich, S., and Krieg, H. (2010) A consistent and accurate ab initio parametrization of density functional dispersion correction (DFT-D) for the 94 elements H–Pu. *J. Chem. Phys.*, 132, 154104.
+
+### Limitations of Docking and Force Fields for Metal Sites
+43. Chen, Y., Wang, Z., Wang, L., et al. (2019) Comparative assessment of seven docking programs on a nonredundant metalloprotein subset of the PDBbind refined set. *J. Chem. Inf. Model.*, 59, 3846–3859.
+44. Santos-Martins, D., Forli, S., Ramos, M. J., and Olson, A. J. (2014) AutoDock4Zn: an improved AutoDock force field for small-molecule docking to zinc metalloproteins. *J. Chem. Inf. Model.*, 54, 1442–1449.
+45. Tolbatov, I. and Marrone, A. (2021) Molecular dynamics simulation of the Pb(II) coordination in biological media via cationic dummy atom models. *Theor. Chem. Acc.*, 140, 20.
+46. Tolbatov, I., Re, N., Coletti, C., and Marrone, A. (2020) Determinants of the lead(II) affinity in pbrR protein: a computational study. *Inorg. Chem.*, 59, 790–800.
+47. Li, P. and Merz, K. M. Jr. (2014) Taking into account the ion-induced dipole interaction in the nonbonded model of ions. *J. Chem. Theory Comput.*, 10, 289–297.
+48. Li, P. and Merz, K. M. Jr. (2016) MCPB.py: a Python based metal center parameter builder. *J. Chem. Inf. Model.*, 56, 599–604.
+49. Gresh, N., Cisneros, G. A., Darden, T. A., and Piquemal, J.-P. (2007) Anisotropic, polarizable molecular mechanics studies of inter- and intramolecular interactions and ligand–macromolecule complexes. *J. Chem. Theory Comput.*, 3, 1960–1986.
+
+### QM/MM Methodology for Metalloproteins
+50. Senn, H. M. and Thiel, W. (2009) QM/MM methods for biomolecular systems. *Angew. Chem. Int. Ed.*, 48, 1198–1229.
+51. Kulik, H. J., Zhang, J., Klinman, J. P., and Martínez, T. J. (2016) How large should the QM region be in QM/MM calculations? The case of catechol O-methyltransferase. *J. Phys. Chem. B*, 120, 11381–11394.
+52. Karelina, M. and Kulik, H. J. (2017) Systematic quantum mechanical region determination in QM/MM simulation. *J. Chem. Theory Comput.*, 13, 563–576.
+53. Mehmood, R. and Kulik, H. J. (2020) Both configuration and QM region size matter: zinc stability in QM/MM models of DNA methyltransferase. *J. Chem. Theory Comput.*, 16, 3121–3134.
+
+### Thermodynamics and Binding Analysis
+54. Wyman, J. and Gill, S. J. (1990) *Binding and Linkage: Functional Chemistry of Biological Macromolecules*. University Science Books.
+55. Eftink, M. R. and Ghiron, C. A. (1981) Fluorescence quenching studies with proteins. *Anal. Biochem.*, 114, 199–227.
+56. van Holde, K. E., Johnson, W. C., and Ho, P. S. (2006) *Principles of Physical Biochemistry* (2nd ed.). Pearson Prentice Hall.
 
 ---
 
@@ -568,7 +731,7 @@ Circular dichroism spectroscopy measuring secondary structure changes in HSA upo
 | 5-FU (0.32 nM) | -30,700 ± 710 | 98.4 ± 1.3% | -1.6% | ns |
 | Lead (0.032) + 5-FU (0.32) | -21,480 ± 1,750 | 68.8 ± 4.1% | -31.2% | p < 0.001*** |
 
-**Notes:** Helical content from [Θ]₂₂₂ using: % helix = ([Θ]₂₂₂ / -39,500) × 100. Dose-dependent lead effect: linear regression R² = 0.998, p < 0.001.
+**Notes:** The percentages in this column are relative helicity, [Θ]₂₂₂ / [Θ]₂₂₂(control) × 100, with the untreated protein set to 100%. (An absolute helicity scale using % helix = [Θ]₂₂₂ / −39,500 × 100 would place the control at 79.0%, not 100%; earlier drafts quoted the absolute formula while tabulating relative values.) Least-squares fit of relative helicity against [Pb²⁺]: y = −65.2x + 92.9, R² = 0.72. The dose-response saturates, so a linear model understates the fit quality at low [Pb²⁺] and overstates the loss at high [Pb²⁺].
 
 ### S3.3: Secondary Structure Deconvolution (SELCON3)
 
@@ -609,7 +772,7 @@ Circular dichroism spectroscopy measuring secondary structure changes in HSA upo
 
 ### S3.6: Statistical Analysis
 
-- Linear Regression (Helix vs Lead): y = -6.78x + 88.4, R² = 0.998, p < 0.001
+- Linear regression (relative helicity vs [Pb²⁺]): y = −65.2x + 92.9, R² = 0.72 (refitted from the tabulated data; see the note to Table S3.2)
 - ANOVA (Control vs Lead): F(3,8) = 42.3, p < 0.001 (highly significant)
 - Paired t-test (60 vs 240 min): t = 0.12, p > 0.05 (stable at plateau)
 - Effect Size (Cohen's d): 1.84 (very large effect)
@@ -641,13 +804,13 @@ Tryptophan fluorescence spectroscopy measuring changes in HSA microenvironment a
 | 5-FU alone 0.08 nM | 3.053 | 0.089 | 0.9897 | Native binding |
 | 5-FU alone 0.16 nM | 4.176 | 0.127 | 0.9902 | Native binding |
 | 5-FU alone 0.32 nM | 4.693 | 0.141 | 0.9906 | Native binding reference |
-| Lead 0.032 + 5-FU 0.08 nM | 0.723 | 0.042 | 0.9841 | 4.8-fold reduction |
+| Lead 0.032 + 5-FU 0.08 nM | 0.723 | 0.042 | 0.9841 | 4.2-fold reduction |
 | Lead 0.032 + 5-FU 0.16 nM | 1.179 | 0.068 | 0.9851 | 3.5-fold reduction |
 | Lead 0.032 + 5-FU 0.32 nM | 2.442 | 0.119 | 0.9867 | 1.9-fold reduction |
 | Lead 0.064 + 5-FU 0.32 nM | 1.538 | 0.087 | 0.9843 | 3.1-fold reduction |
 | Lead 0.32 + 5-FU 0.32 nM | 0.875 | 0.051 | 0.9834 | 5.4-fold reduction |
 
-**Notes:** Mean 2-4 fold reduction matches docking prediction (ΔΔG = -1.8 kcal/mol). All R² > 0.984 indicates excellent linearity.
+**Notes:** Reductions span 1.9–5.4-fold, corresponding to ΔΔG = 0.4–1.0 kcal/mol at 298 K. The docking prediction of ΔΔG = −1.8 kcal/mol corresponds to a 21-fold reduction and therefore overestimates the effect by 4–11×; see Section 4.1. The R² values in this table refer to the linearity of individual Stern-Volmer plots, not to the dose-response across lead concentrations.
 
 ### S4.3: Fluorescence Yield and Quenching Efficiency
 
@@ -700,7 +863,7 @@ Tryptophan fluorescence spectroscopy measuring changes in HSA microenvironment a
 ### S4.7: Statistical Analysis
 
 - ANOVA (Control vs Lead): F(3,8) = 128.4, p < 0.001 (highly significant)
-- Linear Regression (fK vs Lead): y = 4.69 - 13.4x, R² = 0.998, p < 0.001
+- Regression of fK against [Pb²⁺], refitted from the tabulated data: linear y = −8.35x + 3.26, R² = 0.54; log-linear ln(fK) = −4.22x + 1.12, R² = 0.75. The log-linear form is preferred: it fits better and stays positive across the studied range, whereas the linear fit predicts a negative binding constant above ~0.39 mM Pb²⁺.
 - Effect Size (Cohen's d): 2.43 (extremely large)
 
 ---
@@ -767,7 +930,7 @@ DR-FTIR measuring amide I and III bands showing secondary structure changes. Per
 
 ### S5.6: Statistical Analysis
 
-- Linear Regression (α-Helix vs Lead): y = -6.78x + 52.1, R² = 0.996, p < 0.001
+- Linear regression (α-helix fraction vs [Pb²⁺]): y = −35.2x + 50.0, R² = 0.72 (refitted from the tabulated data)
 - ANOVA (Control vs Lead): F(3,8) = 38.7, p < 0.001
 - Pearson Correlation (FTIR vs CD helix loss): r = 0.998, p < 0.001
 
@@ -827,7 +990,7 @@ Specific viscosity measurements using Ubbelohde capillary viscometer. Constant-t
 | 0.064 | 163.6 | 20.1% | 12.1 | -18.5% |
 | 0.320 | 185.4 | 36.1% | 22.8 | -26.4% |
 
-**Notes:** Linear regression: [η] = 136.2 + 96.8[Pb²⁺], R² = 0.998, p < 0.001. B-factor predictions match docking (predicted values 6-29 Ų).
+**Notes:** The tabulated percentages are internally consistent with the [η] column ([η]/[η]₀ − 1; e.g. 185.4/136.2 = +36.1%). The regression quoted in earlier drafts, [η] = 136.2 + 96.8[Pb²⁺] with R² = 0.998, does not describe these data — its R² against this table is 0.40. Least-squares refitting gives [η] = 143.7 + 138.4[Pb²⁺], R² = 0.87. The refitted intercept (143.7) exceeds the measured control (136.2), a further indication that the response is not linear in [Pb²⁺]; a log-linear form, ln[η] = 4.968 + 0.852[Pb²⁺], gives R² = 0.84 and reproduces the control correctly.
 
 ### S6.5: Reproducibility Metrics
 
@@ -843,7 +1006,7 @@ Specific viscosity measurements using Ubbelohde capillary viscometer. Constant-t
 
 ### S6.6: Statistical Analysis
 
-- Linear Regression (Intrinsic Viscosity vs Lead): y = 136.2 + 96.8x, R² = 0.998, p < 0.001
+- Linear regression (intrinsic viscosity vs [Pb²⁺]), refitted from Table S6.4: y = 143.7 + 138.4x, R² = 0.87
 - ANOVA (Control vs All Lead): F(3,8) = 156.2, p < 0.001 (highly significant)
 - Paired t-test (0.032 vs 0.32 mM): t = 12.3, p < 0.001 (highly significant)
 - Effect Size (Cohen's d): 3.28 (extremely large effect)
@@ -855,14 +1018,18 @@ Specific viscosity measurements using Ubbelohde capillary viscometer. Constant-t
 
 ### Summary of Quantitative Predictions vs Experiments
 
-| Method | Predicted Effect | Measured Effect | Agreement | R² or p-value |
-|--------|-----------------|-----------------|-----------|---------------|
-| **Docking** | ΔΔG = -1.8 kcal/mol | 2–4 fold affinity reduction | ✓ Excellent | 0.98 |
-| **Fluorescence** | 5-FU binding ↓ | fK reduced 2–4 fold | ✓ Perfect match | p < 0.001 |
-| **CD** | Helix loss | -26.4% helix | ✓ Close match | R² = 0.998 |
-| **FTIR** | Amide disruption | -4.6% reflectance | ✓ Consistent | R² = 0.996 |
-| **Viscometry** | Protein expansion | [η] +36.1% | ✓ Excellent | R² = 0.998 |
-| **DSC** | Thermal changes | ΔH +2.8 fold | ✓ Significant | p < 0.01 |
+| Method | Predicted | Measured | Direction | Magnitude | Linear fit R² |
+|--------|-----------|----------|-----------|-----------|---------------|
+| **Docking → affinity** | ΔΔG −1.8 kcal/mol (= 21-fold) | 1.9–5.4-fold (= ΔΔG 0.4–1.0) | ✓ agrees | ✗ **over by 4–11×** | — |
+| **Fluorescence** | 5-FU binding ↓ | fK reduced 1.9–5.4-fold | ✓ agrees | — | 0.54 (linear), 0.75 (log-linear) |
+| **CD** | Helix loss | −26.4% helix at 0.32 mM | ✓ agrees | — | 0.72 |
+| **FTIR** | Amide disruption | −4.6% reflectance | ✓ agrees | — | not fitted |
+| **Viscometry** | Protein expansion | [η] +36.1% at 0.32 mM | ✓ agrees | — | 0.87 |
+| **DSC** | Thermal change | ΔH ×2.8 | ✓ agrees | — | n/a |
+| **QM Pb–S distance** | 2.657 Å (this work) | 2.64–2.68 Å (EXAFS, lit.) | ✓ agrees | ✓ **within error** | — |
+| **Docking Pb–S distance** | 2.3 ± 0.2 Å | 2.64–2.68 Å (EXAFS, lit.) | — | ✗ **0.35 Å short** | — |
+
+**Note on the R² values.** Earlier drafts of this table quoted R² = 0.996–0.998 for the dose-response fits. Those values were not obtained from the tabulated data. Refitting each dataset by least squares gives the values above (0.54–0.75). The dose-response is saturating rather than linear, so a straight line is the wrong model; for the binding constant a log-linear form fits better (R² = 0.75) and has the additional merit of remaining positive at all lead concentrations, which the linear fit does not. All fits are reproduced by `scripts/audit_consistency.py`.
 
 ### Allosteric Pathway Validation Across Methods
 
@@ -899,4 +1066,3 @@ All experimental methods show coordinated changes at predicted allosteric pathwa
 **Format:** Publication-Ready Integrated Manuscript  
 **Total Word Count:** 12,000+ words (including supplementary data)  
 **All supplementary tables embedded for single-document accessibility**
-
