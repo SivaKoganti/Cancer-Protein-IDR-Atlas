@@ -78,8 +78,9 @@ The crystallographic structure of human serum albumin bound to fatty acid (PDB: 
 Two independent docking engines were used:
 
 1. **AutoDock Vina** (exhaustiveness = 8, num_modes = 20)
-   - Lamarckian genetic algorithm hybrid local search
-   - Binding free energy scoring (MMFF94 force field)
+   - Iterated local search: Monte Carlo perturbation with Broyden–Fletcher–Goldfarb–Shanno (BFGS) local optimization
+   - Vina empirical scoring function (two steric Gaussian terms, a repulsion term, a hydrophobic term, and a directional hydrogen-bond term), parameterized against the PDBbind refined set [Trott & Olson 2010]
+   - Note: this function contains no explicit electrostatic, desolvation, or metal-coordination term; metals are represented only through generic atom typing. The implications for Pb²⁺ are addressed in Section 4.5.
 
 2. **GOLD 5.7** (ChemScore fitness, 100 GA runs)
    - Genetic algorithm conformational search
@@ -176,7 +177,7 @@ Detailed analysis of lead-coordinating residues revealed specific geometric and 
 | **Asp-183** | Carboxyl O | 3.1 ± 0.4 | Long-range electrostatic | −0.9 ± 0.2 |
 | **Total Binding** | — | — | — | **−8.1 ± 0.9** |
 
-This 4-coordinate geometry is consistent with crystallographic observations of lead coordination in metalloproteins and represents an energetically stable configuration that resists displacement even in the presence of competing ligands.
+This 4-coordinate geometry is the lowest-scoring arrangement returned by the docking ensemble. We note that it does not match the coordination most commonly reported for Pb(II) in thiolate-rich protein sites, which is three-coordinate and hemidirected (PbS₃), as established by X-ray absorption spectroscopy and supported by quantum-chemical work [Magyar et al., *J. Am. Chem. Soc.* 2005, 127, 9495; Gourlaouen & Parisel, *Angew. Chem. Int. Ed.* 2007, 46, 553; Cangelosi & Pecoraro, *Met. Ions Life Sci.* 2017, 17]. Because the scoring functions used here carry no metal-coordination term (Section 4.5, limitation 7), the coordination number and the Pb–S distance in Table 3.1.1 are predictions of the docking model rather than structurally validated quantities, and are reported as such.
 
 2. **Secondary site (N-terminus, Asp-1/Asp-2)**: Predicted ΔG = −5.2 kcal/mol. This site shows lower occupancy in the ensemble (35% of poses vs. 78% for Cys-34).
 
@@ -461,6 +462,12 @@ Our findings are consistent with prior literature on metal-protein interactions:
 5. **Molecular dynamics**: Future work should include all-atom MD simulations to validate predicted pathways and to quantify conformational dynamics of lead-induced allosteric changes.
 
 6. **No clinical or *ex vivo* human data**: All experimental work reported here was performed on purified HSA *in vitro*. No patient samples were analyzed, and no serum, plasma, or tissue from lead-exposed or 5-FU-treated individuals was examined. The clinical implications discussed in Section 4.3 are therefore inferences from an *in vitro* mechanism, not observations in exposed patients, and require prospective clinical study before they can be relied upon.
+
+7. **Docking scoring functions are not parameterized for Pb(II)**: This is the most significant methodological limitation of the computational component. The Vina scoring function contains no electrostatic, desolvation, or metal-coordination term, and was fitted to organic ligand–protein complexes; GOLD ChemScore is likewise not parameterized for post-transition-metal coordination. Benchmarking on a nonredundant metalloprotein subset of PDBbind found that while Vina poses metal complexes acceptably (~73% success), *no* docking program tested succeeded at scoring or ranking metalloprotein binding affinities [Chen et al., *J. Chem. Inf. Model.* 2019, 59, 3846]. AutoDock4Zn was developed precisely because AutoDock4 and Vina fail to establish correct interactions when sulfur coordinates a metal, mispredicting carboxylate coordination instead [Santos-Martins et al., *J. Chem. Inf. Model.* 2014, 54, 1442] — the same situation as Cys-34 here.
+
+   Two specific consequences follow. First, Pb(II) possesses a stereochemically active 6s² lone pair that produces *hemidirected* coordination, in which ligands occupy only one hemisphere and a void accommodates the lone pair [Shimoni-Livny, Glusker & Bock, *Inorg. Chem.* 1998, 37, 1853]. This is an electronic effect that an isotropic point-charge representation cannot reproduce by construction, and it is why Pb(II) entering a Cys₄ site binds only three sulfurs, the emerging lone pair expelling the fourth ligand [Gourlaouen & Parisel, *Angew. Chem. Int. Ed.* 2007, 46, 553]. Second, the absence of a metal term means nothing restrains the Pb–S separation, and the Pb–S distance reported in Table 3.1.1 (2.3 ± 0.2 Å) is accordingly shorter than the 2.64–2.68 Å established by EXAFS for Pb–thiolate sites in proteins and peptides [Magyar et al., *J. Am. Chem. Soc.* 2005, 127, 9495; Mah & Jalilehvand, *Inorg. Chem.* 2012, 51, 6285]. The predicted coordination geometry and the Pb-site binding energy should therefore be treated as provisional pending quantum-mechanical refinement; the experimentally measured quantities in Sections 3.2–3.6 are unaffected.
+
+8. **Assignment of the primary lead site is not settled**: The only study to address Pb–HSA binding directly by spectroscopic means localized Pb to protein nitrogen and oxygen atoms through hydrophilic contacts rather than to the Cys-34 thiol (K ≈ 8.2 × 10⁴ M⁻¹, ~0.7 Pb per protein) [Belatik et al., *PLoS ONE* 2012, 7, e36723]. There is precedent for caution: the two strong Cd(II) sites on albumin do not involve Cys-34 [Sadler & Viles, *Inorg. Chem.* 1996]. Our Cys-34 assignment rests on docking with the scoring-function limitations described above, and should be regarded as a hypothesis requiring independent structural confirmation (EXAFS, ²⁰⁷Pb NMR, or crystallography) rather than an established result.
 
 ### 4.6 FUTURE DIRECTIONS
 
