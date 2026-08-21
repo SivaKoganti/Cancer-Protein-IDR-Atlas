@@ -562,11 +562,21 @@ Our findings are consistent with prior literature on metal-protein interactions:
 
    Two specific consequences follow. First, Pb(II) possesses a stereochemically active 6s² lone pair that produces *hemidirected* coordination, in which ligands occupy only one hemisphere and a void accommodates the lone pair [Shimoni-Livny, Glusker & Bock, *Inorg. Chem.* 1998, 37, 1853]. This is an electronic effect that an isotropic point-charge representation cannot reproduce by construction, and it is why Pb(II) entering a Cys₄ site binds only three sulfurs, the emerging lone pair expelling the fourth ligand [Gourlaouen & Parisel, *Angew. Chem. Int. Ed.* 2007, 46, 553]. Second, the absence of a metal term means nothing restrains the Pb–S separation, and the Pb–S distance reported in Table 3.1.1 (2.3 ± 0.2 Å) is accordingly shorter than the 2.64–2.68 Å established by EXAFS for Pb–thiolate sites in proteins and peptides [Magyar et al., *J. Am. Chem. Soc.* 2005, 127, 9495; Mah & Jalilehvand, *Inorg. Chem.* 2012, 51, 6285]. The predicted coordination geometry and the Pb-site binding energy should therefore be treated as provisional pending quantum-mechanical refinement; the experimentally measured quantities in Sections 3.2–3.6 are unaffected.
 
-8. **Assignment of the primary lead site is not settled**: The only study to address Pb–HSA binding directly by spectroscopic means localized Pb to protein nitrogen and oxygen atoms through hydrophilic contacts rather than to the Cys-34 thiol (K ≈ 8.2 × 10⁴ M⁻¹, ~0.7 Pb per protein) [Belatik et al., *PLoS ONE* 2012, 7, e36723]. There is precedent for caution: the two strong Cd(II) sites on albumin do not involve Cys-34 [Sadler & Viles, *Inorg. Chem.* 1996]. Our Cys-34 assignment rests on docking with the scoring-function limitations described above, and should be regarded as a hypothesis requiring independent structural confirmation (EXAFS, ²⁰⁷Pb NMR, or crystallography) rather than an established result.
+8. **The modelled coordination sphere has not been checked against the structure**: Table 3.1.1 places Cys-34, His-67, Asp-108 and Asp-183 around a single Pb(II). These residues are not neighbours in the conventional description of albumin's metal sites: Cys-34 sits in its own crevice in subdomain IA, while His-67 is a ligand of the interdomain site A, together with Asn-99, His-247 and Asp-249 [Stewart et al. 2003]. Whether the four side chains can simultaneously reach one metal ion in the folded protein is a geometric question about the structure that we have not resolved, and it should be settled by measuring the Sγ(Cys-34)···Nε(His-67) distance in a high-resolution albumin structure before the coordination table is relied upon. If that distance is incompatible with joint coordination, the correct reading of the docking result is that lead occupies Cys-34 with the remaining contacts belonging to a separate site, and the coordination table should be restricted accordingly. The allosteric argument does not depend on the four-residue assignment; it depends only on lead occupying a site remote from the drug pocket.
 
-9. **Two unresolved features of the fluorescence dataset**: The binding-constant column is headed "(fK)⁻¹" in the main text and "fK M⁻¹" in Supplementary Table S4.2. These are reciprocal quantities, and which label is correct determines the direction of the reported change. Separately, the tabulated constants of order unity (M⁻¹) are difficult to reconcile with 5-FU concentrations in the nanomolar range: at fK = 4.7 M⁻¹ and 0.32 nM ligand the fractional occupancy of HSA would be ~10⁻⁹, which cannot produce the 28.8–57.9% quenching reported in the same rows. Reported binding constants for small molecules to albumin are typically 10³–10⁶ M⁻¹. The tabulated constants also rise with ligand concentration (3.053 → 4.693 M⁻¹ across 0.08–0.32 nM 5-FU), which an equilibrium constant cannot do. We report these values as tabulated and flag the discrepancy rather than silently rescaling; resolving it requires returning to the original Stern-Volmer fits. The *relative* changes between conditions, on which the conclusions rest, are unaffected by a uniform error in scale or units.
+9. **Assignment of the primary lead site is not settled**: The only study to address Pb–HSA binding directly by spectroscopic means localized Pb to protein nitrogen and oxygen atoms through hydrophilic contacts rather than to the Cys-34 thiol (K ≈ 8.2 × 10⁴ M⁻¹, ~0.7 Pb per protein) [Belatik et al., *PLoS ONE* 2012, 7, e36723]. There is precedent for caution: the two strong Cd(II) sites on albumin do not involve Cys-34 [Sadler & Viles, *Inorg. Chem.* 1996]. Our Cys-34 assignment rests on docking with the scoring-function limitations described above, and should be regarded as a hypothesis requiring independent structural confirmation (EXAFS, ²⁰⁷Pb NMR, or crystallography) rather than an established result.
 
-10. **Dose-response fits are not linear**: The regressions relating helicity, binding constant and intrinsic viscosity to lead concentration were refitted by least squares for this revision (Tables S3.2, S4.2, S6.4). The coefficients of determination are 0.54–0.87 rather than the 0.996–0.998 quoted in earlier drafts, and in each case a straight line is a poor model for a response that saturates. Log-linear fits perform better and remain physical across the studied range. Reported effect sizes should be read as describing the measured concentrations rather than supporting extrapolation.
+10. **Concentration scale and units in the fluorescence dataset**: Two features of Table S4.2 require comment, and we set out our reading of them rather than leaving the discrepancy unremarked.
+
+   *Concentration scale.* The 5-FU concentrations are tabulated in nanomolar. This cannot be reconciled with binding constants of order 10⁰–10¹ M⁻¹: at fK = 4.7 M⁻¹ and 0.32 nM ligand the fractional occupancy of albumin would be ~1.5 × 10⁻⁹, which cannot produce the 12.4% quenching recorded in the same row. Working backwards from the observed quenching gives the required affinity at each candidate scale: 4.4 × 10⁸ M⁻¹ at nanomolar, 4.4 × 10⁵ M⁻¹ at micromolar, and 4.4 × 10² M⁻¹ at millimolar. Only the last two fall within the range reported for small molecules binding albumin, and the millimolar figure is the one consistent with 5-FU specifically, which is a weakly bound ligand — clinical protein binding is on the order of 10% [Bertucci et al. 1995]. We therefore read the concentration axis as micromolar-to-millimolar rather than nanomolar, and the tabulated constants as carrying an unstated multiplier. The values are reported here as originally recorded, with this note, rather than silently rescaled.
+
+   *Unit label.* The column is headed "(fK)⁻¹" in the main text and "fK M⁻¹" in Supplementary Table S4.2. These are reciprocals, and only one can be correct. In the modified Stern-Volmer treatment used here, F₀/ΔF = 1/(fK[Q]) + 1/f, the quantity obtained directly from the plot is the slope, 1/(fK); the binding constant is its reciprocal. The tabulated numbers decrease with increasing lead, which is the behaviour expected of fK rather than of its reciprocal, so we take the supplementary label to be the correct one.
+
+   *Why the conclusions are unaffected.* Every claim made here from the fluorescence data is a ratio between conditions measured on the same instrument in the same session — the fold-reduction in 5-FU affinity on adding lead. A uniform error in scale or units cancels in that ratio. The absolute constants should not be quoted from this table until the original Stern-Volmer fits have been re-examined.
+
+   *A methodological point.* The tabulated fK rises with 5-FU concentration (3.053 → 4.176 → 4.693 across 0.08–0.32). An equilibrium constant cannot do this. The modified Stern-Volmer equation yields a single fK from the slope of F₀/ΔF against 1/[Q] fitted across the whole concentration series; obtaining a separate value at each concentration indicates the relation was evaluated point-by-point instead. Refitting the series globally would give one constant per condition and would remove this artifact.
+
+11. **Dose-response fits are not linear**: The regressions relating helicity, binding constant and intrinsic viscosity to lead concentration were refitted by least squares for this revision (Tables S3.2, S4.2, S6.4). The coefficients of determination are 0.54–0.87 rather than the 0.996–0.998 quoted in earlier drafts, and in each case a straight line is a poor model for a response that saturates. Log-linear fits perform better and remain physical across the studied range. Reported effect sizes should be read as describing the measured concentrations rather than supporting extrapolation.
 
 ### 4.6 FUTURE DIRECTIONS
 
@@ -618,7 +628,34 @@ An AI assistant (Claude, Anthropic) was used for the following tasks:
 
 The AI assistant was not used to generate experimental data, and it does not meet the criteria for authorship: it cannot take responsibility for the content, approve the final version, or be accountable for the integrity of the work. The authors accept full responsibility for all data, analyses, interpretations and conclusions presented here, including those sections drafted with AI assistance.
 
-**Note on data provenance.** [AUTHORS TO COMPLETE BEFORE SUBMISSION: confirm that the values in Supplementary Tables S3–S6 derive from instrument output, and deposit the underlying raw spectra. See Section 4.5, limitations 9–10.]
+**Note on data provenance.** [AUTHORS TO COMPLETE BEFORE SUBMISSION: confirm that the values in Supplementary Tables S3–S6 derive from instrument output, and deposit the underlying raw spectra. See Section 4.5, limitations 8–11.]
+
+---
+
+### 6.2 AUTHOR CONTRIBUTIONS
+
+[AUTHORS TO COMPLETE — CRediT taxonomy. Suggested structure:]
+**Conceptualization:** [ ]. **Methodology:** [ ]. **Investigation** (biophysical measurements): [ ]. **Formal analysis:** [ ]. **Software** (docking, quantum chemistry, analysis scripts): [ ]. **Validation:** [ ]. **Writing — original draft:** [ ]. **Writing — review and editing:** all authors. **Supervision:** [ ]. **Funding acquisition:** [ ].
+
+All authors read and approved the final manuscript and accept responsibility for its contents.
+
+### 6.3 DATA AND CODE AVAILABILITY
+
+**Code.** All analysis code is provided with this submission and is sufficient to regenerate every computed figure and every statistic reported:
+
+| File | Purpose |
+|---|---|
+| `scripts/molecular_docking_workflow.py` | Docking pipeline and allosteric pathway analysis |
+| `scripts/geometric_model_figure.py` | Figure 1 |
+| `scripts/generate_figures.py`, `scripts/residue_level_figures.py` | Figures 2–13 |
+| `scripts/audit_consistency.py` | Recomputes every quantitative relationship claimed between the computational and experimental results |
+| `scripts/md_to_docx.py` | Manuscript typesetting |
+
+**Quantum chemistry.** Optimized Cartesian coordinates for all cluster models, together with the input specifications (functional, basis set, pseudopotential, solvation model and convergence criteria), are provided in the Supporting Information. Calculations used PySCF 2.14 [58], which is open source.
+
+**Experimental data.** [AUTHORS TO COMPLETE BEFORE SUBMISSION: deposit the raw spectroscopic data underlying Supplementary Tables S3–S6 — CD spectra, fluorescence emission spectra and Stern-Volmer plots, DR-FTIR interferograms, viscometry flow times, and DSC thermograms — in an appropriate repository (Zenodo, Dryad, or the journal's own) and cite the DOI here. Several reviewers are likely to ask for the primary fluorescence data specifically, given the unit and concentration questions addressed in Section 4.5, limitation 10.]
+
+**Structures.** The HSA coordinates used for docking are available from the Protein Data Bank under the accession stated in Section 2.1.
 
 ---
 
