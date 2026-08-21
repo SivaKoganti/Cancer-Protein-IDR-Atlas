@@ -32,6 +32,11 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+# Fixed seed: the projection must reproduce exactly, or the figures and the
+# numbers quoted in Table S7 drift apart between runs.
+RANDOM_SEED = 20260821
+np.random.seed(RANDOM_SEED)
+
 # Set style for publication-quality figures
 sns.set_style("whitegrid")
 sns.set_palette("husl")
@@ -125,6 +130,7 @@ class ProteomicsDataGenerator:
 
     def generate_full_dataset(self):
         """Generate complete proteomics dataset for all groups"""
+        np.random.seed(RANDOM_SEED)
         baseline = self.generate_baseline_intensities()
         control, lead, ffu, combined = self.generate_group_data(baseline)
 

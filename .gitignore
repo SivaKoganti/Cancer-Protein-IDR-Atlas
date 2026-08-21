@@ -8,3 +8,7 @@ data/
 .snakemake/
 .DS_Store
 *.pdb
+
+# Regenerable outputs of the Table S7 simulator (scripts/serum_proteomics_analysis.py)
+Proteomics_Statistical_Results.csv
+Significant_Proteins.csv
