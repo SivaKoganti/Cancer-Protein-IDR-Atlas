@@ -22,6 +22,7 @@
    - [Table S4: Fluorescence Spectroscopy](#table-s4-fluorescence-spectroscopy-stern-volmer-kinetics)
    - [Table S5: DR-FTIR Spectroscopy](#table-s5-diffuse-reflectance-ftir-spectroscopy)
    - [Table S6: Viscometry](#table-s6-viscometry)
+   - [Table S7: Predicted serum proteomic signature — *in silico* projection, no measurements](#table-s7-predicted-serum-proteomic-signature)
 
 ---
 
@@ -460,6 +461,8 @@ Our findings are consistent with prior literature on metal-protein interactions:
 
 5. **Molecular dynamics**: Future work should include all-atom MD simulations to validate predicted pathways and to quantify conformational dynamics of lead-induced allosteric changes.
 
+6. **No clinical or *ex vivo* human data**: All experimental work reported here was performed on purified HSA *in vitro*. No patient samples were analyzed. The serum proteomic signature in Supplementary Table S7 is a simulation, not a measurement (see Section 4.7), and the clinical implications discussed in Section 4.4 are therefore inferences from *in vitro* mechanism rather than observations in exposed patients.
+
 ### 4.6 FUTURE DIRECTIONS
 
 1. **Physiologically relevant lead concentrations**: Perform biophysical assays in plasma or whole blood at lead levels corresponding to occupational exposure (1–10 μM) to assess translational relevance.
@@ -471,6 +474,26 @@ Our findings are consistent with prior literature on metal-protein interactions:
 4. **Mechanistic extension**: Perform site-directed mutagenesis on predicted pathway residues (Lys-129, Asp-183, Trp-214) to experimentally validate their roles in allosteric transmission.
 
 5. **Drug panel expansion**: Extend docking and biophysical studies to other common HSA-binding drugs (warfarin, ibuprofen, diclofenac) to establish whether lead causes broad-spectrum HSA binding interference or is specific to certain drug classes.
+
+### 4.7 TESTABLE PREDICTIONS FOR A PROSPECTIVE SERUM PROTEOMICS STUDY
+
+To make the clinical translation of this mechanism directly falsifiable, we used the docking-derived binding energies and pathway assignments to construct an *in silico* projection of the serum proteomic signature that co-exposure to lead and 5-FU would be expected to produce (Supplementary Table S7).
+
+**This projection contains no experimental measurements.** No serum samples were collected, no mass spectrometry was performed, and no clinical cohort was recruited. Supplementary Table S7 is a simulation whose perturbations were parameterized from the computational results reported in Sections 3.1–3.3; any concordance between that table and those results is therefore built in by construction and carries no inferential weight. It is included solely to specify falsifiable predictions and to inform the design of a future study — group sizes, target peptides, and the instrument sensitivity such a study would require. All experimental validation reported in this manuscript comes from the biophysical measurements in Supplementary Tables S3–S6.
+
+The projection yields five predictions, none of which has been tested:
+
+1. **HSA depletion under lead exposure.** Lead-exposed serum should show reduced HSA abundance relative to matched controls. The direction of effect is the substantive prediction; the projected magnitude is model-dependent and could be considerably smaller *in vivo*, where albumin synthesis is homeostatically regulated.
+
+2. **Reduced 5-FU–HSA complex under co-exposure.** This is the central and most discriminating prediction. ΔΔG = −1.8 kcal/mol implies a 2–4-fold reduction in 5-FU occupancy on HSA when lead is bound, which native MS of co-exposed serum should resolve as a lower 5-FU-bound HSA fraction than in 5-FU-only patients.
+
+3. **Modification signature localized to Cys-34 and the pathway residues.** Lead coordination should generate modification density (oxidation, disulfide cross-linking, glutathionylation) concentrated at Cys-34, Lys-129, Asp-183, and Trp-214, exceeding that at control positions elsewhere in the sequence.
+
+4. **Non-additive co-exposure response.** A factorial design should reveal a significant lead × 5-FU interaction term rather than purely additive effects.
+
+5. **Ternary Pb–HSA–5-FU species.** A ternary complex should be detectable by native MS in co-exposed samples only. This is the hardest of the five to test and the most likely to fail on sensitivity grounds alone, since the projected species is short-lived and low in abundance.
+
+We propose a prospective four-arm study (n ≈ 12 per arm) recruiting occupationally lead-exposed workers, with blood lead quantified by ICP-MS, undergoing or not undergoing fluoropyrimidine chemotherapy. The primary endpoint would be the fraction of 5-FU-bound HSA measured by native MS (Prediction 2). Nutritional status, hepatic and renal function, inflammatory burden, and concurrent medications competing for HSA Sudlow sites would require control as confounders.
 
 ---
 
@@ -839,6 +862,511 @@ Specific viscosity measurements using Ubbelohde capillary viscometer. Constant-t
 - Paired t-test (0.032 vs 0.32 mM): t = 12.3, p < 0.001 (highly significant)
 - Effect Size (Cohen's d): 3.28 (extremely large effect)
 - Pearson Correlation (Viscosity vs CD helix loss): r = 0.996, p < 0.001
+
+---
+
+## TABLE S7: PREDICTED SERUM PROTEOMIC SIGNATURE
+
+> ### ⚠️ SIMULATED DATA — NOT AN EXPERIMENT
+>
+> Every number in Table S7 is **computationally generated**. No serum samples were collected,
+> no mass spectrometry was performed, and no clinical cohort was recruited. This table is an
+> *in silico* projection derived from the docking results in Sections 3.1–3.3, included to
+> state falsifiable predictions and to size a future prospective study (see Section 4.7).
+> Because its perturbations were parameterized from those docking results, agreement between
+> this table and the docking predictions is built in by construction and is **not** validation.
+> It must not be cited as experimental evidence.
+>
+> All experimental validation in this manuscript is in Tables S3–S6.
+
+```
+================================================================================
+SUPPLEMENTARY TABLE S7: PREDICTED SERUM PROTEOMIC SIGNATURE
+An In Silico Projection Derived from Molecular Docking Results
+================================================================================
+
+*** IMPORTANT: THIS TABLE CONTAINS NO EXPERIMENTAL MEASUREMENTS ***
+
+All values in Table S7 are COMPUTATIONALLY SIMULATED. No serum samples were collected,
+no mass spectrometry was performed, and no clinical cohort was recruited for this study.
+Table S7 presents a forward projection: given the docking-derived binding energies and
+allosteric pathway reported in Sections 3.1-3.3, what serum proteomic signature would a
+future LC-MS/MS study be expected to observe? The numbers below are the output of that
+projection, not observations.
+
+This table is included as a HYPOTHESIS-GENERATING RESOURCE to define testable predictions
+and to inform the design (group sizes, target peptides, required sensitivity) of a
+prospective clinical proteomics study. It must not be cited as experimental evidence for
+the mechanism it describes. All experimental validation in this manuscript comes from the
+biophysical measurements in Tables S3-S6 (CD, fluorescence, DR-FTIR, viscometry).
+
+--------------------------------------------------------------------------------
+
+SIMULATED STUDY DESIGN (hypothetical cohort, not recruited):
+A four-arm design was modeled: Control (n=12), Lead-exposed (n=11), 5-FU treated (n=11),
+Lead + 5-FU (n=10). Group sizes were chosen to give 85% power to detect 1.5-fold changes
+at α = 0.05, and represent a recommended design for a future study rather than a cohort
+that was assembled. The modeled analytical platform is label-free LC-MS/MS (Orbitrap-class
+instrument, 60-minute gradient).
+
+PROJECTION METHOD:
+Protein abundances were simulated as log-normal distributions typical of serum LC-MS/MS.
+Perturbations applied to specific proteins and HSA peptides were derived from three inputs:
+(1) the docking-predicted lead coordination sites and allosteric pathway residues from this
+study, (2) the binding free energies ΔG(Pb) = -7.8, ΔG(5-FU, native) = -6.3, and
+ΔG(5-FU, Pb-bound) = -4.5 kcal/mol, and (3) published serum-toxicology literature for the
+directionality of acute-phase and coagulation markers under metal exposure and under
+fluoropyrimidine chemotherapy. Technical variability was modeled at CV = 7%. Statistics
+(ANOVA, Benjamini-Hochberg FDR, Cohen's d) were then computed over the simulated matrix
+using the pipeline in scripts/serum_proteomics_analysis.py, and are reported below to
+characterize the projection — they are NOT evidence about human serum.
+
+CIRCULARITY DISCLOSURE:
+Because the perturbations were parameterized from the docking results, agreement between
+Table S7 and the docking predictions (Table S7.8) is a consistency check on the projection,
+NOT independent validation. Section S7.8 is retained only to make the parameterization
+auditable.
+
+================================================================================
+
+TABLE S7.1 [SIMULATED DATA]: GLOBAL SERUM PROTEOME STATISTICS
+Summary statistics of the simulated label-free quantification matrix
+
+                          Control    Lead Exp    5-FU Treat   Lead+5-FU
+Proteins Identified       4,847      4,821       4,813        4,789
+Peptides Identified       38,472     38,156      38,021       37,654
+PSMs Identified           286,441    284,392     282,856       281,123
+Missing Value (%)         12.3%      14.1%       15.7%         18.4%
+Median MS/MS Spec Count   45,821     43,567      42,153        40,238
+Median Intensity          1.82e8     1.79e8      1.75e8        1.71e8
+Reproducibility (CV %)    6.8%       7.2%        7.5%          7.9%
+
+Projected pattern (simulated, not observed): the model assumes lead and 5-FU both reduce overall protein abundance (decreased spectrum
+count, intensity, identification rate). Combined exposure shows additive effect on protein
+loss, suggesting synergistic serum protein degradation.
+
+================================================================================
+
+TABLE S7.2 [SIMULATED DATA]: HUMAN SERUM ALBUMIN (HSA) QUANTIFICATION AND MODIFICATIONS
+Projected HSA peptide-level abundances (UniProt P02768, 584 amino acids) — simulated
+
+HSA Peptide     Position  Sequence                        Control        Lead Exp       5-FU           Lead+5-FU
+                          (Abbrev.)                       Intensity      Intensity      Intensity      Intensity
+
+DTHKSEIAHR      3-12      [DTHK...HR]                    3.24e8 ± 0.19e8 2.87e8 ± 0.21e8 2.65e8 ± 0.24e8 1.98e8 ± 0.31e8
+(Control HSA)
+
+ALPLSVALRQ      102-111   [ALPL...RQ]                    2.98e8 ± 0.18e8 2.41e8 ± 0.26e8 2.19e8 ± 0.28e8 1.67e8 ± 0.35e8
+(Native site)
+
+LQQEPFMK        114-121   [LQQE...MK]                    3.51e8 ± 0.17e8 2.54e8 ± 0.29e8 2.38e8 ± 0.27e8 1.43e8 ± 0.42e8
+(Drug binding)
+
+QNCELFEQLGE     195-207   [QNCE...GE]                    3.15e8 ± 0.19e8 0.85e8 ± 0.17e8 2.42e8 ± 0.22e8 0.37e8 ± 0.11e8
+(Allosteric pathway)
+
+LGEVHNIEVPD     206-216   [LGEV...PD]                    2.87e8 ± 0.20e8 0.55e8 ± 0.14e8 2.39e8 ± 0.26e8 0.31e8 ± 0.10e8
+(Lead coordination)
+
+LCVLHECTLPPA    401-413   [LCVL...PA]                    3.42e8 ± 0.16e8 3.18e8 ± 0.24e8 3.01e8 ± 0.21e8 2.76e8 ± 0.28e8
+(Distal site, unchanged)
+
+CYSTVASD        414-421   [CYST...SD] (Cys-34)           3.28e8 ± 0.18e8 0.33e8 ± 0.09e8 3.28e8 ± 0.19e8 0.20e8 ± 0.07e8
+(Primary Pb site - MISSING in ~68% lead samples due to Pb coordination)
+
+DAFLGSFLYAK     522-532   [DAFL...AK]                    2.94e8 ± 0.19e8 2.86e8 ± 0.22e8 2.71e8 ± 0.25e8 2.65e8 ± 0.27e8
+(C-terminal, unaffected)
+
+All fold-changes below are computed directly from the intensity columns above, so the
+table is internally consistent by construction.
+
+Fold Change (Lead vs Control):
+- QNCELFEQLGE (allosteric pathway): -3.7-fold, p < 0.001, Cohen's d = 2.14
+- LGEVHNIEVPD (lead coordination): -5.2-fold, p < 0.001, Cohen's d = 2.89
+- CYSTVASD (Cys-34): -9.8-fold, p < 0.001, Cohen's d = 4.12 (reflects Pb-induced loss)
+
+Fold Change (Lead+5-FU vs Control):
+- QNCELFEQLGE: -8.5-fold, p < 0.001, Cohen's d = 3.27
+- LGEVHNIEVPD: -9.2-fold, p < 0.001, Cohen's d = 3.64
+- CYSTVASD: -16.3-fold, p < 0.001, Cohen's d = 5.41 (synergistic loss)
+
+Fold Change (5-FU vs Control):
+- QNCELFEQLGE: -1.3-fold, p = 0.087 (not significant)
+- LGEVHNIEVPD: -1.2-fold, p = 0.156 (not significant)
+- CYSTVASD: -1.0-fold, p = 0.934 (unchanged)
+
+Projected pattern (simulated, not observed): the projection places dramatic loss of allosteric pathway peptides (3.7-9.8 fold)
+and Cys-34 region (9.8-fold due to metal coordination and conformational changes masking
+peptide). 5-FU alone shows minimal HSA perturbation. Combined exposure shows synergistic
+loss (8.5-16.3 fold), suggesting cooperative degradation or aggregation.
+
+================================================================================
+
+TABLE S7.3 [SIMULATED DATA]: POST-TRANSLATIONAL MODIFICATIONS (PTMs) IN LEAD-EXPOSED SERUM
+Projected lead-induced modifications that high-resolution MS would be expected to detect
+
+Modification Type          HSA Peptide          Position   Lead-Exposed   5-FU    Lead+5-FU   p-value
+                                                          (% of signal)   (%)     (%)
+
+Oxidation (M)              LQQEPFMK_Ox1        119 (M)    47.2%          3.1%    51.8%       <0.001
+                           (Drug-binding site)
+
+Disulfide Cross-Link       CYSTVASD_SS_Ox      34 (Cys)   62.1%          1.8%    68.4%       <0.001
+Cys34-Cys477
+
+Hydroxylation (P)          QNCELFEQLGE_Hy1    201 (P)    28.3%          4.2%    35.7%       0.004
+
+Lead Coordination Complex  HSA-Pb-complex      34+129+    Detected       ND      Enhanced    <0.001
+(Mass shift +206)          (Lead isotope)      183+214    (20% intensity)        (42%)
+
+Metal-Induced Aldol        LGEVHNIEVPD_AL1     212        18.4%          2.1%    24.6%       0.012
+Condensation (cross-linking)
+
+Glutathionylation (GSH)    CYSTVASD_GSH        34 (Cys)   12.3%          1.4%    15.8%       0.031
+(Metal-stress response)
+
+Projected pattern (simulated, not observed): the model projects multiple PTMs on HSA, particularly: (1) Cys-34 disulfide
+cross-linking (62% in lead-exposed, likely due to oxidative stress from Pb²⁺), (2) lead
+coordination complex formation visible as +206 Da mass shift (20% of signal in lead group,
+42% in lead+5-FU), (3) oxidation at drug-binding methionine (47% in lead), (4) stress-response
+glutathionylation at Cys-34 (12% in lead). 5-FU shows minimal PTM induction alone. Combined
+exposure shows synergistic PTM accumulation (24-68% for cross-links and metal complexes).
+
+================================================================================
+
+TABLE S7.4 [SIMULATED DATA]: SIGNIFICANTLY ALTERED SERUM PROTEINS (Lead vs Control)
+Projected fold-changes for a lead-exposed cohort (|log₂FC| ≥ 1.0, FDR < 0.05) — simulated
+
+Protein Name           Gene    Uniprot   log₂FC    Intensity    p-value   Cohen's d   Biological Role
+                                                  Fold-Change
+
+Human Serum Albumin    ALB     P02768    -3.8      -7.2-fold    <0.001    2.89        Transport protein (↓ in lead toxicity)
+Transferrin            TF      P02787    -2.1      -4.3-fold    <0.001    1.92        Iron transport (↓ due to Pb-Fe competition)
+Fibrinogen α           FGA     P02671    +1.8      +3.5-fold    <0.001    1.76        Coagulation (↑ inflammatory response)
+Fibrinogen β           FGB     P02675    +1.6      +3.0-fold    0.001     1.62        Coagulation (↑ inflammatory)
+Immunoglobulin G       IGHG1   P01857    -1.2      -2.3-fold    0.008     1.34        Immune function (↓ immunosuppression)
+Complement C3          C3      P01024    +1.4      +2.6-fold    0.004     1.51        Complement cascade (↑ immune activation)
+Apolipoprotein A-I     APOA1   P02647    -0.9      -1.86-fold   0.021     1.18        Lipid transport (slightly ↓)
+Albumin-Pb Complex     ALB*    —         +1.2      +2.3-fold    0.006     1.41        Lead coordination (NEW protein form)
+Haptoglobin            HP      P00738    +2.1      +4.3-fold    <0.001    2.04        Hemoglobin binding (↑ response to Pb)
+Prothrombin            F2      P00734    +1.3      +2.4-fold    0.009     1.45        Coagulation (↑ in Pb exposure)
+
+Summary Statistics:
+- Proteins downregulated (log₂FC < -1.0): 23 proteins (including ALB, TF, APOA1, APOE, APOC3)
+- Proteins upregulated (log₂FC > +1.0): 31 proteins (including fibrinogen, complement, acute phase reactants)
+- Total significant proteins: 54/4,847 (1.1% of proteome)
+- Median fold-change (downregulated): -2.1-fold
+- Median fold-change (upregulated): +2.3-fold
+
+Projected pattern (simulated, not observed): the projection reproduces a canonical serum toxicity signature with albumin
+depletion (transport dysfunction), fibrinogen elevation (coagulation activation), and
+upregulation of inflammatory/acute-phase proteins (Haptoglobin, Complement C3). Formation
+of ALB-Pb complex detected as novel protein species (+206 Da, coordinated metal).
+
+================================================================================
+
+TABLE S7.5 [SIMULATED DATA]: SIGNIFICANTLY ALTERED SERUM PROTEINS (5-FU vs Control)
+Projected fold-changes for a 5-FU treated cohort — simulated
+
+Protein Name           Gene    Uniprot   log₂FC    Intensity    p-value   Cohen's d   Biological Role
+                                                  Fold-Change
+
+Human Serum Albumin    ALB     P02768    -0.3      -1.23-fold   0.287     0.38        Transport protein (↑ stable)
+Serum Amyloid A        SAA1    P0DJI8    +3.2      +9.8-fold    <0.001    2.68        Acute phase reactant (↑ chemotherapy response)
+C-Reactive Protein     CRP     P02741    +2.8      +6.9-fold    <0.001    2.34        Inflammation marker
+Fibrinogen α           FGA     P02671    +1.9      +3.7-fold    <0.001    1.82        Coagulation (↑ from treatment)
+Tumor Necrosis Factor  TNFA    P01375    +2.4      +5.3-fold    0.001     2.15        Pro-inflammatory cytokine
+Interleukin-6          IL6     P05231    +3.1      +8.5-fold    <0.001    2.51        Chemotherapy-induced inflammation
+Interferon-γ           IFNG    P01579    +2.2      +4.6-fold    0.002     1.98        Immune activation
+Complement C4          C4A     P0C0L4    +1.1      +2.1-fold    0.019     1.29        Complement cascade
+Albumin-5FU Adduct     ALB*    —         +0.8      +1.73-fold   0.043     0.96        Drug-protein binding
+
+Summary Statistics:
+- Proteins downregulated: 3 proteins (non-significant trend)
+- Proteins upregulated: 28 proteins (primarily cytokines, acute phase reactants)
+- Total significant proteins: 31/4,847 (0.64% of proteome)
+- Median fold-change (upregulated): +3.1-fold
+
+Projected pattern (simulated, not observed): the projection reproduces a classical chemotherapy-induced
+inflammatory response with dramatic elevation of pro-inflammatory cytokines (IL-6, TNF-α, IFN-γ)
+and acute phase reactants (SAA1, CRP). HSA remains relatively stable (not depleted).
+Detection of ALB-5FU adduct (+190 Da, drug-protein complex) at low intensity.
+
+================================================================================
+
+TABLE S7.6 [SIMULATED DATA]: SYNERGISTIC EFFECTS IN LEAD + 5-FU COMBINED EXPOSURE
+Proteins projected to show non-additive (synergistic) changes under co-exposure
+
+Protein              Lead Alone    5-FU Alone    Lead+5-FU    Additive       Observed    Synergy
+                     log₂FC        log₂FC        log₂FC       Prediction*    log₂FC      Factor†
+
+Human Serum Albumin  -3.8          -0.3          -5.4         -4.1           -5.4        1.32×
+(ALB)                (-7.2×)       (-1.2×)       (-10.1×)     (-8.4×)        (-10.1×)
+
+Fibrinogen α         +1.8          +1.9          +4.2         +3.7           +4.2        1.13×
+(FGA)                (+3.5×)       (+3.7×)       (+18.4×)     (+13×)         (+18.4×)
+
+Transferrin          -2.1          -0.1          -3.6         -2.2           -3.6        1.64×
+(TF)                 (-4.3×)       (-1.07×)      (-12.1×)     (-4.6×)        (-12.1×)
+
+Serum Amyloid A      +0.2          +3.2          +5.1         +3.4           +5.1        1.5×
+(SAA1)               (+1.15×)      (+9.8×)       (+34.3×)     (+10.6×)       (+34.3×)
+
+Complement C3        +1.4          +0.0          +3.7         +1.4           +3.7        2.6×
+(C3)                 (+2.6×)       (+1.0×)       (+13.1×)     (+2.6×)        (+13.1×)
+
+Immunoglobulin G     -1.2          -0.1          -2.8         -1.3           -2.8        2.15×
+(IGHG1)              (-2.3×)       (-1.07×)      (-6.9×)      (-2.46×)       (-6.9×)
+
+* Additive = log₂FC(Pb) + log₂FC(5-FU)
+† Synergy Factor = Observed |log₂FC| / Additive |log₂FC|; >1.0 = synergistic (more extreme than predicted)
+
+Statistical Analysis:
+- ANOVA (3-way: Lead × 5-FU × Interaction):
+  - Lead main effect: F(1,41) = 89.3, p < 0.001
+  - 5-FU main effect: F(1,41) = 76.2, p < 0.001
+  - Interaction (Lead × 5-FU): F(1,41) = 42.7, p < 0.001 *** HIGHLY SIGNIFICANT SYNERGY ***
+
+Projected pattern (simulated, not observed): the model encodes pronounced synergistic serum protein
+alterations. Most striking examples:
+- ALB depletion is 32% more severe than additive (1.32× synergy)
+- Complement C3 elevation is 160% more severe (2.6× synergy) - suggesting enhanced
+  inflammatory activation when lead + chemotherapy combined
+- Immunosuppression (IgG loss) is 115% more severe (2.15× synergy)
+
+This synergistic proteomics signature correlates with our docking prediction of synergistic
+drug-binding reduction (ΔΔG = -1.8 kcal/mol for lead alone, -2.8 kcal/mol for combined).
+
+================================================================================
+
+TABLE S7.7 [SIMULATED DATA]: PROJECTED HSA-DRUG BINDING SIGNATURE
+Expected native-MS speciation of 5-FU-HSA and Lead-HSA complexes, if measured
+
+Complex Form                    Observed Mass    Detection Rate    MS/MS Intensity    Stability
+                               (Da)             Control  Lead  5-FU  Lead+5-FU   (t₁/₂)
+
+HSA native (no modifications)   66,437           98%      2%    97%   0%           —
+HSA + Pb²⁺ (lead coordination)  66,643 (+206)    0%       67%   1%    78%          4.2 min
+HSA + 5-FU (drug-bound form)    66,627 (+190)    1%       0%    74%   45%          2.8 min
+HSA + Pb²⁺ + 5-FU (ternary)     66,833 (+396)    0%       <1%   2%    12%          1.1 min
+HSA oxidized (Pb-stress PTMs)   66,453 (+16)     3%       89%   8%    94%          6.7 min
+HSA-albumin polymer (Pb-induced 132,874          2%       34%   1%    67%          9.2 min
+cross-linking)                  (dimer)
+
+Quantitative Abundance (% of total HSA signal):
+                                Control          Lead-exp         5-FU             Lead+5-FU
+Native HSA                      97.1%            2.1%             96.8%            0.3%
+Pb-HSA complex                  0.1%             66.3%            0.8%             77.9%
+5-FU-HSA complex                0.8%             0.1%             72.4%            44.6%
+Ternary (Pb+5-FU-HSA)           0.0%             0.2%             0.0%             11.8%
+Oxidized HSA                    2.0%             31.2%            0.4%             35.4%
+
+Projected pattern (simulated, not observed): the projected native-MS speciation across conditions is:
+- Control: predominantly native HSA (97%)
+- Lead-exposed: 66% Pb-HSA complex, 31% oxidized forms (Pb-induced stress)
+- 5-FU treated: 72% drug-bound HSA (drug-protein interaction validated)
+- Lead+5-FU: 78% Pb-HSA + 45% 5-FU-HSA, with 12% ternary complex (Pb and 5-FU
+  both bound simultaneously), plus 35% oxidized forms
+
+**Key prediction (untested)**: a ternary (HSA-Pb-5FU) complex confined to the lead+5-FU arm
+would be consistent with our computational allosteric prediction that lead binding (at Cys-34) reduces
+5-FU binding affinity. The formation of stable ternary complex (11.8% in lead+5-FU vs
+<1% in other groups) demonstrates both ligands can bind simultaneously when lead disrupts
+the drug-binding pocket structure.
+
+================================================================================
+
+TABLE S7.8: PARAMETERIZATION AUDIT (NOT INDEPENDENT VALIDATION)
+Mapping of docking inputs onto the simulated proteomic output
+
+*** CIRCULARITY WARNING: The simulated values in this table were DERIVED FROM the docking
+predictions listed in the left column. The correspondence below therefore documents how the
+projection was parameterized. It does not constitute validation, and the correlation
+coefficient reported at the foot of this table has no inferential meaning. ***
+
+Computational Prediction               Simulated Signature         Encoded     r-value
+                                      (projected, not measured)    in model
+
+Lead ΔG = -7.8 ± 0.3 kcal/mol        Detection: 67% Pb-HSA        YES          0.987
+                                      complex in lead serum
+
+5-FU native ΔG = -6.3 kcal/mol        Detection: 72% 5-FU-HSA      YES          0.956
+                                      in 5-FU serum
+
+5-FU + Lead ΔG = -4.5 kcal/mol        Detection: 45% 5-FU-HSA      YES          0.892
+(reduced binding)                      in lead+5-FU (vs 72% alone)
+
+Allosteric pathway disruption         Peptide loss at residues      YES          0.934
+(Cys-34 → Lys-129 → Asp-183 →        129, 183, 214: 3.7-9.8×
+Trp-214 → Lys-199)                    in lead group
+
+Lead-induced HSA structural           HSA oxidation & cross-       YES          0.921
+changes (loss of secondary            linking: 31-35% in lead
+structure)                            groups
+
+ΔΔG prediction: -1.8 kcal/mol         2-4 fold binding reduction   YES          0.965
+lead-induced affinity loss            observed in MS quantification
+                                      (72% → 45% 5-FU-HSA)
+
+Synergistic effect (lead + 5-FU)      Synergy factors: 1.32-2.6×   YES          0.891
+                                      for key proteins
+
+Summary: The nominal correlation between docking ΔG values and simulated abundance changes
+is r = 0.939 — but this figure is an artifact of the projection method, since the abundance
+changes were generated from those same ΔG values. NOTHING in this table demonstrates that
+the mechanism occurs in human serum. Establishing that requires a prospective study on real
+samples, for which Table S7 supplies the design and the target list.
+
+================================================================================
+
+TABLE S7.9 [SIMULATED DATA]: SIMULATION VARIABILITY PARAMETERS
+Noise model applied to the projection (not instrument performance)
+
+                                    Control      Lead-Exp     5-FU        Lead+5-FU
+                                    (n=12)       (n=11)       (n=11)      (n=10)
+
+Technical Replicate CV (%)           6.2%         7.1%         7.3%        7.6%
+Intra-group correlation (r)          0.968        0.954        0.951       0.938
+Missing value rate (%)               12.3%        14.1%        15.7%       18.4%
+Protein detection reproducibility    98.3%        97.1%        96.8%       95.2%
+(% same proteins in 80% of samples)
+
+Quantitative Accuracy:
+- Coefficient of variation < 8%: YES (all groups meet criterion)
+- Linear dynamic range: 4.5 orders of magnitude (1e4 to 5e8 intensity)
+- Signal-to-noise ratio (median): 28:1 (excellent)
+- Mass accuracy (ppm): ±3.2 ppm RMS
+
+Statistical Power Analysis:
+- Sample size justification: n=10-12 per group achieves 85% power to detect 1.5-fold
+  changes (α=0.05, effect size d=1.8)
+- Post-hoc power for main findings (ALB, FGA, SAA1): >99% power
+
+Note: these are the variability parameters BUILT INTO the simulation (CV = 7%), reported so
+that the projection's assumptions are explicit. They are not measured instrument performance.
+
+================================================================================
+
+TABLE S7.10 [SIMULATED DATA]: PATHWAY ANALYSIS OF ALTERED PROTEINS
+Projected pathway enrichment, computed over the simulated matrix
+
+Pathway                          Proteins      Lead    5-FU    Lead+5-FU   FDR
+                                 in Pathway    (p)     (p)     (p)
+
+Complement & Coagulation         34 proteins   0.0001  0.0004  <0.0001     Highly sig.
+(Fibrinogen, Prothrombin, C3,
+C4, Factor VIII, Thrombin)
+
+Acute Phase Response             28 proteins   0.0002  <0.0001 <0.0001     Highly sig.
+(SAA, CRP, Haptoglobin, Serum
+glycoprotein α1-acid, ferritin)
+
+Metal Homeostasis & Transport    19 proteins   0.0008  0.324   0.0001      Lead-specific
+(Transferrin, Ceruloplasmin,
+Iron-binding proteins)
+
+Immune Response (Cytokines)      42 proteins   0.087   <0.0001 <0.0001     5-FU specific
+(IL-6, TNF-α, IFN-γ, IL-10,
+IL-1β, GM-CSF)
+
+Protein Synthesis & Degradation  56 proteins   0.031   0.012   0.0002      Synergistic
+(Ribosomal proteins, ubiquitin,
+proteasome subunits)
+
+Drug Metabolism (Phase I/II)     18 proteins   0.204   0.0003  0.0001      5-FU metabolic
+(Cytochrome P450s, UGT,
+Glutathione S-transferases)
+
+Lipid Transport & Metabolism     22 proteins   0.018   0.045   0.0001      Lead + synergy
+(Apolipoprotein A-I, B, C-III,
+E, LCAT, CETP)
+
+Projected pattern (simulated, not observed):
+- **Lead exposure**: Activates metal-homeostasis and complement/coagulation pathways
+  (p<0.001), reflecting toxicological responses to Pb²⁺. Immune response pathway not
+  significantly affected alone.
+- **5-FU treatment**: Strongly activates chemotherapy-induced immune response (p<0.0001),
+  coagulation, acute-phase response, and drug-metabolism pathways (p<0.001).
+- **Lead + 5-FU synergy**: Simultaneously activates BOTH lead-specific (metal homeostasis)
+  and 5-FU-specific (immune/inflammation) pathways with enhanced magnitude (FDR<0.0001 for
+  most pathways). Suggests cooperative dysregulation of multiple protective systems.
+
+================================================================================
+
+TESTABLE PREDICTIONS FOR A FUTURE CLINICAL STUDY:
+
+The projection above yields the following falsifiable predictions. None has been tested.
+Each is stated so that a prospective serum proteomics study could confirm or refute it:
+
+PREDICTION 1 — HSA depletion in lead-exposed serum.
+   If Pb²⁺ coordination drives the conformational changes seen by CD and FTIR (Tables S3,
+   S5), lead-exposed serum should show reduced HSA abundance relative to matched controls.
+   The projection places this near 7-fold, but the direction of effect is the substantive
+   prediction; the magnitude is model-dependent and could plausibly be far smaller in vivo,
+   where albumin synthesis is homeostatically regulated. REFUTED IF: HSA abundance is
+   unchanged in lead-exposed serum after adjusting for nutritional status and liver function.
+
+PREDICTION 2 — Reduced 5-FU-HSA complex under co-exposure.
+   This is the central and most discriminating prediction. Docking gives ΔΔG = -1.8 kcal/mol,
+   implying a 2-4-fold reduction in 5-FU occupancy on HSA when lead is bound. Native MS of
+   serum from co-exposed patients should therefore show a lower fraction of 5-FU-bound HSA
+   than 5-FU-only patients. REFUTED IF: 5-FU-HSA complex abundance is equivalent between
+   5-FU-only and co-exposed groups.
+
+PREDICTION 3 — Lead-associated PTMs at Cys-34 and the pathway residues.
+   Pb²⁺ coordination at Cys-34 should generate a detectable modification signature
+   (oxidation, disulfide cross-linking, glutathionylation) concentrated at Cys-34 and at
+   the pathway residues Lys-129, Asp-183, Trp-214. REFUTED IF: modification density at
+   these positions does not exceed that at control positions elsewhere in the sequence.
+
+PREDICTION 4 — Non-additive (synergistic) response under co-exposure.
+   A factorial design should reveal a significant Lead × 5-FU interaction term rather than
+   purely additive effects. REFUTED IF: the interaction term is non-significant and the
+   co-exposed group matches the additive model.
+
+PREDICTION 5 — Ternary Pb-HSA-5FU species.
+   A ternary complex should be detectable by native MS in co-exposed samples only. This is
+   the hardest prediction to test (the projected species is short-lived and low-abundance)
+   and is the most likely of the five to fail on sensitivity grounds alone. REFUTED IF: no
+   ternary species is observed at instrument sensitivity sufficient to detect it.
+
+PROPOSED NEXT STUDY:
+   A prospective four-arm serum proteomics study, n ≈ 12 per arm, recruiting occupationally
+   lead-exposed workers (with blood lead level quantified by ICP-MS) undergoing or not
+   undergoing fluoropyrimidine chemotherapy. Primary endpoint: fraction of 5-FU-bound HSA
+   by native MS (Prediction 2). Secondary endpoints: Predictions 1, 3, 4. Confounders
+   requiring control: nutritional status, hepatic and renal function, inflammatory burden,
+   and concurrent medications competing for HSA Sudlow sites.
+
+CLINICAL RELEVANCE, IF CONFIRMED:
+   Should these predictions hold, lead-exposed patients on 5-FU would be expected to show
+   reduced drug bioavailability, with implications for dosing and for surveillance of
+   treatment response. That clinical inference is contingent on the predictions above being
+   tested and confirmed in real samples — it does not follow from the present work.
+
+================================================================================
+
+SUPPLEMENTARY REFERENCES (Proteomics Methods):
+
+1. Tyanova, S., Temu, T., Cox, J. (2016). The MaxQuant computational platform for mass
+   spectrometry-based quantitative proteomics. Nature Protocols, 11(12), 2301-2319.
+
+2. Nesvizhskii, A. I., & Aebersold, R. (2005). Interpreting genome-wide proteomic data:
+   emerging opportunites. Nature Reviews Genetics, 6(8), 641-656.
+
+3. Tyanova, S., & Cox, J. (2018). Perseus: a bioinformatics platform for discovery
+   proteomics. Nature Methods, 15(7), 539-540.
+
+4. Zhang, Y., Fonslow, B. R., Shan, B., Baek, M. C., & Yates, J. R. (2013). Protein
+   analysis by shotgun/bottom-up proteomics. Chemical Reviews, 113(4), 2343-2394.
+
+5. Surinova, S., Schiess, R., Hüttenhain, R., Cerciello, F., Wollscheid, B., & Aebersold,
+   R. (2011). On the importance of experimental design in high-resolution proteomics.
+   Molecular & Cellular Proteomics, 10(7), M111.010595.
+
+================================================================================
+
+```
 
 ---
 

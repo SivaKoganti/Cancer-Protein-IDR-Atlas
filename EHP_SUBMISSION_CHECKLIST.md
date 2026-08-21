@@ -57,16 +57,32 @@
 - [ ] Confirm file sizes < 5 MB each
 
 ### ☐ Supplementary Tables
-- [ ] Verify all 4 supplementary tables present:
-  - [ ] Supplementary_Table_S3_CD_Spectroscopy.txt
-  - [ ] Supplementary_Table_S4_Fluorescence_Spectroscopy.txt
-  - [ ] Supplementary_Table_S5_FTIR_Spectroscopy.txt
-  - [ ] Supplementary_Table_S6_Viscometry.txt
+- [ ] Verify all supplementary tables present:
+  - [ ] Supplementary_Table_S3_CD_Spectroscopy.txt (experimental)
+  - [ ] Supplementary_Table_S4_Fluorescence_Spectroscopy.txt (experimental)
+  - [ ] Supplementary_Table_S5_FTIR_Spectroscopy.txt (experimental)
+  - [ ] Supplementary_Table_S6_Viscometry.txt (experimental)
+  - [ ] Supplementary_Table_S7_Serum_Proteomics.txt (**SIMULATED — in silico projection**)
+
 - [ ] Check all tables include:
   - [ ] Data values (all columns populated)
   - [ ] Statistical analysis (p-values, R², effect sizes)
   - [ ] Figure captions for embedded figures
 - [ ] Verify formatting is consistent and readable
+
+### ☐ Simulated-Data Disclosure (Table S7) — DO NOT SKIP
+Table S7 and Figures S7.1–S7.4 contain no measurements. Before submitting, confirm:
+- [ ] Table S7 header still carries the "NO EXPERIMENTAL MEASUREMENTS" banner
+- [ ] Figures S7.1–S7.4 still carry the red "SIMULATED DATA" banner
+- [ ] Manuscript Section 4.7 frames S7 as prediction, never as evidence
+- [ ] Limitation 6 in Section 4.5 states no patient samples were analyzed
+- [ ] No sentence anywhere claims S7 "validates" or "confirms" the mechanism
+- [ ] Cover letter does NOT list proteomics among experimental validation
+- [ ] **Alternative**: if the editor or your co-authors prefer, drop S7 entirely —
+      remove the file, Section 4.7, and Figures S7.* . The manuscript stands on
+      Tables S3–S6 without it.
+
+---
 
 ### ☐ File Organization
 - [ ] Create a folder: `EHP_Submission_[YourName]_Aug2026`

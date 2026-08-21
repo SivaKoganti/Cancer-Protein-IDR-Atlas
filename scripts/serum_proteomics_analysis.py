@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
 """
-Serum Proteomics Analysis - Lead & 5-FU Exposure Study
-Label-Free LC-MS/MS Quantification and Statistical Analysis
+Serum Proteomic Signature - IN SILICO PROJECTION (Supplementary Table S7)
 
-This script replicates the analysis workflow for clinical serum proteomics data
-demonstrating lead and 5-FU induced protein alterations with validation against
-computational docking predictions.
+*** THIS SCRIPT SIMULATES DATA. IT DOES NOT ANALYZE MEASUREMENTS. ***
+
+No serum samples were collected and no mass spectrometry was performed for this
+study. This script generates a synthetic serum proteomics matrix by applying
+perturbations derived from the molecular docking results (binding free energies and
+allosteric pathway residues) on top of a log-normal abundance model typical of serum
+LC-MS/MS, then runs a standard differential-abundance pipeline over that synthetic
+matrix to produce Supplementary Table S7 and Figures S7.1-S7.4.
+
+Purpose: to state falsifiable predictions and to size/design a future prospective
+clinical proteomics study. Output must not be presented as experimental evidence.
+
+Note on circularity: the perturbations are parameterized FROM the docking results, so
+any agreement between the output and those docking predictions is built in by
+construction and carries no inferential weight.
 
 Author: Generated for Lead-HSA-5FU Publication
 Date: August 2026
@@ -37,6 +48,30 @@ plt.rcParams['legend.fontsize'] = 9
 # PART 1: GENERATE SYNTHETIC PROTEOMICS DATASET
 # ==============================================================================
 
+# (matrix_index, lead_log2FC, 5FU_log2FC, combined_log2FC)
+# Whole serum proteins - directionality from serum-toxicology literature,
+# magnitudes scaled to the docking-derived exposure model.
+WHOLE_PROTEIN_SERIES = {
+    'HSA':           (0, -3.8, -0.3, -5.4),
+    'TRANSFERRIN':   (1, -2.1, -0.1, -3.6),
+    'FIBRINOGEN_A':  (2, +1.8, +1.9, +4.2),
+    'FIBRINOGEN_B':  (3, +1.6, +1.6, +4.0),
+    'HAPTOGLOBIN':   (4, +2.1, +0.5, +3.8),
+    'COMPLEMENT_C3': (5, +1.4, +0.0, +3.7),
+    'SAA':           (6, +0.2, +3.2, +5.1),
+    'CRP':           (7, +0.3, +2.8, +4.5),
+}
+
+# HSA tryptic peptides. Fold-changes match Table S7.2 exactly (log2 of the
+# intensity ratios printed there), so figure and table cannot drift apart.
+HSA_PEPTIDE_SERIES = {
+    'PEP_DTHKSEIAHR':  (8,  -0.18, -0.29, -0.71),   # control site
+    'PEP_LQQEPFMK':    (9,  -0.47, -0.56, -1.30),   # drug-binding site
+    'PEP_QNCELFEQLGE': (10, -1.89, -0.38, -3.09),   # allosteric pathway
+    'PEP_LGEVHNIEVPD': (11, -2.38, -0.26, -3.21),   # Pb coordination
+    'PEP_CYSTVASD':    (12, -3.31,  0.00, -4.04),   # Cys-34, primary Pb site
+}
+
 class ProteomicsDataGenerator:
     """Generate realistic clinical serum proteomics data based on known proteotoxicology"""
 
@@ -58,17 +93,12 @@ class ProteomicsDataGenerator:
     def generate_group_data(self, baseline, cv=0.07):
         """Generate replicate intensity data for each group with realistic variation"""
 
-        # Key proteins to perturb based on lead/5-FU toxicology
-        key_proteins = {
-            'HSA': (0, -3.8, -0.3, -5.4),           # (idx, lead_fc, 5fu_fc, combined_fc)
-            'TRANSFERRIN': (1, -2.1, -0.1, -3.6),
-            'FIBRINOGEN_A': (2, +1.8, +1.9, +4.2),
-            'FIBRINOGEN_B': (3, +1.6, +1.6, +4.0),
-            'HAPTOGLOBIN': (4, +2.1, +0.5, +3.8),
-            'COMPLEMENT_C3': (5, +1.4, +0.0, +3.7),
-            'SAA': (6, +0.2, +3.2, +5.1),
-            'CRP': (7, +0.3, +2.8, +4.5),
-        }
+        # Whole-protein series (indices 0-7). Perturbations are the docking-informed
+        # log2 fold-changes reported in Tables S7.4-S7.6.
+        key_proteins = dict(WHOLE_PROTEIN_SERIES)
+        # HSA peptide series (indices 8-12) live at their OWN indices so that
+        # peptide-level figures do not accidentally plot whole-protein series.
+        key_proteins.update(HSA_PEPTIDE_SERIES)
 
         # Generate control group (n=12 replicates)
         control_data = baseline * np.random.normal(1.0, cv, size=(self.n_control, self.n_proteins))
@@ -252,6 +282,8 @@ def plot_proteome_overview(all_data, group_labels):
     ax.legend()
     ax.grid(True, alpha=0.3)
 
+    fig.suptitle('SIMULATED DATA - in silico projection, not measurements', fontsize=11,
+                 color='#b03030', fontweight='bold', y=1.005)
     plt.tight_layout()
     plt.savefig('Figure_S7.1_Proteome_Overview.png', dpi=300, bbox_inches='tight')
     plt.close()
@@ -268,11 +300,11 @@ def plot_hsa_quantification(all_data, group_labels):
 
     # Key HSA peptides with their responses
     hsa_peptides = {
-        'Control Site (DTHKSEIAHR)': 0,
-        'Drug Binding (LQQEPFMK)': 1,
-        'Allosteric (QNCELFEQLGE)': 2,
-        'Pb Coordination (LGEVHNIEVPD)': 3,
-        'Cys-34 site (CYSTVASD)': 4,
+        'Control Site (DTHKSEIAHR)':    HSA_PEPTIDE_SERIES['PEP_DTHKSEIAHR'][0],
+        'Drug Binding (LQQEPFMK)':      HSA_PEPTIDE_SERIES['PEP_LQQEPFMK'][0],
+        'Allosteric (QNCELFEQLGE)':     HSA_PEPTIDE_SERIES['PEP_QNCELFEQLGE'][0],
+        'Pb Coordination (LGEVHNIEVPD)': HSA_PEPTIDE_SERIES['PEP_LGEVHNIEVPD'][0],
+        'Cys-34 site (CYSTVASD)':       HSA_PEPTIDE_SERIES['PEP_CYSTVASD'][0],
     }
 
     # A: Individual HSA peptide intensities
@@ -353,7 +385,7 @@ def plot_hsa_quantification(all_data, group_labels):
     ffu_binding = [0.8, 0.1, 72.4, 44.6]  # % 5-FU-HSA complex in each group
     bars = ax.bar(groups, ffu_binding, color=colors, alpha=0.8, edgecolor='black', linewidth=1.5)
     ax.set_ylabel('5-FU-HSA Complex (% of HSA)', fontsize=11)
-    ax.set_title('D. 5-FU Binding to HSA\n(Validates Docking Prediction)', fontsize=12, fontweight='bold')
+    ax.set_title('D. Projected 5-FU Binding to HSA\n(simulated from docking $\\Delta\\Delta$G)', fontsize=12, fontweight='bold')
     ax.set_ylim([0, 80])
 
     # Annotations
@@ -363,11 +395,15 @@ def plot_hsa_quantification(all_data, group_labels):
                 f'{height:.1f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')
 
     # Add docking prediction reference line
-    ax.axhline(y=72.4, color='blue', linestyle='--', linewidth=2, alpha=0.7, label='Predicted reduction: 2-4×')
-    ax.text(1.5, 75, '2-4× reduction\n(docking prediction)', fontsize=10, color='blue', fontweight='bold')
+    ax.axhline(y=72.4, color='blue', linestyle='--', linewidth=2, alpha=0.7)
+    ax.text(0.05, 0.96, 'dashed line = model input\n(2-4x reduction from docking,\nnot a measurement)',
+            transform=ax.transAxes, fontsize=8.5, color='blue', fontweight='bold',
+            va='top', ha='left')
 
     ax.grid(True, alpha=0.3, axis='y')
 
+    fig.suptitle('SIMULATED DATA - in silico projection, not measurements', fontsize=11,
+                 color='#b03030', fontweight='bold', y=1.005)
     plt.tight_layout()
     plt.savefig('Figure_S7.2_HSA_Quantification.png', dpi=300, bbox_inches='tight')
     plt.close()
@@ -496,6 +532,8 @@ def plot_protein_alterations(all_data, group_labels):
     cbar = plt.colorbar(im, ax=ax4)
     cbar.set_label('log₂(FC)', fontsize=10)
 
+    fig.suptitle('SIMULATED DATA - in silico projection, not measurements', fontsize=11,
+                 color='#b03030', fontweight='bold', y=1.005)
     plt.tight_layout()
     plt.savefig('Figure_S7.3_Protein_Alterations.png', dpi=300, bbox_inches='tight')
     plt.close()
@@ -615,6 +653,8 @@ def plot_synergy_analysis(all_data, group_labels):
 
     ax.grid(True, alpha=0.3, axis='y')
 
+    fig.suptitle('SIMULATED DATA - in silico projection, not measurements', fontsize=11,
+                 color='#b03030', fontweight='bold', y=1.005)
     plt.tight_layout()
     plt.savefig('Figure_S7.4_Synergy_Analysis.png', dpi=300, bbox_inches='tight')
     plt.close()
@@ -627,7 +667,8 @@ def plot_synergy_analysis(all_data, group_labels):
 
 if __name__ == '__main__':
     print("\n" + "="*80)
-    print("SERUM PROTEOMICS ANALYSIS - Lead & 5-FU Exposure Study")
+    print("SERUM PROTEOMIC SIGNATURE - IN SILICO PROJECTION")
+    print("*** SIMULATED DATA - no samples, no mass spectrometry ***")
     print("="*80 + "\n")
 
     # Generate synthetic dataset
