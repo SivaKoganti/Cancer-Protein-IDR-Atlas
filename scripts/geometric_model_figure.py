@@ -36,7 +36,7 @@ gs = fig.add_gridspec(2, 2, hspace=0.30, wspace=0.42,
 axA = fig.add_subplot(gs[0, 0]); axA.set_facecolor(SURFACE)
 axA.set_xlim(0, 10); axA.set_ylim(0, 6); axA.axis('off')
 axA.set_aspect('equal')
-axA.set_title('A  Coordination geometry: the open question',
+axA.set_title('A  Coordination sphere: QM-refined geometry',
               loc='left', fontweight='bold', color=INK)
 
 def donor(ax, x, y, label, color):
@@ -61,21 +61,23 @@ axA.text(pbx, pby, 'Pb', ha='center', va='center', color='white',
          fontsize=8.5, fontweight='bold', zorder=4)
 axA.text(pbx, 1.15, 'hemidirected  PbS$_3$', ha='center', fontsize=8.5,
          fontweight='bold', color=INK)
-axA.text(pbx, 0.6, 'literature consensus', ha='center', fontsize=7.5, color=MUTED)
+axA.text(pbx, 0.6, 'thiolate-rich sites (lit.)', ha='center', fontsize=7.5, color=MUTED)
 
 # holodirected PbS4
 pbx2 = 7.4
-for ang in (55, 145, 235, 325):
+for ang, lab, col in ((55, 'S', GREEN), (145, 'N', PURP),
+                      (235, 'O', BLUE), (325, 'O', BLUE)):
     dx, dy = 1.25*np.cos(np.radians(ang)), 1.25*np.sin(np.radians(ang))
     axA.plot([pbx2, pbx2+dx], [pby, pby+dy], color=MUTED, lw=1.6, zorder=2)
-    donor(axA, pbx2+dx, pby+dy, 'L', PURP)
+    donor(axA, pbx2+dx, pby+dy, lab, col)
 axA.add_patch(Circle((pbx2, pby), 0.44, facecolor=BLUE, edgecolor=SURFACE,
                      linewidth=2, zorder=3))
 axA.text(pbx2, pby, 'Pb', ha='center', va='center', color='white',
          fontsize=8.5, fontweight='bold', zorder=4)
-axA.text(pbx2, 1.15, 'holodirected  4-coordinate', ha='center', fontsize=8.5,
+axA.text(pbx2, 1.15, 'mixed S/N/O, 4-coordinate', ha='center', fontsize=8.5,
          fontweight='bold', color=INK)
-axA.text(pbx2, 0.6, 'Table 3.1.1, unconfirmed', ha='center', fontsize=7.5, color=MUTED)
+axA.text(pbx2, 0.6, 'this work: Pb–S 2.65, Pb–N 2.73,\nPb–O 2.42 / 2.38 Å',
+         ha='center', fontsize=7, color=MUTED)
 axA.text(4.9, 3.5, 'vs', ha='center', va='center', fontsize=11,
          color=MUTED, style='italic')
 
