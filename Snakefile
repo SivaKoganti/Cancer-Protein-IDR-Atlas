@@ -7,6 +7,7 @@ rule all:
     expand("results/atlas/{gene}_atlas.tsv", gene=config["genes"]),
     expand("results/atlas/{gene}_atlas_with_clinvar.tsv", gene=config["genes"]),
     "results/atlas/global_disorder_phylogeny_atlas.tsv",
+    "results/spin_glass/spin_glass_scores.tsv",
     "results/alphafold/plddt_scores.tsv",
     "results/delta_llps/delta_llps_scores.tsv",
     "results/mutants/idr_llps_mutants.tsv",
@@ -135,6 +136,21 @@ rule compute_conservation:
     python3 scripts/compute_phylo_conservation.py --ortholog-dir data/orthologs --output {output}
     """
 
+rule compute_spin_glass:
+  input:
+    fasta="data/fasta/selected_proteins.fasta",
+    config="config.yaml"
+  output:
+    "results/spin_glass/spin_glass_scores.tsv"
+  shell:
+    """
+    mkdir -p results/spin_glass
+    python3 scripts/compute_spin_glass_features.py \
+      --fasta {input.fasta} \
+      --config {input.config} \
+      --output {output}
+    """
+
 rule build_atlas:
   input:
     iupred="results/iupred/iupred_scores.tsv",
@@ -146,6 +162,7 @@ rule build_atlas:
     conservation="results/phylogeny/conservation.tsv",
     plddt="results/alphafold/plddt_scores.tsv",
     delta_llps="results/delta_llps/delta_llps_scores.tsv",
+    spin_glass="results/spin_glass/spin_glass_scores.tsv",
     cdr="results/cdr/all_genes_cdr.tsv",
     slim="results/slim/slim_per_residue.tsv",
     ptm="results/slim/ptm_per_residue.tsv",
@@ -166,6 +183,7 @@ rule build_atlas:
       --conservation {input.conservation} \
       --plddt {input.plddt} \
       --delta-llps {input.delta_llps} \
+      --spin-glass {input.spin_glass} \
       --cdr {input.cdr} \
       --slim {input.slim} \
       --ptm {input.ptm} \

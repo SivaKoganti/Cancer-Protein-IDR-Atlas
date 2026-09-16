@@ -3,12 +3,26 @@ import subprocess
 import sys
 
 import pandas as pd
+import pytest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_build_disorder_atlas_generates_tables_from_available_inputs(tmp_path):
+    required_inputs = [
+        REPO_ROOT / "results" / "iupred" / "iupred_scores.tsv",
+        REPO_ROOT / "results" / "seg" / "seg_regions.tsv",
+        REPO_ROOT / "results" / "plaac" / "plaac_scores.tsv",
+        REPO_ROOT / "results" / "llps" / "llps_scores.tsv",
+        REPO_ROOT / "results" / "structure" / "structure_scores.tsv",
+        REPO_ROOT / "results" / "clinvar" / "mapped_variants.tsv",
+        REPO_ROOT / "results" / "phylogeny" / "conservation.tsv",
+        REPO_ROOT / "data" / "fasta" / "selected_proteins.fasta",
+    ]
+    if not all(path.exists() for path in required_inputs):
+        pytest.skip("repository fixture outputs are not present in this clone")
+
     outdir = tmp_path / "atlas"
     cmd = [
         sys.executable,
@@ -62,6 +76,11 @@ def test_build_disorder_atlas_normalizes_isoform_ids_and_ignores_invalid_optiona
     (tmp_path / "conservation.tsv").write_text("gene\tpos\tconservation_score\nTP53_1\t1\t0.7\n", encoding="utf-8")
     (tmp_path / "plddt.tsv").write_text("", encoding="utf-8")
     (tmp_path / "delta_llps.tsv").write_text("gene\tpos\tllps_vulnerability\tdelta_llps_max\tdelta_llps_min\nTP53_1\tNaN\t0.1\t0.2\t0.3\n", encoding="utf-8")
+    (tmp_path / "spin_glass.tsv").write_text(
+        "gene\tpos\taa\twindow_start\twindow_end\twindow_length\tspin_state\tlocal_energy\tlocal_frustration\tcoupling_mean\tcoupling_variance\tsusceptibility_like\tnull_energy_mean\tnull_energy_std\tnull_frustration_mean\tnull_frustration_std\tnull_coupling_variance_mean\tnull_coupling_variance_std\tnull_susceptibility_mean\tnull_susceptibility_std\tspin_glass_score\tspin_glass_method\tspin_glass_version\n"
+        "TP53_1\t1\tA\t1\t2\t2\t0.0\t-0.1\t0.2\t0.0\t0.03\t0.5\t-0.05\t0.01\t0.1\t0.01\t0.01\t0.01\t0.3\t0.01\t0.62\tspin_glass_inspired_sequence_heuristic\t1.0.0\n",
+        encoding="utf-8",
+    )
     (tmp_path / "cdr.tsv").write_text("", encoding="utf-8")
     (tmp_path / "slim.tsv").write_text("", encoding="utf-8")
     (tmp_path / "ptm.tsv").write_text("gene\tpos\tptm_count\tptm_categories\tptm_ids\tptm_in_idr_count\tptm_clinvar_overlap_count\nTP53_1\t1\t1\tphospho\tMOD_CDK_1\t1\t0\n", encoding="utf-8")
@@ -89,6 +108,8 @@ def test_build_disorder_atlas_normalizes_isoform_ids_and_ignores_invalid_optiona
         str(tmp_path / "plddt.tsv"),
         "--delta-llps",
         str(tmp_path / "delta_llps.tsv"),
+        "--spin-glass",
+        str(tmp_path / "spin_glass.tsv"),
         "--cdr",
         str(tmp_path / "cdr.tsv"),
         "--slim",
@@ -107,8 +128,9 @@ def test_build_disorder_atlas_normalizes_isoform_ids_and_ignores_invalid_optiona
     assert atlas_df["gene"].eq("TP53").all()
     assert atlas_df["pos"].tolist()[:2] == [1, 2]
     assert {"ptm_count", "ptm_categories", "ptm_ids"}.issubset(atlas_df.columns)
-    assert {"vipp_score", "is_idr"}.issubset(atlas_df.columns)
+    assert {"vipp_score", "is_idr", "spin_glass_score", "spin_glass_method", "spin_glass_version"}.issubset(atlas_df.columns)
     assert atlas_df["vipp_score"].between(0, 1).all()
+    assert atlas_df.loc[atlas_df["pos"] == 1, "spin_glass_score"].iloc[0] == 0.62
     assert atlas_df["is_idr"].isin([0, 1]).all()
     assert "idr_class" in atlas_df.columns
     assert atlas_df["idr_class"].isin(["structured", "disordered", "conditionally_disordered"]).all()
@@ -116,7 +138,7 @@ def test_build_disorder_atlas_normalizes_isoform_ids_and_ignores_invalid_optiona
     assert atlas_df.loc[atlas_df["iupred_score"] < 0.5, "is_idr"].eq(0).all()
 
     summary_df = pd.read_csv(outdir / "global_disorder_phylogeny_atlas.tsv", sep="\t")
-    assert {"mean_vipp_score", "max_vipp_score", "virus_interaction_fraction", "mean_virus_count", "idr_fraction", "conditionally_disordered_fraction"}.issubset(summary_df.columns)
+    assert {"mean_vipp_score", "max_vipp_score", "mean_spin_glass_score", "max_spin_glass_score", "virus_interaction_fraction", "mean_virus_count", "idr_fraction", "conditionally_disordered_fraction"}.issubset(summary_df.columns)
     assert summary_df["mean_vipp_score"].between(0, 1).all()
 
 
