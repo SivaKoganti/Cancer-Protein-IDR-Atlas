@@ -2,9 +2,14 @@
 """Validate that the computational repository contains the core atlas, benchmark, and repurposing outputs."""
 
 import argparse
+import math
 from pathlib import Path
 
 import pandas as pd
+
+
+def is_finite_series(series):
+    return series.map(lambda value: pd.isna(value) or math.isfinite(float(value))).all()
 
 
 def validate_repository(atlas_dir, results_dir, output_path):
@@ -30,6 +35,9 @@ def validate_repository(atlas_dir, results_dir, output_path):
     repurposing = results_dir / "llps" / "ncats_repurposing_candidates.tsv"
     checks.append(("repurposing", repurposing.exists(), f"Repurposing candidates exist: {repurposing.exists()}"))
 
+    spin_glass = results_dir / "spin_glass" / "spin_glass_scores.tsv"
+    checks.append(("spin_glass_scores", spin_glass.exists(), f"Spin-glass scores exist: {spin_glass.exists()}"))
+
     if llps_library.exists():
         llps_df = pd.read_csv(llps_library, sep="\t")
         checks.append(("llps_library_not_empty", not llps_df.empty, f"LLPS library rows: {len(llps_df)}"))
@@ -41,6 +49,43 @@ def validate_repository(atlas_dir, results_dir, output_path):
     if repurposing.exists():
         rep_df = pd.read_csv(repurposing, sep="\t")
         checks.append(("repurposing_rows", not rep_df.empty, f"Repurposing rows: {len(rep_df)}"))
+
+    if spin_glass.exists():
+        spin_df = pd.read_csv(spin_glass, sep="\t")
+        required_columns = {
+            "gene",
+            "pos",
+            "aa",
+            "window_start",
+            "window_end",
+            "local_energy",
+            "local_frustration",
+            "coupling_variance",
+            "susceptibility_like",
+            "null_energy_mean",
+            "null_frustration_mean",
+            "spin_glass_score",
+            "spin_glass_method",
+            "spin_glass_version",
+        }
+        checks.append((
+            "spin_glass_schema",
+            required_columns.issubset(spin_df.columns),
+            f"Spin-glass columns present: {required_columns.issubset(spin_df.columns)}",
+        ))
+        numeric_columns = [
+            "local_energy",
+            "local_frustration",
+            "coupling_variance",
+            "susceptibility_like",
+            "null_energy_mean",
+            "null_frustration_mean",
+            "spin_glass_score",
+        ]
+        finite_numeric = required_columns.issubset(spin_df.columns) and all(
+            is_finite_series(spin_df[column]) for column in numeric_columns
+        )
+        checks.append(("spin_glass_finite_numeric", finite_numeric, f"Spin-glass numeric columns finite: {finite_numeric}"))
 
     report = pd.DataFrame(
         [

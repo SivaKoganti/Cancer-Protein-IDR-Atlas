@@ -60,6 +60,15 @@ llps:
   charge_pattern_weight: 0.15
   hydrophobic_weight: 0.15
 
+spin_glass:
+  enabled: true
+  window_size: 15
+  temperature: 1.5
+  coupling_scale: 1.0
+  field_scale: 0.35
+  num_shuffles: 16
+  encoding: biophysical_v1
+
 structural:
   quantum_proxy:
     dielectric_constant: 4.0

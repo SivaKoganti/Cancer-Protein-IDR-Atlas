@@ -156,6 +156,7 @@ def main():
     parser.add_argument("--outdir", required=True)
     parser.add_argument("--plddt", default=None)
     parser.add_argument("--delta-llps", dest="delta_llps", default=None)
+    parser.add_argument("--spin-glass", dest="spin_glass", default=None)
     parser.add_argument("--cdr", default=None)
     parser.add_argument("--slim", default=None)
     parser.add_argument("--ptm", default=None)
@@ -182,6 +183,7 @@ def main():
 
     plddt      = load_optional_tsv(args.plddt)
     delta_llps = load_optional_tsv(args.delta_llps)
+    spin_glass = load_optional_tsv(args.spin_glass)
     cdr_data   = load_optional_tsv(args.cdr)
     slim_data  = load_optional_tsv(args.slim)
     ptm_data   = load_optional_tsv(args.ptm)
@@ -249,6 +251,7 @@ def main():
         # ── index novelty layers by position for O(1) lookup ──────────────
         plddt_idx      = pos_lookup(plddt, gene)
         delta_llps_idx = pos_lookup(delta_llps, gene)
+        spin_glass_idx = pos_lookup(spin_glass, gene)
         cdr_idx        = pos_lookup(cdr_data, gene)
         slim_idx       = pos_lookup(slim_data, gene)
         ptm_idx        = pos_lookup(ptm_data, gene)
@@ -262,6 +265,7 @@ def main():
 
             pr = plddt_idx.get(pos)
             dr = delta_llps_idx.get(pos)
+            sgr = spin_glass_idx.get(pos)
             cr = cdr_idx.get(pos)
             sr = slim_idx.get(pos)
             pr_ptm = ptm_idx.get(pos)
@@ -323,6 +327,13 @@ def main():
                 "llps_vulnerability": float(dr["llps_vulnerability"]) if dr is not None else float("nan"),
                 "delta_llps_max":   float(dr["delta_llps_max"]) if dr is not None else float("nan"),
                 "delta_llps_min":   float(dr["delta_llps_min"]) if dr is not None else float("nan"),
+                "spin_glass_score": float(sgr["spin_glass_score"]) if sgr is not None and "spin_glass_score" in sgr else float("nan"),
+                "spin_glass_energy": float(sgr["local_energy"]) if sgr is not None and "local_energy" in sgr else float("nan"),
+                "spin_glass_frustration": float(sgr["local_frustration"]) if sgr is not None and "local_frustration" in sgr else float("nan"),
+                "spin_glass_coupling_variance": float(sgr["coupling_variance"]) if sgr is not None and "coupling_variance" in sgr else float("nan"),
+                "spin_glass_susceptibility_like": float(sgr["susceptibility_like"]) if sgr is not None and "susceptibility_like" in sgr else float("nan"),
+                "spin_glass_method": str(sgr["spin_glass_method"]) if sgr is not None and "spin_glass_method" in sgr else "",
+                "spin_glass_version": str(sgr["spin_glass_version"]) if sgr is not None and "spin_glass_version" in sgr else "",
                 "cdr_flag":         int(cr["cdr_flag"]) if cr is not None and "cdr_flag" in cr else 0,
                 "discordant_flag":  disc_flag,
                 "slim_count":       int(sr["slim_count"]) if sr is not None and "slim_count" in sr else 0,
@@ -351,6 +362,8 @@ def main():
                 "variant_count": len(variant_list),
                 "mean_plddt": gene_df["plddt"].mean() if "plddt" in gene_df else float("nan"),
                 "mean_llps_vulnerability": gene_df["llps_vulnerability"].mean() if "llps_vulnerability" in gene_df else float("nan"),
+                "mean_spin_glass_score": gene_df["spin_glass_score"].mean() if "spin_glass_score" in gene_df else float("nan"),
+                "max_spin_glass_score": gene_df["spin_glass_score"].max() if "spin_glass_score" in gene_df else float("nan"),
                 "cdr_fraction": gene_df["cdr_flag"].mean() if "cdr_flag" in gene_df else 0.0,
                 "discordant_fraction": gene_df["discordant_flag"].mean() if "discordant_flag" in gene_df else 0.0,
                 "slim_density": gene_df["slim_count"].mean() if "slim_count" in gene_df else 0.0,

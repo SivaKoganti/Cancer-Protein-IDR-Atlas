@@ -18,8 +18,10 @@ def test_validate_computational_repository_writes_report(tmp_path):
     results_dir = tmp_path / "results"
     llps_dir = results_dir / "llps"
     benchmark_dir = results_dir / "benchmark"
+    spin_glass_dir = results_dir / "spin_glass"
     llps_dir.mkdir(parents=True)
     benchmark_dir.mkdir(parents=True)
+    spin_glass_dir.mkdir(parents=True)
 
     pd.DataFrame([
         {"llps_class": "low", "residues": 10, "virus_linked_residues": 1, "max_llps": 0.3, "candidate_compounds": "test", "rationale": "test"},
@@ -38,6 +40,25 @@ def test_validate_computational_repository_writes_report(tmp_path):
     pd.DataFrame([
         {"compound_id": "CMP001", "compound_name": "Test", "validated_for_repurpose": True},
     ]).to_csv(repurposing, sep="\t", index=False)
+
+    pd.DataFrame([
+        {
+            "gene": "TP53",
+            "pos": 1,
+            "aa": "A",
+            "window_start": 1,
+            "window_end": 1,
+            "local_energy": 0.0,
+            "local_frustration": 0.0,
+            "coupling_variance": 0.0,
+            "susceptibility_like": 0.0,
+            "null_energy_mean": 0.0,
+            "null_frustration_mean": 0.0,
+            "spin_glass_score": 0.5,
+            "spin_glass_method": "spin_glass_inspired_sequence_heuristic",
+            "spin_glass_version": "1.0.0",
+        },
+    ]).to_csv(spin_glass_dir / "spin_glass_scores.tsv", sep="\t", index=False)
 
     output = tmp_path / "validation.tsv"
     completed = subprocess.run([
